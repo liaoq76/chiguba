@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/records/records",
+    "pages/add/add",
+    "pages/stats/stats",
+    "pages/mine/mine",
+    "pages/detail/detail"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ff6f9d",
+    "navigationBarTitleText": "吃谷吧",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#fff5f8"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#ff6f9d",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab/home.png",
+        "selectedIconPath": "images/tab/home_active.png"
+      },
+      {
+        "pagePath": "pages/records/records",
+        "text": "账本",
+        "iconPath": "images/tab/book.png",
+        "selectedIconPath": "images/tab/book_active.png"
+      },
+      {
+        "pagePath": "pages/add/add",
+        "text": "记账",
+        "iconPath": "images/tab/add.png",
+        "selectedIconPath": "images/tab/add_active.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计",
+        "iconPath": "images/tab/chart.png",
+        "selectedIconPath": "images/tab/chart_active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/tab/mine.png",
+        "selectedIconPath": "images/tab/mine_active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

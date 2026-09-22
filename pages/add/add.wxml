@@ -1,0 +1,67 @@
+<view class="container add-page">
+  <view class="card amount-card">
+    <view class="muted">金额</view>
+    <view class="amount-input">
+      <text class="amount-symbol">¥</text>
+      <input type="digit" placeholder="0.00" value="{{amount}}" bindinput="onAmountInput" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="title-row">
+      <view class="title">分类</view>
+      <view class="more" bindtap="openCategoryManager">管理</view>
+    </view>
+    <view class="category-grid">
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="cat-item {{activeCategoryId === item.id ? 'active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="chooseCategory"
+      >
+        <view class="cat-icon" style="background: {{item.color}}22; color: {{item.color}}">{{item.icon}}</view>
+        <view class="cat-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="title-row">
+      <view class="title">商品名称</view>
+      <view class="more muted">选填</view>
+    </view>
+    <input class="text-input" placeholder="例：原神 刻晴 景品手办" value="{{title}}" bindinput="onTitleInput" />
+  </view>
+
+  <view class="card">
+    <view class="title-row">
+      <view class="title">日期</view>
+    </view>
+    <view class="text-input" bindtap="pickDate">{{dateText}} ›</view>
+  </view>
+
+  <view class="card">
+    <view class="title-row">
+      <view class="title">备注</view>
+      <view class="more muted">选填</view>
+    </view>
+    <textarea class="text-area" placeholder="想记录点什么…（购买店铺、心情、CP 磕点）" value="{{note}}" bindinput="onNoteInput" maxlength="200" auto-height />
+  </view>
+
+  <view class="card">
+    <view class="title-row">
+      <view class="title">晒图</view>
+      <view class="more muted">{{images.length}}/3</view>
+    </view>
+    <view class="image-row">
+      <view class="image-box" wx:for="{{images}}" wx:key="*this" data-index="{{index}}" bindtap="removeImage">
+        <image src="{{item}}" mode="aspectFill" />
+        <view class="image-remove">×</view>
+      </view>
+      <view class="image-add" wx:if="{{images.length < 3}}" bindtap="chooseImage">+</view>
+    </view>
+  </view>
+
+  <view class="save-btn primary-btn" bindtap="save">保存这笔</view>
+</view>

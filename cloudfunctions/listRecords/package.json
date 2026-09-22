@@ -1,0 +1,9 @@
+{
+  "name": "listRecords",
+  "version": "1.0.0",
+  "description": "拉取当前用户的全部记账",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

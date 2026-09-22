@@ -1,0 +1,50 @@
+<view class="container">
+  <view class="card total-card">
+    <view class="muted">{{monthLabel}}花销</view>
+    <view class="big-amount">¥ {{total}}</view>
+    <view class="meta-row">
+      <view><text class="muted">共 </text><text>{{count}}</text><text class="muted"> 笔</text></view>
+      <view><text class="muted">日均 </text><text class="amount">¥ {{avgPerDay}}</text></view>
+    </view>
+  </view>
+
+  <view class="range-tabs">
+    <view class="range-tab {{rangeIndex === 0 ? 'active' : ''}}" data-index="0" bindtap="switchRange">本月</view>
+    <view class="range-tab {{rangeIndex === 1 ? 'active' : ''}}" data-index="1" bindtap="switchRange">近30天</view>
+    <view class="range-tab {{rangeIndex === 2 ? 'active' : ''}}" data-index="2" bindtap="switchRange">全部</view>
+  </view>
+
+  <view class="title-row">
+    <view class="title">分类占比</view>
+  </view>
+  <view class="card">
+    <view class="bar-row" wx:for="{{topList}}" wx:key="id">
+      <view class="bar-icon" style="background: {{item.color}}22; color: {{item.color}}">{{item.icon}}</view>
+      <view class="bar-content">
+        <view class="bar-head">
+          <text>{{item.name}}</text>
+          <text class="amount">¥ {{item.amount}}</text>
+        </view>
+        <view class="bar-track">
+          <view class="bar-fill" style="width: {{item.percent}}%; background: {{item.color}}"></view>
+        </view>
+        <view class="muted bar-percent">{{item.percent}}%</view>
+      </view>
+    </view>
+    <view class="empty" wx:if="{{topList.length === 0}}">该时段还没有记录哦</view>
+  </view>
+
+  <view class="title-row">
+    <view class="title">月度趋势</view>
+    <view class="more muted">最近 {{monthList.length}} 个月</view>
+  </view>
+  <view class="card chart-card">
+    <view class="chart">
+      <view class="chart-col" wx:for="{{monthList}}" wx:key="month">
+        <view class="chart-bar" style="height: {{item.height}}rpx"></view>
+        <view class="chart-label">{{item.month}}</view>
+      </view>
+      <view class="empty" wx:if="{{monthList.length === 0}}">暂无数据</view>
+    </view>
+  </view>
+</view>

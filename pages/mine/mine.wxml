@@ -1,0 +1,108 @@
+<view class="container">
+  <view class="profile-card card">
+    <view class="profile-row">
+      <view class="avatar">{{profile.avatar || '🍡'}}</view>
+      <view class="profile-main">
+        <view class="profile-name">{{profile.nickname}}</view>
+        <view class="muted">点击右侧修改昵称</view>
+      </view>
+      <view class="ghost-btn edit-btn" bindtap="editNickname">编辑</view>
+    </view>
+    <view class="profile-stats">
+      <view class="stat">
+        <view class="stat-num">{{recordCount}}</view>
+        <view class="muted">总笔数</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num amount">¥ {{monthTotal}}</view>
+        <view class="muted">本月花销</view>
+      </view>
+      <view class="stat">
+        <view class="stat-num amount">¥ {{total}}</view>
+        <view class="muted">累计</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="tabs card">
+    <view class="tab {{activeTab === 'profile' ? 'active' : ''}}" data-tab="profile" bindtap="switchTab">资料</view>
+    <view class="tab {{activeTab === 'budget' ? 'active' : ''}}" data-tab="budget" bindtap="switchTab">预算</view>
+    <view class="tab {{activeTab === 'categories' ? 'active' : ''}}" data-tab="categories" bindtap="switchTab">分类</view>
+    <view class="tab {{activeTab === 'about' ? 'active' : ''}}" data-tab="about" bindtap="switchTab">关于</view>
+  </view>
+
+  <view wx:if="{{activeTab === 'budget'}}">
+    <view class="card">
+      <view class="title-row">
+        <view class="title">月度预算</view>
+        <view class="more muted">¥ / 月</view>
+      </view>
+      <input class="text-input" type="digit" value="{{budget}}" placeholder="如：1000" bindblur="saveBudget" />
+      <view class="muted" style="margin-top:12rpx;">设为 0 即不开启预算统计</view>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab === 'categories'}}">
+    <view class="card">
+      <view class="title-row">
+        <view class="title">我的分类</view>
+        <view class="more" bindtap="showAddCatModal">+ 新增</view>
+      </view>
+      <view class="cat-list">
+        <view class="cat-cell" wx:for="{{categories}}" wx:key="id">
+          <view class="cat-icon" style="background: {{item.color}}22; color: {{item.color}}">{{item.icon}}</view>
+          <view class="cat-name">{{item.name}}</view>
+          <view class="cat-del" wx:if="{{item.id !== 'other'}}" data-id="{{item.id}}" bindtap="removeCat">删除</view>
+        </view>
+      </view>
+      <view class="ghost-btn reset-btn" bindtap="resetCategories">恢复默认分类</view>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab === 'about'}}">
+    <view class="card">
+      <view class="title">关于「吃谷吧」</view>
+      <view class="about-text">
+        专属于二次元周边党的轻量记账小工具。<text class="bold">吃谷</text> = 买 IP 周边（土产/谷子），
+        这里帮你记录每一笔买买买，看看这个月又吃土了多少。
+      </view>
+      <view class="about-text">所有数据存储在你自己的微信本地缓存中，不上传服务器，更换设备前请记得自行导出。</view>
+      <view class="ghost-btn" style="margin-top:24rpx;" bindtap="exportData">导出本地数据</view>
+      <view class="danger-btn" style="margin-top:24rpx;" bindtap="clearAll">清空全部记录</view>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab === 'profile'}}">
+    <view class="card">
+      <view class="title-row">
+        <view class="title">我的偏好</view>
+      </view>
+      <view class="pref-row"><text class="muted">昵称</text><text>{{profile.nickname}}</text></view>
+      <view class="pref-row"><text class="muted">月度预算</text><text>{{budget > 0 ? ('¥ ' + budget) : '未设置'}}</text></view>
+      <view class="pref-row"><text class="muted">分类数量</text><text>{{categories.length}}</text></view>
+      <view class="pref-row"><text class="muted">记录笔数</text><text>{{recordCount}}</text></view>
+    </view>
+  </view>
+
+  <view class="modal-mask" wx:if="{{showAddCatModal}}" bindtap="hideAddCatModal">
+    <view class="modal" catchtap="stopPropagation">
+      <view class="modal-title">新增分类</view>
+      <input class="text-input" placeholder="分类名称" value="{{newCat.name}}" bindinput="onCatNameInput" />
+
+      <view class="modal-section">图标</view>
+      <view class="icon-grid">
+        <view class="icon-cell {{newCat.icon === item ? 'active' : ''}}" wx:for="{{iconOptions}}" wx:key="*this" data-icon="{{item}}" bindtap="pickIcon">{{item}}</view>
+      </view>
+
+      <view class="modal-section">颜色</view>
+      <view class="color-grid">
+        <view class="color-cell {{newCat.color === item ? 'active' : ''}}" wx:for="{{colorOptions}}" wx:key="*this" style="background: {{item}}" data-color="{{item}}" bindtap="pickColor"></view>
+      </view>
+
+      <view class="modal-actions">
+        <view class="ghost-btn" bindtap="hideAddCatModal">取消</view>
+        <view class="primary-btn" bindtap="confirmAddCat">保存</view>
+      </view>
+    </view>
+  </view>
+</view>
