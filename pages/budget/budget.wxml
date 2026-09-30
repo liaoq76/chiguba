@@ -1,0 +1,106 @@
+<view class="budget-page">
+
+  <view class="section-title">总预算</view>
+  <block wx:if="{{total}}">
+    <view class="budget-card">
+      <view class="budget-card__head">
+        <text class="budget-card__title">{{total.rangeLabel}}</text>
+        <view class="budget-card__status budget-card__status--{{total.status || 'safe'}}">{{total.statusLabel || '正常'}}</view>
+      </view>
+      <view class="budget-card__amount">
+        <text>预算 <text class="budget-card__amount__v">{{total.amount}}</text></text>
+        <text>实际 <text class="budget-card__amount__v">{{total.actual}}</text></text>
+      </view>
+      <view class="budget-card__bar">
+        <view class="budget-card__fill budget-card__fill--{{total.status || 'safe'}}" style="width: {{total.barWidth * 100}}%"></view>
+      </view>
+      <view class="budget-card__bottom">
+        <text>{{total.rawPercent}}%</text>
+        <text>阈值：{{total.thresholds.join('/')}}</text>
+      </view>
+      <view class="budget-card__actions">
+        <button class="btn btn--ghost btn--sm" data-type="total" bindtap="openBudget">修改</button>
+        <button class="btn btn--danger btn--sm" data-type="total" bindtap="openBudget">关闭</button>
+      </view>
+    </view>
+  </block>
+  <view wx:else class="budget-empty">
+    <view>总预算未开启</view>
+    <view class="budget-empty__btn">
+      <button class="btn btn--primary btn--sm" data-type="total" bindtap="openBudget">开启总预算</button>
+    </view>
+  </view>
+
+  <view class="section-title">分类预算</view>
+  <block wx:if="{{guzi}}">
+    <view class="budget-card">
+      <view class="budget-card__head">
+        <text class="budget-card__title">谷子 · {{guzi.rangeLabel}}</text>
+        <view class="budget-card__status budget-card__status--{{guzi.status || 'safe'}}">{{guzi.statusLabel || '正常'}}</view>
+      </view>
+      <view class="budget-card__amount">
+        <text>预算 <text class="budget-card__amount__v">{{guzi.amount}}</text></text>
+        <text>实际 <text class="budget-card__amount__v">{{guzi.actual}}</text></text>
+      </view>
+      <view class="budget-card__bar">
+        <view class="budget-card__fill budget-card__fill--{{guzi.status || 'safe'}}" style="width: {{guzi.barWidth * 100}}%"></view>
+      </view>
+      <view class="budget-card__bottom">
+        <text>{{guzi.rawPercent}}%</text>
+        <text>周期：{{guzi.cycleLabel}}</text>
+      </view>
+      <view class="budget-card__actions">
+        <button class="btn btn--ghost btn--sm" data-type="guzi" bindtap="openBudget">修改</button>
+        <button class="btn btn--danger btn--sm" data-type="guzi" bindtap="openBudget">关闭</button>
+      </view>
+    </view>
+  </block>
+  <view wx:else class="budget-empty">
+    <view>谷子预算未开启</view>
+    <view class="budget-empty__btn">
+      <button class="btn btn--ghost btn--sm" data-type="guzi" bindtap="openBudget">开启谷子预算</button>
+    </view>
+  </view>
+
+  <block wx:if="{{game}}">
+    <view class="budget-card">
+      <view class="budget-card__head">
+        <text class="budget-card__title">游戏 · {{game.rangeLabel}}</text>
+        <view class="budget-card__status budget-card__status--{{game.status || 'safe'}}">{{game.statusLabel || '正常'}}</view>
+      </view>
+      <view class="budget-card__amount">
+        <text>预算 <text class="budget-card__amount__v">{{game.amount}}</text></text>
+        <text>实际 <text class="budget-card__amount__v">{{game.actual}}</text></text>
+      </view>
+      <view class="budget-card__bar">
+        <view class="budget-card__fill budget-card__fill--{{game.status || 'safe'}}" style="width: {{game.barWidth * 100}}%"></view>
+      </view>
+      <view class="budget-card__bottom">
+        <text>{{game.rawPercent}}%</text>
+        <text>周期：{{game.cycleLabel}}</text>
+      </view>
+      <view class="budget-card__actions">
+        <button class="btn btn--ghost btn--sm" data-type="game" bindtap="openBudget">修改</button>
+        <button class="btn btn--danger btn--sm" data-type="game" bindtap="openBudget">关闭</button>
+      </view>
+    </view>
+  </block>
+  <view wx:else class="budget-empty">
+    <view>游戏预算未开启</view>
+    <view class="budget-empty__btn">
+      <button class="btn btn--ghost btn--sm" data-type="game" bindtap="openBudget">开启游戏预算</button>
+    </view>
+  </view>
+
+  <!-- 历史 -->
+  <view class="section-title" wx:if="{{history.length > 0}}">历史周期</view>
+  <view wx:if="{{history.length > 0}}" class="budget-card">
+    <view wx:for="{{history}}" wx:key="_id" class="history-row">
+      <text class="history-row__label">{{item.range.label}}</text>
+      <view>
+        <text class="history-row__amount">{{item.actual}}</text>
+        <text class="t-mute" style="margin-left:8rpx;font-size:22rpx;">/ {{item.amount}}</text>
+      </view>
+    </view>
+  </view>
+</view>

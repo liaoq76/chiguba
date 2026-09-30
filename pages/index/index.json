@@ -1,5 +1,4 @@
 {
-  "navigationBarTitleText": "吃谷吧 · 首页",
-  "enablePullDownRefresh": true,
-  "backgroundTextStyle": "light"
+  "navigationBarTitleText": "吃谷吗",
+  "enablePullDownRefresh": true
 }

@@ -1,0 +1,9 @@
+{
+  "name": "deleteFile",
+  "version": "1.0.0",
+  "description": "删除云存储文件（商品图片清理）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

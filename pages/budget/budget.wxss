@@ -1,0 +1,87 @@
+/* pages/budget/budget.wxss */
+.budget-page { padding-bottom: 80rpx; }
+.section-title {
+  padding: 24rpx 32rpx 12rpx;
+  font-size: 24rpx;
+  color: var(--text-mute);
+  letter-spacing: 4rpx;
+}
+.budget-card {
+  background: var(--bg-card);
+  margin: 0 28rpx 16rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid var(--line);
+  padding: 28rpx 32rpx;
+}
+.budget-card__head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16rpx;
+}
+.budget-card__title {
+  font-size: 30rpx;
+  color: var(--text);
+  font-weight: 500;
+}
+.budget-card__status {
+  font-size: 22rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 6rpx;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.budget-card__status--p80 { background: #f4e3d3; color: var(--warn); }
+.budget-card__status--p100, .budget-card__status--over {
+  background: var(--primary-soft); color: var(--primary);
+}
+.budget-card__amount {
+  display: flex; justify-content: space-between;
+  font-size: 26rpx;
+  color: var(--text-sub);
+  margin-bottom: 12rpx;
+}
+.budget-card__amount__v { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 500; }
+.budget-card__bar {
+  height: 16rpx;
+  background: var(--line-soft);
+  border-radius: 8rpx;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+.budget-card__fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 8rpx;
+}
+.budget-card__fill--p80 { background: var(--warn); }
+.budget-card__fill--p100, .budget-card__fill--over { background: var(--primary); }
+.budget-card__bottom {
+  display: flex; justify-content: space-between;
+  font-size: 22rpx;
+  color: var(--text-mute);
+  margin-bottom: 16rpx;
+}
+.budget-card__actions { display: flex; gap: 12rpx; }
+.budget-card__actions .btn { flex: 1; }
+
+.budget-empty {
+  text-align: center;
+  padding: 60rpx 32rpx;
+  color: var(--text-mute);
+  background: var(--bg-card);
+  margin: 0 28rpx 16rpx;
+  border-radius: 16rpx;
+  border: 1rpx dashed var(--line);
+}
+.budget-empty__btn {
+  margin-top: 24rpx;
+  display: inline-block;
+}
+
+.history-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid var(--line-soft);
+}
+.history-row:last-child { border-bottom: 0; }
+.history-row__label { font-size: 24rpx; color: var(--text-sub); }
+.history-row__amount { font-size: 26rpx; color: var(--text); font-variant-numeric: tabular-nums; }

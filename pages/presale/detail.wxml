@@ -1,0 +1,22 @@
+<view class="detail-page" wx:if="{{item}}">
+
+  <view class="detail-hero">
+    <view class="detail-hero__name">{{item.name}}</view>
+    <view class="detail-hero__amount t-money">{{item.amountLabel}}</view>
+    <view class="detail-hero__status {{item.status === 'received' ? 'detail-hero__status--received' : ''}}">{{item.statusLabel}}</view>
+  </view>
+
+  <view class="section">
+    <view class="section__row"><view class="section__label">数量</view><view class="section__value">×{{item.quantity}}</view></view>
+    <view class="section__row"><view class="section__label">预计出荷</view><view class="section__value">{{item.expectedShipLabel}}</view></view>
+    <view class="section__row" wx:if="{{relatedExpense}}">
+      <view class="section__label">关联消费</view>
+      <view class="section__value">{{relatedExpense.name}} · {{relatedExpense.amount}}</view>
+    </view>
+  </view>
+
+  <view class="action-bar">
+    <button class="btn btn--danger" bindtap="deleteOne">删除</button>
+    <button class="btn btn--primary" wx:if="{{item.status !== 'received'}}" bindtap="markReceived">标记已收到</button>
+  </view>
+</view>

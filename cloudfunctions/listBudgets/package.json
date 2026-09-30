@@ -1,0 +1,9 @@
+{
+  "name": "listBudgets",
+  "version": "1.0.0",
+  "description": "查询budgets",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

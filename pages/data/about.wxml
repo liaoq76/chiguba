@@ -1,0 +1,34 @@
+<view class="about-page">
+  <view class="about-hero">
+    <view class="about-hero__seal">◉</view>
+    <view class="about-hero__name">吃谷吗</view>
+    <view class="about-hero__version">V1.0</view>
+  </view>
+
+  <view class="about-section-title">产品介绍</view>
+  <view class="about-desc">面向二次元用户的消费与收藏管理工具。让用户清楚知道：自己在什么时候、哪个作品上、以什么方式，花了多少钱。</view>
+
+  <view class="about-section-title">联系我们</view>
+  <view class="about-card">
+    <view class="about-row">
+      <view class="about-row__title">反馈邮箱</view>
+      <view class="about-row__copy" bindtap="copyContact">复制</view>
+    </view>
+  </view>
+
+  <view class="about-section-title">更多</view>
+  <view class="about-card">
+    <navigator class="about-row" url="/pages/data/feedback" hover-class="none">
+      <view class="about-row__title">意见反馈</view>
+      <text class="about-row__arrow">›</text>
+    </navigator>
+    <navigator class="about-row" url="/pages/data/agreement" hover-class="none">
+      <view class="about-row__title">用户协议</view>
+      <text class="about-row__arrow">›</text>
+    </navigator>
+    <navigator class="about-row" url="/pages/data/privacy" hover-class="none">
+      <view class="about-row__title">隐私政策</view>
+      <text class="about-row__arrow">›</text>
+    </navigator>
+  </view>
+</view>

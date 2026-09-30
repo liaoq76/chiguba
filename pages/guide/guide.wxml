@@ -1,0 +1,18 @@
+<view class="guide-page">
+  <view class="guide-skip" bindtap="finish">跳过</view>
+
+  <view class="guide-card">
+    <view class="guide-seal">{{steps[step - 1].seal}}</view>
+    <view class="guide-title">{{steps[step - 1].title}}</view>
+    <view class="guide-desc">{{steps[step - 1].desc}}</view>
+  </view>
+
+  <view class="guide-dots">
+    <view wx:for="{{steps}}" wx:key="title" class="guide-dot {{step === index + 1 ? 'guide-dot--active' : ''}}"></view>
+  </view>
+
+  <view class="guide-nav">
+    <button wx:if="{{step > 1}}" class="btn btn--ghost" bindtap="prev">上一步</button>
+    <button class="btn btn--primary" bindtap="next">{{step === 3 ? '开始使用' : '下一步'}}</button>
+  </view>
+</view>

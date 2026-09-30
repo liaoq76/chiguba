@@ -1,0 +1,4 @@
+/* pages/data/agreement.wxss */
+.legal-page { padding: 32rpx 40rpx; line-height: 1.8; color: var(--text-sub); font-size: 26rpx; }
+.legal-page h2 { font-size: 32rpx; color: var(--text); margin: 32rpx 0 16rpx; }
+.legal-page p { margin-bottom: 16rpx; }

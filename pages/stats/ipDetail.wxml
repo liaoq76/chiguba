@@ -1,0 +1,49 @@
+<view class="ip-detail-page" wx:if="{{detail}}">
+
+  <view class="range-tabs">
+    <view class="range-tabs__item {{rangeType === 'week' ? 'range-tabs__item--active' : ''}}" data-t="week" bindtap="switchRange">本周</view>
+    <view class="range-tabs__item {{rangeType === 'month' ? 'range-tabs__item--active' : ''}}" data-t="month" bindtap="switchRange">本月</view>
+    <view class="range-tabs__item {{rangeType === 'year' ? 'range-tabs__item--active' : ''}}" data-t="year" bindtap="switchRange">本年</view>
+  </view>
+  <view class="range-label">{{rangeLabel}}</view>
+
+  <view class="ip-hero">
+    <view class="ip-hero__name">{{name}}</view>
+    <view class="ip-hero__total t-money">{{detail.total}}</view>
+    <view class="ip-hero__breakdown">
+      <text>◉ 谷子 {{detail.guzi}}</text>
+      <text>◆ 游戏 {{detail.game}}</text>
+      <text>共 {{detail.count}} 笔</text>
+    </view>
+  </view>
+
+  <!-- 角色 -->
+  <view class="card">
+    <view class="card-title"><view class="card-title__dot"></view><text class="card-title__name">角色</text></view>
+    <view wx:if="{{roles.length === 0}}" class="empty-cell" style="color:var(--text-mute);font-size:24rpx;text-align:center;padding:24rpx;">暂无数据</view>
+    <view wx:for="{{roles}}" wx:key="name" class="dim-row">
+      <text class="dim-row__name">{{item.name}}</text>
+      <view><text class="dim-row__count">{{item.count}}笔</text><text class="dim-row__amount">{{item.amount}}</text></view>
+    </view>
+  </view>
+
+  <!-- 商品类型 -->
+  <view class="card">
+    <view class="card-title"><view class="card-title__dot"></view><text class="card-title__name">商品类型</text></view>
+    <view wx:if="{{productTypes.length === 0}}" class="empty-cell" style="color:var(--text-mute);font-size:24rpx;text-align:center;padding:24rpx;">暂无数据</view>
+    <view wx:for="{{productTypes}}" wx:key="name" class="dim-row">
+      <text class="dim-row__name">{{item.name}}</text>
+      <view><text class="dim-row__count">{{item.count}}笔</text><text class="dim-row__amount">{{item.amount}}</text></view>
+    </view>
+  </view>
+
+  <!-- 购买渠道 -->
+  <view class="card">
+    <view class="card-title"><view class="card-title__dot"></view><text class="card-title__name">购买渠道</text></view>
+    <view wx:if="{{channels.length === 0}}" class="empty-cell" style="color:var(--text-mute);font-size:24rpx;text-align:center;padding:24rpx;">暂无数据</view>
+    <view wx:for="{{channels}}" wx:key="name" class="dim-row">
+      <text class="dim-row__name">{{item.name}}</text>
+      <view><text class="dim-row__count">{{item.count}}笔</text><text class="dim-row__amount">{{item.amount}}</text></view>
+    </view>
+  </view>
+</view>

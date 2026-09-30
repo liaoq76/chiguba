@@ -1,0 +1,9 @@
+{
+  "name": "clearAll",
+  "version": "1.0.0",
+  "description": "清空业务数据（保留词库）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

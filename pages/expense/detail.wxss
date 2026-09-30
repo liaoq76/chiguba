@@ -1,0 +1,88 @@
+/* pages/expense/detail.wxss */
+.detail-page { padding-bottom: 60rpx; }
+
+.detail-hero {
+  background: var(--bg-card);
+  margin: 24rpx 28rpx;
+  padding: 40rpx 32rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid var(--line);
+  text-align: center;
+}
+.detail-hero__name {
+  font-size: 34rpx;
+  color: var(--text);
+  font-weight: 500;
+  margin-bottom: 16rpx;
+}
+.detail-hero__amount {
+  font-size: 80rpx;
+  color: var(--primary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2rpx;
+  line-height: 1.1;
+}
+.detail-hero__type {
+  display: inline-block;
+  margin-top: 16rpx;
+  font-size: 22rpx;
+  color: var(--text-mute);
+  letter-spacing: 4rpx;
+}
+
+.section {
+  background: var(--bg-card);
+  margin: 0 28rpx 20rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid var(--line);
+  overflow: hidden;
+}
+.section__head {
+  padding: 16rpx 32rpx 8rpx;
+  font-size: 22rpx;
+  color: var(--text-mute);
+  letter-spacing: 4rpx;
+}
+.section__row {
+  display: flex;
+  padding: 16rpx 32rpx;
+  border-bottom: 1rpx solid var(--line-soft);
+}
+.section__row:last-child { border-bottom: 0; }
+.section__label { color: var(--text-sub); width: 200rpx; font-size: 26rpx; }
+.section__value { flex: 1; color: var(--text); font-size: 26rpx; }
+
+/* === 商品图片网格（PRD 4.2.4）=== */
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  padding: 8rpx 32rpx 24rpx;
+}
+.image-grid__item {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 12rpx;
+  background: var(--bg-elev);
+  border: 1rpx solid var(--line-soft);
+}
+
+/* === 操作栏：详情页非 tabBar 页，使用流式布局，避免被覆盖 === */
+.action-bar {
+  display: flex;
+  gap: 16rpx;
+  padding: 24rpx 28rpx;
+  margin: 16rpx 28rpx 0;
+  background: transparent;
+  z-index: 50;
+}
+.action-bar .btn { flex: 1; }
+
+.empty-cell {
+  padding: 32rpx;
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 24rpx;
+}
+.section__value.is-empty { color: var(--text-mute); }

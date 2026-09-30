@@ -4,115 +4,135 @@
 
 ---
 
-## 第一步：在开发者工具里开通云环境（GUI 操作）
+## 第一步：开通云环境（GUI 操作）
 
-> ⚠️ 这一步必须在**微信开发者工具**里手动做，我无法替你完成。
+> ⚠️ 这一步必须在**微信开发者工具**里手动做，无法替你完成。
 
-1. 打开「吃谷吧」项目（用 `wx5e981000404c5de7` AppID 导入）
+1. 打开「吃谷吗」项目
 2. 顶部菜单 → **云开发**（或快捷键 `Ctrl+Shift+9`）
 3. 首次点开会弹出「开通云开发」弹窗，点「开通」
 4. 同意协议，等待环境创建（约 30 秒）
-5. 创建完成后，你会看到环境 ID，格式类似 `chigu-bar-0a8b9d`
-6. **把这个环境 ID 复制到 `app.js` 第 8 行的 `env:` 字段里**，比如：
-   ```js
-   env: 'chigu-bar-0a8b9d',
-   ```
-7. 同时在 `cloudfunctions/addRecord/config.json` / `listRecords/config.json` 等文件的 `permissions` 里补充环境 ID（也可在开发者工具里右键云函数 → 上传并部署时选择环境）
+5. 创建完成后，你会看到环境 ID（例如 `cloudbase-d4gsz9sx6c8d47a29`）
+6. **确认 `app.js` 第 9 行的 `envId` 与你的云环境一致**（已默认填好）：
 
-> 💡 **找不到云开发入口？**
-> 微信开发者工具 2.x + 的新版界面中，云开发按钮在顶部工具栏。如果没显示，检查「工具」→「设置」→「实验性功能」里是否开启了云开发插件。
+```js
+envId: 'cloudbase-d4gsz9sx6c8d47a29',
+```
 
 ---
 
 ## 第二步：部署云函数（GUI 操作）
 
-在开发者工具里右键每个 `cloudfunctions/` 下的子目录 → **上传并部署（云端安装依赖）**：
+在开发者工具里，**右键每个云函数目录**（注意：不是右键 `cloudfunctions/` 整个目录） → **上传并部署：云端安装依赖**。
 
-| 云函数 | 顺序 | 说明 |
-| --- | --- | --- |
-| `initDBSchema` | **先** | 创建 `records` 集合，只需运行一次 |
-| `addRecord` | 其次 | 新增/覆盖记账 |
-| `listRecords` | 再 | 拉取用户全量记录 |
-| `deleteRecord` | 再 | 删除单条记录 |
+> ⚠️ 每个云函数目录下都包含 `index.js / db.js / package.json / config.json` 四份文件，**不能少**。上传时整目录会打包上传。
 
-部署成功后，每个云函数会在你云环境的「云函数」列表里看到。
+### 部署顺序建议
+
+| 顺序 | 云函数 | 作用 |
+|---|---|---|
+| **第 1 批（先）** | `initDBSchema` | 创建 7 个集合 |
+| **第 2 批** | `feedback` | 反馈收集 |
+| **第 3 批** | `clearAll` `exportAll` | 清空 + 导出（这两个需要装依赖）|
+| **第 4 批（其余一起）** | 所有 addXxx / listXxx / updateXxx / deleteXxx | 业务 CRUD |
+
+### 27 个云函数清单
+
+```
+initDBSchema
+feedback
+clearAll
+exportAll
+addExpenses            listExpenses           updateExpenses          deleteExpenses
+addCollections         listCollections        updateCollections       deleteCollections
+addCollectionContributions                       deleteCollectionContributions
+addPresales            listPresales           updatePresales          deletePresales
+addBudgets             listBudgets            updateBudgets
+addBudgetPeriods       listBudgetPeriods      updateBudgetPeriods
+addVocabularies        listVocabularies       updateVocabularies      deleteVocabularies
+```
+
+> 💡 **右键单击**每个目录就能看到「上传并部署」。一次部署一个目录，不要试图批量上传整个 `cloudfunctions/`（会报 `_shared` 不存在的错——其实旧版本有 `_shared`，现已删除）。
 
 ---
 
-## 第三步：设置数据库权限
+## 第三步：调用 `initDBSchema` 创建 7 个集合
 
-云函数运行后，`records` 集合的权限默认是**仅创建者可读写**（通过 `_openid` 隔离），这是我们设计的安全策略，不需要手动改。
+部署成功后，进入云开发控制台 → 云函数 → 找到 `initDBSchema` → 点 **测试** → 输入 `{}`（空对象） → 点 **运行**。
 
-如果你希望「我的」页面显示同步状态，可以在云开发控制台 → 数据库 → `records` 集合 → 「权限设置」里确认：
+预期返回：
 
+```json
+{
+  "code": 0,
+  "collections": [
+    { "name": "expenses", "created": true },
+    { "name": "collections", "created": true },
+    { "name": "collectionContributions", "created": true },
+    { "name": "presales", "created": true },
+    { "name": "budgets", "created": true },
+    { "name": "budgetPeriods", "created": true },
+    { "name": "vocabularies", "created": true }
+  ]
+}
 ```
-仅创建者可读写  ☑
-```
+
+每个 `created: true` 表示新建成功。如果看到 `created: false`，说明该集合已存在（再次运行不会出错）。
+
+> 💡 **快速验证**：云开发控制台 → 数据库 → 应该能看到上面 7 个集合。
 
 ---
 
-## 第四步：修改 `app.js` 中的环境 ID
+## 第四步：设置数据库权限
 
-打开 `app.js`，找到第 8 行：
+进入云开发控制台 → 数据库 → 逐个设置每个集合的权限：
 
-```javascript
-env: 'chigu-bar-0a8b9d',   // ← 改成你在第二步拿到的环境 ID
+```
+权限设置：仅创建者可读写
 ```
 
-如果暂时没开通云环境（还在开发调试阶段），可以临时注释掉云相关代码，恢复纯本地模式：
-
-```javascript
-// if (typeof wx.cloud !== 'undefined') {
-//   wx.cloud.init({ env: 'YOUR_ENV_ID', traceUser: true });
-//   Storage.pullFromCloud().then...
-// }
-```
+> 这一步决定了"用户 A 看不到用户 B 的数据"。所有 `addXxx / listXxx / updateXxx / deleteXxx` 云函数都按 `_openid` 字段过滤，无需在前端做权限判断。
 
 ---
 
-## 第五步：运行 initDBSchema（创建集合）
+## 第五步：上传体验版 + 真机测试
 
-1. 在开发者工具里右键 `cloudfunctions/initDBSchema/` → **上传并部署（云端安装依赖）**
-2. 部署完成后，右键该云函数 → **上传并部署（仅中文）** 旁边有个 **测试** 按钮
-3. 点「测试」，输入 `{}`（空对象），点「运行」
-4. 返回 `{ code: 0, records: { name: 'records', created: true } }` 即表示集合创建成功
+1. 微信开发者工具右上角 → **上传**（填版本号 + 项目备注）
+2. 微信公众平台 → 版本管理 → 设为**体验版**
+3. 体验码扫码 → 在手机上真实测试：
+   - 记一笔（谷子 + 游戏）
+   - 加收藏 + 数量归零 → 进历史
+   - 勾选预售 → 标记已收到
+   - 开启预算 → 改金额 → 看首页摘要
+   - 关闭网络 → 记一笔 → 首页应显示"待同步" → 打开网络 → 自动清零
 
 ---
 
 ## 常见问题
 
-### Q: 提示 `cloud.init` is not a function
-**原因：** 云开发未正确初始化，或小程序未使用正式 AppID（测试号不支持云开发）。
-**解决：** 确保项目用 `wx5e981000404c5de7` 导入，且在「项目详情」里看 AppID 是否正确。
+### Q：上传时报 `FunctionName取值与规范不符`
+**原因**：目录名以 `_` 开头（旧版有 `_shared`，已删除）。
+**解决**：确保 `cloudfunctions/` 下没有 `_` 开头的目录。
 
-### Q: 提示 `env` 参数无效 / 云函数找不到集合
-**原因：** 云环境 ID 填错了，或集合还没创建。
-**解决：**
-1. 云开发控制台右上角「设置」→「环境 ID」复制粘贴
-2. 先运行 `initDBSchema` 创建集合
+### Q：上传时报 `Cannot find module './db.js'`
+**原因**：旧版云函数目录里缺少 `db.js` 文件。
+**解决**：重新部署，确保每个云函数目录里都有 `db.js`。
 
-### Q: 云函数部署后调用报错 `collection not exists`
-**原因：** `records` 集合未创建。
-**解决：** 部署并运行 `initDBSchema` 云函数一次。
+### Q：运行时 `wx.cloud is not a function`
+**原因**：`app.js` 里没调 `wx.cloud.init(...)`。
+**解决**：已修复，确保使用最新的 `app.js`。
 
-### Q: 部署云函数时报 `node_modules not found`
-**解决：** 在开发者工具里右键云函数目录 → **上传并部署（云端安装依赖）**，不要选「本地安装」。
+### Q：`env` 参数无效
+**原因**：云环境 ID 填错了。
+**解决**：把 `app.js` 第 9 行 `envId` 改成你的实际环境 ID（云开发控制台 → 设置 → 环境 ID）。
 
-### Q: 数据同步逻辑是什么？会不会冲突？
-**写入：** 每次 `addRecord` / `updateRecord` 时，先写本地缓存，再异步推送到云端。推送失败不影响本地。
-**读取：** 每次小程序冷启动（`onLaunch`）时从云端拉取，与本地合并（按 `updatedAt` 取最新），保证两端最终一致。
-**多端同步：** 用户换手机后首次打开 App，小程序自动从云端拉取完整历史记录，实现无缝衔接。
+### Q：集合创建失败 / `collection not exists`
+**原因**：`initDBSchema` 没运行，或者网络问题。
+**解决**：重新在云函数控制台运行 `initDBSchema`（幂等，可重复执行）。
 
 ---
 
 ## 云开发控制台入口
 
-- 路径：微信开发者工具 → 顶部「云开发」按钮
-- 可查看：云函数列表、数据库集合、存储、监控、计费等
-
-## 计费提醒
-
-当前阶段（< 1000 用户）基本走免费额度，主要费用来自用户上传的晒图（云存储）。如需控制成本：
-- 客户端上传前压缩图片（代码里已用 `compressed`）
-- 定期清理不再需要的图片文件
-- 在云开发控制台设置「预算告警」
+- 微信开发者工具 → 顶部「云开发」按钮
+- 查看云函数、数据库、存储、监控、计费

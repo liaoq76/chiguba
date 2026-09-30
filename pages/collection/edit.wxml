@@ -1,0 +1,48 @@
+<view class="add-coll-page">
+  <view class="form-card">
+    <view class="input-cell">
+      <view class="input-cell__label">商品名称<text class="t-danger">*</text></view>
+      <input class="input-cell__field" placeholder="如：芙宁娜吧唧" value="{{name}}" bindinput="onName" placeholder-class="input-cell__placeholder" />
+    </view>
+
+    <view class="input-cell">
+      <view class="input-cell__label">IP<text class="t-danger">*</text></view>
+      <input class="input-cell__field" placeholder="如：原神" value="{{ip}}" bindinput="onIp" bindfocus="onIpFocus" placeholder-class="input-cell__placeholder" />
+    </view>
+    <view wx:if="{{ipSuggestions.length > 0}}" class="suggest-list">
+      <view wx:for="{{ipSuggestions}}" wx:key="*this" class="suggest-item" data-field="ip" data-value="{{item}}" bindtap="pickSuggestion">{{item}}</view>
+    </view>
+
+    <view class="input-cell">
+      <view class="input-cell__label">角色</view>
+      <input class="input-cell__field" placeholder="可选" value="{{role}}" bindinput="onRole" bindfocus="onRoleFocus" placeholder-class="input-cell__placeholder" />
+    </view>
+    <view wx:if="{{roleSuggestions.length > 0}}" class="suggest-list">
+      <view wx:for="{{roleSuggestions}}" wx:key="*this" class="suggest-item" data-field="role" data-value="{{item}}" bindtap="pickSuggestion">{{item}}</view>
+    </view>
+
+    <view class="input-cell">
+      <view class="input-cell__label">商品类型</view>
+      <input class="input-cell__field" placeholder="吧唧/立牌/..." value="{{productType}}" bindinput="onType" bindfocus="onTypeFocus" placeholder-class="input-cell__placeholder" />
+    </view>
+    <view wx:if="{{typeSuggestions.length > 0}}" class="suggest-list">
+      <view wx:for="{{typeSuggestions}}" wx:key="*this" class="suggest-item" data-field="productType" data-value="{{item}}" bindtap="pickSuggestion">{{item}}</view>
+    </view>
+
+    <view class="qty-row">
+      <view class="input-cell__label">数量<text class="t-danger">*</text></view>
+      <view class="qty-row__btn" data-op="-1" bindtap="onQuantityStep">−</view>
+      <view class="qty-row__num">{{quantity}}</view>
+      <view class="qty-row__btn" data-op="1" bindtap="onQuantityStep">＋</view>
+    </view>
+
+    <view class="input-cell" bindtap="onPickDate">
+      <view class="input-cell__label">开始拥有</view>
+      <view class="input-cell__field">{{startDateLabel}}</view>
+    </view>
+  </view>
+
+  <view class="submit-bar">
+    <button class="btn btn--primary" bindtap="save">保存收藏</button>
+  </view>
+</view>

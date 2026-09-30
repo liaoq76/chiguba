@@ -1,50 +1,135 @@
-<view class="container">
-  <view class="card total-card">
-    <view class="muted">{{monthLabel}}花销</view>
-    <view class="big-amount">¥ {{total}}</view>
-    <view class="meta-row">
-      <view><text class="muted">共 </text><text>{{count}}</text><text class="muted"> 笔</text></view>
-      <view><text class="muted">日均 </text><text class="amount">¥ {{avgPerDay}}</text></view>
-    </view>
-  </view>
+<view class="stats-page">
 
+  <!-- 时间范围 -->
   <view class="range-tabs">
-    <view class="range-tab {{rangeIndex === 0 ? 'active' : ''}}" data-index="0" bindtap="switchRange">本月</view>
-    <view class="range-tab {{rangeIndex === 1 ? 'active' : ''}}" data-index="1" bindtap="switchRange">近30天</view>
-    <view class="range-tab {{rangeIndex === 2 ? 'active' : ''}}" data-index="2" bindtap="switchRange">全部</view>
+    <view class="range-tabs__item {{rangeType === 'week' ? 'range-tabs__item--active' : ''}}" data-t="week" bindtap="switchRange">本周</view>
+    <view class="range-tabs__item {{rangeType === 'month' ? 'range-tabs__item--active' : ''}}" data-t="month" bindtap="switchRange">本月</view>
+    <view class="range-tabs__item {{rangeType === 'year' ? 'range-tabs__item--active' : ''}}" data-t="year" bindtap="switchRange">本年</view>
   </view>
 
-  <view class="title-row">
-    <view class="title">分类占比</view>
-  </view>
+  <view class="range-label">{{rangeLabel}}</view>
+
+  <!-- 总览 -->
   <view class="card">
-    <view class="bar-row" wx:for="{{topList}}" wx:key="id">
-      <view class="bar-icon" style="background: {{item.color}}22; color: {{item.color}}">{{item.icon}}</view>
-      <view class="bar-content">
-        <view class="bar-head">
-          <text>{{item.name}}</text>
-          <text class="amount">¥ {{item.amount}}</text>
+    <view class="card-title">
+      <view class="card-title__dot"></view>
+      <text class="card-title__name">总览</text>
+    </view>
+    <view class="overview">
+      <text class="overview__total t-money">{{total}}</text>
+      <text class="overview__count">共 {{count}} 笔</text>
+    </view>
+    <view class="row">
+      <text class="row__label">◉ 谷子</text>
+      <text class="row__value t-money">{{guzi}}</text>
+    </view>
+    <view class="row">
+      <text class="row__label">◆ 游戏</text>
+      <text class="row__value t-money">{{game}}</text>
+    </view>
+  </view>
+
+  <!-- 趋势 -->
+  <view class="card">
+    <view class="card-title">
+      <view class="card-title__dot"></view>
+      <text class="card-title__name">趋势</text>
+    </view>
+    <view class="trend-switch">
+      <view class="trend-switch__btn {{trendMode === 'cumulative' ? 'trend-switch__btn--active' : ''}}" data-m="cumulative" bindtap="switchTrend">累计</view>
+      <view class="trend-switch__btn {{trendMode === 'actual' ? 'trend-switch__btn--active' : ''}}" data-m="actual" bindtap="switchTrend">实际</view>
+    </view>
+    <view class="trend-chart">
+      <canvas canvas-id="statsTrend" id="statsTrend" type="2d" bindtouchstart="onTrendTouch" class="trend-chart__canvas"></canvas>
+    </view>
+  </view>
+
+  <!-- 消费构成（环形图） -->
+  <view class="card">
+    <view class="card-title">
+      <view class="card-title__dot"></view>
+      <text class="card-title__name">消费构成</text>
+    </view>
+    <view class="ring-row">
+      <canvas canvas-id="statsRing" id="statsRing" type="2d" class="ring-canvas"></canvas>
+      <view class="ring-legend">
+        <view class="ring-legend__item">
+          <view class="ring-legend__name"><view class="ring-legend__dot ring-legend__dot--guzi"></view><text>谷子</text></view>
+          <text class="ring-legend__amount">{{guzi}}</text>
         </view>
-        <view class="bar-track">
-          <view class="bar-fill" style="width: {{item.percent}}%; background: {{item.color}}"></view>
+        <view class="ring-legend__item">
+          <view class="ring-legend__name"><view class="ring-legend__dot ring-legend__dot--game"></view><text>游戏</text></view>
+          <text class="ring-legend__amount">{{game}}</text>
         </view>
-        <view class="muted bar-percent">{{item.percent}}%</view>
       </view>
     </view>
-    <view class="empty" wx:if="{{topList.length === 0}}">该时段还没有记录哦</view>
   </view>
 
-  <view class="title-row">
-    <view class="title">月度趋势</view>
-    <view class="more muted">最近 {{monthList.length}} 个月</view>
-  </view>
-  <view class="card chart-card">
-    <view class="chart">
-      <view class="chart-col" wx:for="{{monthList}}" wx:key="month">
-        <view class="chart-bar" style="height: {{item.height}}rpx"></view>
-        <view class="chart-label">{{item.month}}</view>
+  <!-- IP Top5 -->
+  <view class="card">
+    <view class="card-title">
+      <view class="card-title__dot"></view>
+      <text class="card-title__name">IP 消费 Top 5</text>
+    </view>
+    <view wx:if="{{ipTop.length === 0 && !ipBlank}}" class="empty">
+      <view class="empty__text">没有 IP 数据</view>
+    </view>
+
+    <block wx:for="{{ipTop}}" wx:key="key">
+      <view class="ip-row" data-name="{{item.name}}" bindtap="expandIp">
+        <text class="ip-row__name">{{item.name}}</text>
+        <view class="ip-row__bar-wrap">
+          <view class="ip-row__bar" style="width: {{item.percent}}"></view>
+        </view>
+        <text class="ip-row__amount t-money">{{item.amount}}</text>
+        <text class="ip-row__arrow">{{expandedIp === item.name ? '▲' : '▼'}}</text>
       </view>
-      <view class="empty" wx:if="{{monthList.length === 0}}">暂无数据</view>
+      <view wx:if="{{expandedIp === item.name}}" class="ip-detail">
+        <view class="ip-detail__item">
+          <text class="ip-detail__label">占比</text>
+          <text class="ip-detail__value">{{item.percent}}</text>
+        </view>
+        <view class="ip-detail__item">
+          <text class="ip-detail__label">笔数</text>
+          <text class="ip-detail__value">{{item.count}}</text>
+        </view>
+        <view class="ip-detail__item">
+          <text class="ip-detail__label">谷子</text>
+          <text class="ip-detail__value t-money">¥{{item.guzi}}</text>
+        </view>
+        <view class="ip-detail__item">
+          <text class="ip-detail__label">游戏</text>
+          <text class="ip-detail__value t-money">¥{{item.game}}</text>
+        </view>
+        <view style="width:100%;text-align:right;padding-top:8rpx;">
+          <text class="t-primary" data-name="{{item.name}}" bindtap="goIpDetail">查看 IP 详情 ›</text>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{ipOther}}" class="ip-row" data-name="__OTHERS__" bindtap="expandIp">
+      <text class="ip-row__name">其他 <text class="t-mute" style="font-size:22rpx;">· {{ipOther.restCount}} 个 IP</text></text>
+      <view class="ip-row__bar-wrap">
+        <view class="ip-row__bar ip-row__bar--other" style="width: {{ipOther.percent}}"></view>
+      </view>
+      <text class="ip-row__amount t-money">{{ipOther.amount}}</text>
+      <text class="ip-row__arrow">{{expandedIp === '__OTHERS__' ? '▲' : '▼'}}</text>
+    </view>
+    <view wx:if="{{expandedIp === '__OTHERS__' && ipOther}}" class="ip-detail">
+      <view wx:for="{{ipOther.restList}}" wx:key="key" class="ip-row" style="padding:8rpx 0;">
+        <text class="ip-row__name t-small">{{item.name}}</text>
+        <view class="ip-row__bar-wrap"><view class="ip-row__bar ip-row__bar--other" style="width: {{item.percent}}"></view></view>
+        <text class="ip-row__amount t-small t-money">¥{{item.total}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{ipBlank}}" class="ip-row" data-name="__BLANK__" bindtap="expandIp">
+      <text class="ip-row__name t-mute">未填写IP</text>
+      <view class="ip-row__bar-wrap">
+        <view class="ip-row__bar ip-row__bar--blank" style="width: {{ipBlank.percent}}"></view>
+      </view>
+      <text class="ip-row__amount t-money">{{ipBlank.amount}}</text>
+      <text class="ip-row__arrow">{{expandedIp === '__BLANK__' ? '▲' : '▼'}}</text>
     </view>
   </view>
 </view>

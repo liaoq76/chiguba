@@ -1,0 +1,54 @@
+<view class="data-page">
+
+  <view class="section-title">数据导出</view>
+  <view class="data-card">
+    <view class="data-row" bindtap="doExport">
+      <view class="data-row__icon">⇋</view>
+      <view class="data-row__main">
+        <view class="data-row__title">导出全部数据</view>
+        <view class="data-row__desc">生成 XLSX 文件，可在小程序内查看</view>
+      </view>
+      <text class="data-row__arrow">›</text>
+    </view>
+  </view>
+
+  <view class="section-title">同步状态</view>
+  <view class="data-card">
+    <view class="data-row">
+      <view class="data-row__icon" style="background:var(--accent-soft);color:var(--accent);">⌒</view>
+      <view class="data-row__main">
+        <view class="data-row__title">待同步</view>
+        <view class="data-row__desc">{{queueCount}} 条记录中 {{pendingSync}} 条未完成</view>
+      </view>
+      <text class="data-row__count">{{pendingSync}}</text>
+    </view>
+    <view wx:if="{{failedCount > 0}}" class="data-row" bindtap="retrySync">
+      <view class="data-row__icon" style="background:#f0d6d2;color:var(--danger);">!</view>
+      <view class="data-row__main">
+        <view class="data-row__title">重试失败项</view>
+        <view class="data-row__desc">{{failedCount}} 条同步失败</view>
+      </view>
+      <text class="data-row__arrow">›</text>
+    </view>
+    <view wx:if="{{pendingSync > 0}}" class="data-row" bindtap="cleanQueue">
+      <view class="data-row__icon" style="background:#e8e3f8;color:var(--text-sub);">⌫</view>
+      <view class="data-row__main">
+        <view class="data-row__title">清理已同步/失败项</view>
+        <view class="data-row__desc">云端已有数据时，清掉本地残留队列</view>
+      </view>
+      <text class="data-row__arrow">›</text>
+    </view>
+  </view>
+
+  <view class="section-title">清空数据</view>
+  <view class="data-card">
+    <view class="data-row" bindtap="doClear">
+      <view class="data-row__icon" style="background:#f0d6d2;color:var(--danger);">⌫</view>
+      <view class="data-row__main">
+        <view class="data-row__title t-danger">清空全部数据</view>
+        <view class="data-row__desc">清空业务数据，个人词库保留</view>
+      </view>
+      <text class="data-row__arrow">›</text>
+    </view>
+  </view>
+</view>

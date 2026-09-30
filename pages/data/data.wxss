@@ -1,0 +1,40 @@
+/* pages/data/data.wxss */
+.data-page { padding-bottom: 80rpx; }
+.section-title {
+  padding: 24rpx 32rpx 12rpx;
+  font-size: 24rpx;
+  color: var(--text-mute);
+  letter-spacing: 4rpx;
+}
+.data-card {
+  background: var(--bg-card);
+  margin: 0 28rpx 16rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid var(--line);
+  overflow: hidden;
+}
+.data-row {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid var(--line-soft);
+}
+.data-row:last-child { border-bottom: 0; }
+.data-row__icon {
+  width: 64rpx; height: 64rpx;
+  border-radius: 16rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32rpx;
+  margin-right: 20rpx;
+}
+.data-row__main { flex: 1; }
+.data-row__title { font-size: 28rpx; color: var(--text); }
+.data-row__desc { font-size: 22rpx; color: var(--text-mute); margin-top: 4rpx; }
+.data-row__arrow { font-size: 36rpx; color: var(--text-mute); }
+.data-row__count {
+  font-size: 24rpx;
+  color: var(--text-mute);
+  margin-right: 12rpx;
+}

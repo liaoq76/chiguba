@@ -1,0 +1,11 @@
+<view class="feedback-page">
+  <view class="form-card">
+    <view class="label">反馈内容（必填）</view>
+    <textarea class="textarea" placeholder="想说点什么..." maxlength="500" value="{{content}}" bindinput="onContent"></textarea>
+  </view>
+  <view class="form-card">
+    <view class="label">联系方式（可选）</view>
+    <input class="input" placeholder="如：微信号/邮箱" value="{{contact}}" bindinput="onContact" />
+  </view>
+  <button class="btn btn--primary submit-btn" bindtap="submit">提交反馈</button>
+</view>

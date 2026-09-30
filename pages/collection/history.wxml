@@ -1,0 +1,15 @@
+<view class="coll-page">
+  <view wx:if="{{items.length === 0}}" class="empty">
+    <view class="empty__seal">◌</view>
+    <view class="empty__text">还没有收藏历史</view>
+  </view>
+  <view class="coll-list" wx:else>
+    <view wx:for="{{items}}" wx:key="_id" class="coll-list__item" data-id="{{item._id}}" bindtap="goDetail">
+      <view class="coll-list__icon">○</view>
+      <view class="coll-list__main">
+        <view class="coll-list__name">{{item.name}}</view>
+        <view class="coll-list__sub">{{item.ip || '未填IP'}} · 曾拥有 ×{{item.ownedQty}}</view>
+      </view>
+    </view>
+  </view>
+</view>

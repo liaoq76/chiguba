@@ -1,0 +1,26 @@
+<view class="vocab-page">
+
+  <view class="tabs">
+    <view class="tabs__item {{activeType === 'ip' ? 'tabs__item--active' : ''}}" data-t="ip" bindtap="switchType">IP</view>
+    <view class="tabs__item {{activeType === 'game' ? 'tabs__item--active' : ''}}" data-t="game" bindtap="switchType">游戏</view>
+    <view class="tabs__item {{activeType === 'role' ? 'tabs__item--active' : ''}}" data-t="role" bindtap="switchType">角色</view>
+    <view class="tabs__item {{activeType === 'productType' ? 'tabs__item--active' : ''}}" data-t="productType" bindtap="switchType">商品类型</view>
+    <view class="tabs__item {{activeType === 'channel' ? 'tabs__item--active' : ''}}" data-t="channel" bindtap="switchType">购买渠道</view>
+  </view>
+
+  <view class="vocab-list">
+    <view wx:if="{{items.length === 0}}" class="empty">
+      <view class="empty__seal">⌘</view>
+      <view class="empty__text">该分类下还没有词条</view>
+    </view>
+    <view wx:for="{{items}}" wx:key="_id" class="vocab-row">
+      <text class="vocab-row__name">{{item.name}}</text>
+      <view class="vocab-row__btn" data-id="{{item._id}}" data-name="{{item.name}}" bindtap="rename">修改</view>
+      <view class="vocab-row__btn vocab-row__btn--danger" data-id="{{item._id}}" data-name="{{item.name}}" bindtap="remove">删除</view>
+    </view>
+  </view>
+
+  <view class="action-bar">
+    <button class="btn btn--danger btn--sm" bindtap="clearAll">清空词库</button>
+  </view>
+</view>

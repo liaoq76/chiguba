@@ -1,0 +1,41 @@
+<view class="presale-page">
+
+  <view class="tabs">
+    <view class="tabs__item {{tab === 'pending' ? 'tabs__item--active' : ''}}" data-t="pending" bindtap="switchTab">待收到</view>
+    <view class="tabs__item {{tab === 'received' ? 'tabs__item--active' : ''}}" data-t="received" bindtap="switchTab">已收到</view>
+  </view>
+
+  <view wx:if="{{tab === 'pending'}}">
+    <view wx:if="{{pendingList.length === 0}}" class="empty">
+      <view class="empty__seal">◌</view>
+      <view class="empty__text">没有待收到的预售</view>
+    </view>
+    <view class="presale-list" wx:else>
+      <view wx:for="{{pendingList}}" wx:key="_id" class="presale-item" data-id="{{item._id}}" bindtap="goDetail">
+        <view class="presale-item__icon">◫</view>
+        <view class="presale-item__main">
+          <view class="presale-item__name">{{item.name}} ×{{item.quantity}}</view>
+          <view class="presale-item__sub">预计出荷：{{item.expectedShip}}</view>
+        </view>
+        <view class="presale-item__amount t-money">{{item.amount}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{tab === 'received'}}">
+    <view wx:if="{{receivedList.length === 0}}" class="empty">
+      <view class="empty__seal">✓</view>
+      <view class="empty__text">没有已收到的预售</view>
+    </view>
+    <view class="presale-list" wx:else>
+      <view wx:for="{{receivedList}}" wx:key="_id" class="presale-item" data-id="{{item._id}}" bindtap="goDetail">
+        <view class="presale-item__icon presale-item__icon--received">✓</view>
+        <view class="presale-item__main">
+          <view class="presale-item__name">{{item.name}} ×{{item.quantity}}</view>
+          <view class="presale-item__sub">预计出荷：{{item.expectedShip}}</view>
+        </view>
+        <view class="presale-item__amount t-money">{{item.amount}}</view>
+      </view>
+    </view>
+  </view>
+</view>

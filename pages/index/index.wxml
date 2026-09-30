@@ -1,52 +1,102 @@
-<view class="container">
-  <view class="hello">{{greeting}}</view>
-  <view class="banner card">
-    <view class="banner-row">
-      <view>
-        <view class="muted">本月花销</view>
-        <view class="big-amount">¥ {{monthTotal}}</view>
+<view class="home">
+  <!-- 问候 + 同步状态 -->
+  <view class="greet">
+    <view class="greet__left">
+      <view class="greet__avatar-wrap">
+        <image wx:if="{{avatarURL}}" class="greet__avatar" src="{{avatarURL}}" mode="aspectFill" bindtap="goMine"></image>
+        <view wx:else class="greet__avatar greet__avatar--placeholder" bindtap="goMine">人</view>
       </view>
-      <view class="banner-side">
-        <view class="muted">今日 ¥ {{todayTotal}}</view>
-        <view class="muted">{{monthCount}} 笔</view>
+      <view class="greet__text-col">
+        <text class="greet__text">今日，</text>
+        <text class="greet__name">{{nickname}}</text>
       </view>
     </view>
-    <view class="budget-bar" wx:if="{{budget > 0}}">
-      <view class="budget-fill" style="width: {{budgetPercent}}%"></view>
-    </view>
-    <view class="muted budget-tip" wx:if="{{budget > 0}}">已用 {{budgetPercent}}% · 预算 ¥ {{budget}}</view>
-    <view class="actions">
-      <view class="primary-btn" bindtap="goAdd">记一笔</view>
-      <view class="ghost-btn" bindtap="goStats">查看统计</view>
+    <view class="greet__sync" wx:if="{{pendingSync > 0}}">
+      <view class="greet__sync-dot greet__sync-dot--off"></view>
+      <text>{{pendingSync}} 条待同步</text>
     </view>
   </view>
 
-  <view class="title-row">
-    <view class="title">分类花销 TOP</view>
-    <view class="more" bindtap="goRecords">全部 ›</view>
-  </view>
-  <view class="card top-grid">
-    <view class="top-item" wx:for="{{topCategories}}" wx:key="id">
-      <view class="top-icon" style="background: {{item.color}}22; color: {{item.color}}">{{item.icon}}</view>
-      <view class="top-name">{{item.name}}</view>
-      <view class="top-amount amount">¥ {{item.amount}}</view>
+  <!-- 本月消费 -->
+  <view class="month-card">
+    <view class="month-card__label">本月消费 · {{monthLabel}}</view>
+    <view class="month-card__total t-money">{{monthTotal}}</view>
+    <view class="month-card__breakdown">
+      <view class="month-card__item">
+        <text class="month-card__icon">◉</text>
+        <text>谷子</text>
+        <text class="month-card__amount t-money">{{guziTotal}}</text>
+      </view>
+      <view class="month-card__item">
+        <text class="month-card__icon">◆</text>
+        <text>游戏</text>
+        <text class="month-card__amount t-money">{{gameTotal}}</text>
+      </view>
     </view>
-    <view class="empty" wx:if="{{topCategories.length === 0}}">还没有记录哦，去记一笔吧～</view>
   </view>
 
-  <view class="title-row">
-    <view class="title">最近记录</view>
-    <view class="more" bindtap="goRecords">账本 ›</view>
-  </view>
-  <view class="card record-list">
-    <view class="record-row" wx:for="{{recent}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
-      <view class="record-icon" style="background: {{item.categoryColor}}22; color: {{item.categoryColor}}">{{item.categoryIcon}}</view>
-      <view class="record-main">
-        <view class="record-title">{{item.title || item.categoryName}}</view>
-        <view class="record-sub muted">{{item.dateLabel}} · {{item.categoryName}}</view>
+  <!-- 消费趋势 -->
+  <view class="card trend-card">
+    <view class="card-title">
+      <view class="card-title__left">
+        <view class="card-title__dot"></view>
+        <text>消费趋势</text>
       </view>
-      <view class="record-amount amount">¥ {{item.amount}}</view>
     </view>
-    <view class="empty" wx:if="{{recent.length === 0}}">还没有记录哦，去记一笔吧～</view>
+    <view class="trend-chart">
+      <canvas canvas-id="homeTrend" id="homeTrend" class="trend-chart__canvas" type="2d" bindtouchstart="onTrendTouch"></canvas>
+    </view>
+    <view class="trend-compare">
+      <text>本月 <text class="trend-compare__cur t-money">{{curTotal}}</text></text>
+      <text>上月 <text class="t-money">{{prevTotal}}</text></text>
+    </view>
   </view>
+
+  <!-- 待收到 -->
+  <view class="pending" bindtap="goPresale">
+    <view class="pending__icon">◫</view>
+    <view class="pending__text">待收到 {{pendingCount}} 件</view>
+    <text class="pending__arrow">›</text>
+  </view>
+
+  <!-- 预算摘要（PRD 4.1.6 — 仅开启时显示） -->
+  <view class="budget" wx:if="{{budget}}" bindtap="goBudget">
+    <view class="budget__head">
+      <view class="budget__title">{{budget.typeLabel}} · 本周期</view>
+      <view class="budget__status budget__status--{{budget.status}}">{{budget.statusLabel}}</view>
+    </view>
+    <view class="budget__bar">
+      <view class="budget__fill budget__fill--{{budget.status}}" style="width: {{budget.percent * 100}}%"></view>
+    </view>
+    <view class="budget__bottom">
+      <text>已用 <text class="budget__actual t-money">{{budget.actual}}</text></text>
+      <text class="t-mute">{{budget.rawPercent}}%</text>
+    </view>
+  </view>
+
+  <!-- 最近 3 条 -->
+  <view class="recent">
+    <view class="recent__head">最近消费</view>
+    <view class="recent__list">
+      <view wx:if="{{recent.length === 0}}" class="empty">
+        <view class="empty__seal">◌</view>
+        <view class="empty__text">还没有消费记录</view>
+        <view style="margin-top:24rpx;">
+          <button class="btn btn--primary btn--sm" bindtap="fillDemo">填入示例数据看效果</button>
+        </view>
+      </view>
+      <view wx:for="{{recent}}" wx:key="_id" class="recent-item" data-id="{{item._id}}" bindtap="goRecentDetail">
+        <view class="recent-item__icon {{item.icon === '◆' ? 'recent-item__icon--game' : ''}}">{{item.icon}}</view>
+        <view class="recent-item__main">
+          <view class="recent-item__name">{{item.name}}</view>
+          <view class="recent-item__date">{{item.dateLabel}}</view>
+        </view>
+        <image wx:if="{{item.thumb}}" class="recent-item__thumb" src="{{item.thumb}}" mode="aspectFill" data-id="{{item._id}}" catchtap="onTapThumb"></image>
+        <view class="recent-item__amount">{{item.amount}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 中央浮动 ＋ -->
+  <view class="fab" bindtap="goAdd">＋</view>
 </view>

@@ -1,0 +1,10 @@
+{
+  "name": "exportAll",
+  "version": "1.0.0",
+  "description": "导出 XLSX",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "xlsx": "^0.18.5"
+  }
+}

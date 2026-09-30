@@ -1,0 +1,91 @@
+<view class="coll-page">
+
+  <!-- 顶部 Tab + 工具 -->
+  <view class="coll-toolbar">
+    <view class="coll-tab">
+      <view class="coll-tab__item {{activeTab === 'current' ? 'coll-tab__item--active' : ''}}" data-t="current" bindtap="switchTab">当前收藏</view>
+      <view class="coll-tab__item {{activeTab === 'history' ? 'coll-tab__item--active' : ''}}" data-t="history" bindtap="switchTab">收藏历史</view>
+    </view>
+    <view class="coll-tools">
+      <view class="coll-tools__btn" bindtap="openFilter">筛选 ≡</view>
+      <view class="coll-tools__btn {{view === 'grid' ? 'coll-tools__btn--active' : ''}}" bindtap="switchView">{{view === 'grid' ? '网格' : '列表'}}</view>
+    </view>
+  </view>
+
+  <!-- 当前 -->
+  <block wx:if="{{activeTab === 'current'}}">
+    <view wx:if="{{currentItems.length === 0}}" class="empty">
+      <view class="empty__seal">♡</view>
+      <view class="empty__text">还没有收藏</view>
+      <view style="margin-top:24rpx;">
+        <button class="btn btn--primary btn--sm" bindtap="goAdd">＋添加收藏</button>
+      </view>
+    </view>
+
+    <!-- 网格 -->
+    <view wx:if="{{view === 'grid'}}" class="coll-grid">
+      <view wx:for="{{currentItems}}" wx:key="_id" class="coll-grid__item" data-id="{{item._id}}" bindtap="goDetail">
+        <view class="coll-grid__icon">♡</view>
+        <view class="coll-grid__name">{{item.name}}</view>
+        <view class="coll-grid__sub">{{item.ip || '未填IP'}}</view>
+        <view class="coll-grid__qty">当前 ×{{item.currentQty}} · 曾拥有 ×{{item.ownedQty}}</view>
+      </view>
+    </view>
+
+    <!-- 列表 -->
+    <view wx:else class="coll-list">
+      <view wx:for="{{currentItems}}" wx:key="_id" class="coll-list__item" data-id="{{item._id}}" bindtap="goDetail">
+        <view class="coll-list__icon">♡</view>
+        <view class="coll-list__main">
+          <view class="coll-list__name">{{item.name}}</view>
+          <view class="coll-list__sub">{{item.ip || '未填IP'}}{{item.role ? ' · ' + item.role : ''}}</view>
+        </view>
+        <view class="coll-list__qty">×{{item.currentQty}}</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 历史 -->
+  <block wx:if="{{activeTab === 'history'}}">
+    <view wx:if="{{historyItems.length === 0}}" class="empty">
+      <view class="empty__seal">◌</view>
+      <view class="empty__text">收藏历史为空</view>
+    </view>
+    <view class="coll-list">
+      <view wx:for="{{historyItems}}" wx:key="_id" class="coll-list__item" data-id="{{item._id}}" bindtap="goDetail">
+        <view class="coll-list__icon">○</view>
+        <view class="coll-list__main">
+          <view class="coll-list__name">{{item.name}}</view>
+          <view class="coll-list__sub">{{item.ip || '未填IP'}} · 曾拥有 ×{{item.ownedQty}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 筛选 -->
+  <view wx:if="{{filterOpen}}" class="filter-mask" bindtap="closeFilter"></view>
+  <view wx:if="{{filterOpen}}" class="filter-panel-inner">
+    <view class="filter-block">
+      <view class="filter-block__title">IP</view>
+      <view class="filter-pills">
+        <view wx:for="{{ipOptions}}" wx:key="*this" class="filter-pill {{filters.ip === item ? 'filter-pill--active' : ''}}" data-field="ip" data-value="{{item}}" bindtap="pickFilter">{{item}}</view>
+      </view>
+    </view>
+    <view class="filter-block">
+      <view class="filter-block__title">角色</view>
+      <view class="filter-pills">
+        <view wx:for="{{roleOptions}}" wx:key="*this" class="filter-pill {{filters.role === item ? 'filter-pill--active' : ''}}" data-field="role" data-value="{{item}}" bindtap="pickFilter">{{item}}</view>
+      </view>
+    </view>
+    <view class="filter-block">
+      <view class="filter-block__title">商品类型</view>
+      <view class="filter-pills">
+        <view wx:for="{{typeOptions}}" wx:key="*this" class="filter-pill {{filters.productType === item ? 'filter-pill--active' : ''}}" data-field="productType" data-value="{{item}}" bindtap="pickFilter">{{item}}</view>
+      </view>
+    </view>
+    <view class="filter-actions">
+      <button class="btn btn--ghost" bindtap="resetFilter">重置</button>
+      <button class="btn btn--primary" bindtap="applyFilter">确定</button>
+    </view>
+  </view>
+</view>

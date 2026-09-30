@@ -1,0 +1,63 @@
+<view class="expense-page">
+
+  <!-- 月份切换 + 汇总 -->
+  <view class="month-bar">
+    <view class="month-bar__nav">
+      <view class="month-bar__btn" bindtap="prevMonth">‹</view>
+
+      <!-- 年月双列下拉：单一长胶囊，点击弹出 picker -->
+      <picker mode="multiSelector"
+              range="{{pickerColumns}}"
+              value="{{pickerValue}}"
+              bindchange="onMonthPickerChange"
+              bindcolumnchange="onMonthPickerColumnChange">
+        <view class="month-bar__picker">
+          <text class="month-bar__cell">{{year}}</text>
+          <text class="month-bar__sep">·</text>
+          <text class="month-bar__cell">{{monthLabel}}</text>
+          <text class="month-bar__caret">▾</text>
+        </view>
+      </picker>
+
+      <view class="month-bar__btn {{isCurrentMonth ? 'month-bar__btn--disabled' : ''}}" bindtap="nextMonth">›</view>
+    </view>
+
+    <view class="month-bar__totals">
+      <text class="month-bar__total t-money">{{monthTotal}}</text>
+      <text class="month-bar__count">共 {{monthCount}} 笔</text>
+    </view>
+    <view class="month-bar__break">
+      <text>◉ 谷子 {{monthGuZi}}</text>
+      <text>◆ 游戏 {{monthGame}}</text>
+    </view>
+  </view>
+
+  <!-- 类型 tabs -->
+  <view class="tabs">
+    <view class="tabs__item {{activeType === 'all' ? 'tabs__item--active' : ''}}" data-t="all" bindtap="pickType">全部</view>
+    <view class="tabs__item {{activeType === 'guzi' ? 'tabs__item--active' : ''}}" data-t="guzi" bindtap="pickType">谷子</view>
+    <view class="tabs__item {{activeType === 'game' ? 'tabs__item--active' : ''}}" data-t="game" bindtap="pickType">游戏</view>
+  </view>
+
+  <!-- 列表 -->
+  <view class="record-list">
+    <view wx:if="{{records.length === 0}}" class="empty">
+      <view class="empty__seal">◌</view>
+      <view class="empty__text">本月还没有记录</view>
+      <view style="margin-top:24rpx;">
+        <button class="btn btn--primary btn--sm" bindtap="goAdd" open-type="switchTab" data-url="/pages/add/add">＋记一笔</button>
+      </view>
+    </view>
+    <view wx:for="{{records}}" wx:key="_id" class="record" data-id="{{item._id}}" bindtap="goDetail">
+      <view class="record__icon {{item.icon === '◆' ? 'record__icon--game' : ''}}">{{item.icon}}</view>
+      <view class="record__main">
+        <view class="record__name">{{item.name}}</view>
+        <view class="record__sub">{{item.sub}}</view>
+      </view>
+      <view>
+        <view class="record__amount t-money">{{item.amount}}</view>
+        <view class="record__date">{{item.dateLabel}}</view>
+      </view>
+    </view>
+  </view>
+</view>

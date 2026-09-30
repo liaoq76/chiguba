@@ -1,24 +1,43 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/records/records",
-    "pages/add/add",
+    "pages/expense/expense",
+    "pages/expense/edit",
+    "pages/expense/detail",
+    "pages/collection/collection",
+    "pages/collection/history",
+    "pages/collection/detail",
+    "pages/collection/edit",
+    "pages/presale/presale",
+    "pages/presale/detail",
     "pages/stats/stats",
+    "pages/stats/ipDetail",
+    "pages/stats/records",
+    "pages/budget/budget",
+    "pages/vocab/vocab",
+    "pages/vocab/edit",
+    "pages/data/data",
+    "pages/data/feedback",
+    "pages/data/about",
+    "pages/data/agreement",
+    "pages/data/privacy",
     "pages/mine/mine",
-    "pages/detail/detail"
+    "pages/add/add",
+    "pages/guide/guide"
   ],
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#ff6f9d",
-    "navigationBarTitleText": "吃谷吧",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#fff5f8"
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#faf6ef",
+    "navigationBarTitleText": "吃谷吗",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5efe6",
+    "enablePullDownRefresh": false
   },
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#ff6f9d",
-    "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "color": "#9a8f80",
+    "selectedColor": "#b6433a",
+    "backgroundColor": "#faf6ef",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -27,22 +46,22 @@
         "selectedIconPath": "images/tab/home_active.png"
       },
       {
-        "pagePath": "pages/records/records",
-        "text": "账本",
-        "iconPath": "images/tab/book.png",
-        "selectedIconPath": "images/tab/book_active.png"
+        "pagePath": "pages/expense/expense",
+        "text": "消费",
+        "iconPath": "images/tab/expense.png",
+        "selectedIconPath": "images/tab/expense_active.png"
       },
       {
         "pagePath": "pages/add/add",
-        "text": "记账",
+        "text": "记一笔",
         "iconPath": "images/tab/add.png",
         "selectedIconPath": "images/tab/add_active.png"
       },
       {
-        "pagePath": "pages/stats/stats",
-        "text": "统计",
-        "iconPath": "images/tab/chart.png",
-        "selectedIconPath": "images/tab/chart_active.png"
+        "pagePath": "pages/collection/collection",
+        "text": "收藏",
+        "iconPath": "images/tab/collection.png",
+        "selectedIconPath": "images/tab/collection_active.png"
       },
       {
         "pagePath": "pages/mine/mine",

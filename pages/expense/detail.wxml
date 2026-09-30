@@ -1,0 +1,149 @@
+<view class="detail-page" wx:if="{{expense}}">
+
+  <!-- 顶部：商品/游戏 + 金额（PRD 4.2.14） -->
+  <view class="detail-hero">
+    <view class="detail-hero__name">{{expense.productName || expense.gameName || '未命名'}}</view>
+    <view class="detail-hero__amount t-money">{{expense.amountLabel}}</view>
+    <view class="detail-hero__type">{{expense.typeLabel}}</view>
+  </view>
+
+  <!-- 基础字段：所有字段都展示，无值灰字 -->
+  <view class="section">
+    <view class="section__head">基础信息</view>
+
+    <view class="section__row">
+      <view class="section__label">类型</view>
+      <view class="section__value">{{expense.typeLabel}}</view>
+    </view>
+    <view class="section__row">
+      <view class="section__label">日期</view>
+      <view class="section__value">{{expense.dateLabel || '未填写'}}</view>
+    </view>
+    <view class="section__row">
+      <view class="section__label">{{expense.type === 'guzi' ? '商品名称' : '游戏名称'}}</view>
+      <view class="section__value">{{expense.productName || expense.gameName || '未填写'}}</view>
+    </view>
+
+    <!-- 谷子字段 -->
+    <block wx:if="{{expense.type === 'guzi'}}">
+      <view class="section__row">
+        <view class="section__label">IP</view>
+        <view class="section__value {{expense.ip ? '' : 'is-empty'}}">{{expense.ip || '未填写'}}</view>
+      </view>
+      <view class="section__row">
+        <view class="section__label">角色</view>
+        <view class="section__value {{expense.role ? '' : 'is-empty'}}">{{expense.role || '未填写'}}</view>
+      </view>
+      <view class="section__row">
+        <view class="section__label">商品类型</view>
+        <view class="section__value {{expense.productType ? '' : 'is-empty'}}">{{expense.productType || '未填写'}}</view>
+      </view>
+      <view class="section__row">
+        <view class="section__label">单价</view>
+        <view class="section__value {{expense.unitPrice ? '' : 'is-empty'}}">{{expense.unitPrice ? '¥' + expense.unitPrice : '未填写'}}</view>
+      </view>
+      <view class="section__row">
+        <view class="section__label">数量</view>
+        <view class="section__value {{expense.quantity ? '' : 'is-empty'}}">{{expense.quantity ? '×' + expense.quantity : '未填写'}}</view>
+      </view>
+      <view class="section__row">
+        <view class="section__label">购买渠道</view>
+        <view class="section__value {{expense.channel ? '' : 'is-empty'}}">{{expense.channel || '未填写'}}</view>
+      </view>
+      <view class="section__row">
+        <view class="section__label">官方/同人</view>
+        <view class="section__value {{expense.source ? '' : 'is-empty'}}">{{expense.sourceLabel || '未填写'}}</view>
+      </view>
+    </block>
+
+    <!-- 游戏字段 -->
+    <block wx:else>
+      <view class="section__row">
+        <view class="section__label">氪金原因</view>
+        <view class="section__value {{expense.gameReason ? '' : 'is-empty'}}">{{expense.gameReason || '未填写'}}</view>
+      </view>
+      <block wx:if="{{expense.gameReason === '月卡' || expense.gameReason === '礼包'}}">
+        <view class="section__row">
+          <view class="section__label">单价</view>
+          <view class="section__value {{expense.unitPrice ? '' : 'is-empty'}}">{{expense.unitPrice ? '¥' + expense.unitPrice : '未填写'}}</view>
+        </view>
+        <view class="section__row">
+          <view class="section__label">数量</view>
+          <view class="section__value {{expense.quantity ? '' : 'is-empty'}}">{{expense.quantity ? '×' + expense.quantity : '未填写'}}</view>
+        </view>
+      </block>
+      <block wx:elif="{{expense.amount}}">
+        <view class="section__row">
+          <view class="section__label">金额</view>
+          <view class="section__value">¥{{expense.amount}}</view>
+        </view>
+      </block>
+    </block>
+
+    <!-- 备注（始终显示） -->
+    <view class="section__row">
+      <view class="section__label">备注</view>
+      <view class="section__value {{expense.note ? '' : 'is-empty'}}">{{expense.note || '无'}}</view>
+    </view>
+
+    <!-- 加入收藏 -->
+    <view class="section__row">
+      <view class="section__label">加入收藏</view>
+      <view class="section__value {{expense.addToCollection ? '' : 'is-empty'}}">{{expense.addToCollection ? '是' : '否'}}</view>
+    </view>
+  </view>
+
+  <!-- 商品图片（始终显示 section，无图时灰字说明） -->
+  <view class="section">
+    <view class="section__head">商品图片</view>
+    <view wx:if="{{expense.imageUrls && expense.imageUrls.length > 0}}" class="image-grid">
+      <image wx:for="{{expense.imageUrls}}" wx:key="*this"
+        class="image-grid__item"
+        src="{{item}}"
+        mode="aspectFill"
+        data-idx="{{index}}"
+        bindtap="onTapImage"></image>
+    </view>
+    <view wx:else class="empty-cell">暂无图片</view>
+  </view>
+
+  <!-- 收藏关联（始终显示） -->
+  <view class="section">
+    <view class="section__head">收藏关联</view>
+    <view wx:if="{{contributions.length > 0}}">
+      <view wx:for="{{contributions}}" wx:key="_id" class="section__row">
+        <view class="section__label">贡献数量</view>
+        <view class="section__value">×{{item.qty}}</view>
+      </view>
+    </view>
+    <view wx:else class="empty-cell">未关联收藏</view>
+  </view>
+
+  <!-- 预售（始终显示） -->
+  <view class="section">
+    <view class="section__head">预售</view>
+    <block wx:if="{{presale}}">
+      <view class="section__row">
+        <view class="section__label">状态</view>
+        <view class="section__value">
+          <text class="tag {{presale.status === 'received' ? 'tag--accent' : 'tag--warn'}}">{{presale.statusLabel}}</text>
+        </view>
+      </view>
+      <view class="section__row">
+        <view class="section__label">预售数量</view>
+        <view class="section__value">×{{presale.quantity}}</view>
+      </view>
+      <view class="section__row">
+        <view class="section__label">预计出荷</view>
+        <view class="section__value {{presale.expectedShipLabel ? '' : 'is-empty'}}">{{presale.expectedShipLabel || '未填预计出荷时间'}}</view>
+      </view>
+    </block>
+    <view wx:else class="empty-cell">非预售记录</view>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="action-bar">
+    <button class="btn btn--danger" bindtap="deleteOne">删除</button>
+    <button class="btn btn--primary" bindtap="goEdit">编辑</button>
+  </view>
+</view>

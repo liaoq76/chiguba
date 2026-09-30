@@ -1,67 +1,235 @@
-<view class="container add-page">
-  <view class="card amount-card">
-    <view class="muted">金额</view>
-    <view class="amount-input">
-      <text class="amount-symbol">¥</text>
-      <input type="digit" placeholder="0.00" value="{{amount}}" bindinput="onAmountInput" />
-    </view>
-  </view>
+<view class="add-page">
 
-  <view class="card">
-    <view class="title-row">
-      <view class="title">分类</view>
-      <view class="more" bindtap="openCategoryManager">管理</view>
+  <!-- === 步骤 1：选择消费类型 === -->
+  <block wx:if="{{step === 'type'}}">
+    <view class="section-title">先选择一种消费</view>
+
+    <view class="type-card" data-type="guzi" bindtap="pickType">
+      <view class="type-card__icon">◉</view>
+      <view class="type-card__main">
+        <view class="type-card__title">谷子 / 周边</view>
+        <view class="type-card__desc">官方/同人创作、周边及商品</view>
+      </view>
+      <text class="type-card__arrow">›</text>
     </view>
-    <view class="category-grid">
-      <view
-        wx:for="{{categories}}"
-        wx:key="id"
-        class="cat-item {{activeCategoryId === item.id ? 'active' : ''}}"
-        data-id="{{item.id}}"
-        bindtap="chooseCategory"
-      >
-        <view class="cat-icon" style="background: {{item.color}}22; color: {{item.color}}">{{item.icon}}</view>
-        <view class="cat-name">{{item.name}}</view>
+
+    <view class="type-card" data-type="game" bindtap="pickType">
+      <view class="type-card__icon type-card__icon--game">◆</view>
+      <view class="type-card__main">
+        <view class="type-card__title">游戏氪金</view>
+        <view class="type-card__desc">抽卡 / 直购 / 月卡 / 礼包 / 赠送</view>
+      </view>
+      <text class="type-card__arrow">›</text>
+    </view>
+  </block>
+
+  <!-- === 步骤 2：表单 === -->
+  <block wx:if="{{step === 'form'}}">
+    <view class="form-card">
+      <view class="input-cell" bindtap="backType">
+        <view class="input-cell__label">类型</view>
+        <view class="input-cell__field">{{expenseType === 'guzi' ? '谷子 / 周边' : '游戏氪金'}}</view>
+      </view>
+
+      <!-- 日期 -->
+      <view class="input-cell" bindtap="onPickDate">
+        <view class="input-cell__label">日期</view>
+        <view class="input-cell__field">{{dateLabel}}</view>
+      </view>
+
+      <!-- === 谷子字段 === -->
+      <block wx:if="{{expenseType === 'guzi'}}">
+        <view class="input-cell">
+          <view class="input-cell__label">商品名称<text class="t-danger">*</text></view>
+          <input class="input-cell__field" placeholder="如：芙宁娜吧唧" value="{{name}}" bindinput="onName" placeholder-class="input-cell__placeholder" />
+        </view>
+
+        <view class="input-cell">
+          <view class="input-cell__label">单价<text class="t-danger">*</text></view>
+          <input class="input-cell__field" type="digit" placeholder="0.00" value="{{unitPrice}}" bindinput="onUnitPrice" placeholder-class="input-cell__placeholder" />
+        </view>
+
+        <view class="qty-row">
+          <view class="qty-row__label">数量<text class="t-danger">*</text></view>
+          <view class="qty-row__btn" data-op="-1" bindtap="onQuantityStep">−</view>
+          <view class="qty-row__num">{{quantity}}</view>
+          <view class="qty-row__btn" data-op="1" bindtap="onQuantityStep">＋</view>
+          <input class="qty-row__field" type="number" placeholder="1" value="{{quantity}}" bindinput="onQuantity" placeholder-class="qty-row__placeholder" />
+        </view>
+
+        <view class="input-cell">
+          <view class="input-cell__label">IP<text class="t-danger">*</text></view>
+          <input class="input-cell__field" placeholder="如：原神" value="{{ip}}" bindinput="onIp" bindfocus="onIpFocus" placeholder-class="input-cell__placeholder" />
+        </view>
+
+        <view class="suggest-box" wx:if="{{activeField === 'ip' && ipSuggestions.length > 0}}">
+          <view class="suggest-list">
+            <view wx:for="{{ipSuggestions}}" wx:key="*this" class="suggest-item" data-field="ip" data-value="{{item}}" bindtap="pickSuggestion">{{item}}</view>
+          </view>
+        </view>
+      </block>
+
+      <!-- === 游戏字段 === -->
+      <block wx:if="{{expenseType === 'game'}}">
+        <view class="input-cell">
+          <view class="input-cell__label">游戏名称<text class="t-danger">*</text></view>
+          <input class="input-cell__field" placeholder="如：原神" value="{{gameName}}" bindinput="onGameName" bindfocus="onGameNameFocus" placeholder-class="input-cell__placeholder" />
+        </view>
+        <view class="suggest-box" wx:if="{{activeField === 'gameName' && gameSuggestions.length > 0}}">
+          <view class="suggest-list">
+            <view wx:for="{{gameSuggestions}}" wx:key="*this" class="suggest-item" data-field="gameName" data-value="{{item}}" bindtap="pickSuggestion">{{item}}</view>
+          </view>
+        </view>
+
+        <view class="input-cell">
+          <view class="input-cell__label">氪金原因<text class="t-danger">*</text></view>
+          <view class="pill-row">
+            <view wx:for="{{gameReasonOptions}}" wx:key="*this" class="pill {{gameReason === item ? 'pill--active' : ''}}" data-r="{{item}}" bindtap="pickGameReason">{{item}}</view>
+          </view>
+        </view>
+
+        <block wx:if="{{gameReason === '月卡' || gameReason === '礼包'}}">
+          <view class="input-cell">
+            <view class="input-cell__label">单价<text class="t-danger">*</text></view>
+            <input class="input-cell__field" type="digit" placeholder="0.00" value="{{unitPrice}}" bindinput="onUnitPrice" placeholder-class="input-cell__placeholder" />
+          </view>
+          <view class="qty-row">
+            <view class="qty-row__label">数量</view>
+            <view class="qty-row__btn" data-op="-1" bindtap="onQuantityStep">−</view>
+            <view class="qty-row__num">{{quantity}}</view>
+            <view class="qty-row__btn" data-op="1" bindtap="onQuantityStep">＋</view>
+          </view>
+        </block>
+
+        <block wx:else>
+          <view class="input-cell">
+            <view class="input-cell__label">金额<text class="t-danger">*</text></view>
+            <input class="input-cell__field" type="digit" placeholder="0.00" value="{{amount}}" bindinput="onAmount" placeholder-class="input-cell__placeholder" />
+          </view>
+        </block>
+      </block>
+
+      <!-- 总金额显示 -->
+      <view class="total-display">
+        <view class="total-display__label">总金额<text class="total-display__hint">自动计算</text></view>
+        <view class="total-display__amount t-money">¥{{totalAmount}}</view>
       </view>
     </view>
-  </view>
 
-  <view class="card">
-    <view class="title-row">
-      <view class="title">商品名称</view>
-      <view class="more muted">选填</view>
-    </view>
-    <input class="text-input" placeholder="例：原神 刻晴 景品手办" value="{{title}}" bindinput="onTitleInput" />
-  </view>
-
-  <view class="card">
-    <view class="title-row">
-      <view class="title">日期</view>
-    </view>
-    <view class="text-input" bindtap="pickDate">{{dateText}} ›</view>
-  </view>
-
-  <view class="card">
-    <view class="title-row">
-      <view class="title">备注</view>
-      <view class="more muted">选填</view>
-    </view>
-    <textarea class="text-area" placeholder="想记录点什么…（购买店铺、心情、CP 磕点）" value="{{note}}" bindinput="onNoteInput" maxlength="200" auto-height />
-  </view>
-
-  <view class="card">
-    <view class="title-row">
-      <view class="title">晒图</view>
-      <view class="more muted">{{images.length}}/3</view>
-    </view>
-    <view class="image-row">
-      <view class="image-box" wx:for="{{images}}" wx:key="*this" data-index="{{index}}" bindtap="removeImage">
-        <image src="{{item}}" mode="aspectFill" />
-        <view class="image-remove">×</view>
+    <!-- 更多信息 -->
+    <view class="form-card">
+      <view class="more-toggle" bindtap="toggleMore">
+        <text>更多信息</text>
+        <text class="more-toggle__arrow">{{showMore ? '▲' : '▼'}}</text>
       </view>
-      <view class="image-add" wx:if="{{images.length < 3}}" bindtap="chooseImage">+</view>
-    </view>
-  </view>
 
-  <view class="save-btn primary-btn" bindtap="save">保存这笔</view>
+      <block wx:if="{{showMore}}">
+        <!-- 谷子更多信息 -->
+        <block wx:if="{{expenseType === 'guzi'}}">
+          <view class="input-cell">
+            <view class="input-cell__label">角色</view>
+            <input class="input-cell__field" placeholder="可选" value="{{role}}" bindinput="onRole" bindfocus="onRoleFocus" placeholder-class="input-cell__placeholder" />
+          </view>
+          <view class="suggest-box" wx:if="{{activeField === 'role' && roleSuggestions.length > 0}}">
+            <view class="suggest-list">
+              <view wx:for="{{roleSuggestions}}" wx:key="*this" class="suggest-item" data-field="role" data-value="{{item}}" bindtap="pickSuggestion">{{item}}</view>
+            </view>
+          </view>
+
+          <view class="input-cell">
+            <view class="input-cell__label">商品类型</view>
+            <input class="input-cell__field" placeholder="吧唧/立牌/..." value="{{productType}}" bindinput="onProductType" bindfocus="onProductTypeFocus" placeholder-class="input-cell__placeholder" />
+          </view>
+          <view class="suggest-box" wx:if="{{activeField === 'productType' && typeSuggestions.length > 0}}">
+            <view class="suggest-list">
+              <view wx:for="{{typeSuggestions}}" wx:key="*this" class="suggest-item" data-field="productType" data-value="{{item}}" bindtap="pickSuggestion">{{item}}</view>
+            </view>
+          </view>
+
+          <view class="input-cell">
+            <view class="input-cell__label">购买渠道</view>
+            <input class="input-cell__field" placeholder="淘宝/闲鱼/..." value="{{channel}}" bindinput="onChannel" bindfocus="onChannelFocus" placeholder-class="input-cell__placeholder" />
+          </view>
+          <view class="suggest-box" wx:if="{{activeField === 'channel' && channelSuggestions.length > 0}}">
+            <view class="suggest-list">
+              <view wx:for="{{channelSuggestions}}" wx:key="*this" class="suggest-item" data-field="channel" data-value="{{item}}" bindtap="pickSuggestion">{{item}}</view>
+            </view>
+          </view>
+
+          <view class="input-cell">
+            <view class="input-cell__label">官方/同人</view>
+            <view class="pill-row">
+              <view class="pill {{source === 'official' ? 'pill--active' : ''}}" data-s="official" bindtap="pickSource">官方</view>
+              <view class="pill {{source === 'fanmade' ? 'pill--active' : ''}}" data-s="fanmade" bindtap="pickSource">同人</view>
+            </view>
+          </view>
+
+          <view class="switch-row">
+            <view>
+              <text class="switch-row__label">加入收藏</text>
+              <text class="switch-row__hint">同时沉淀到当前收藏</text>
+            </view>
+            <switch checked="{{addToCollection}}" bindchange="toggleCollection" color="#b6433a" />
+          </view>
+        </block>
+
+        <!-- 预售 -->
+        <view class="switch-row">
+          <view>
+            <text class="switch-row__label">预售</text>
+            <text class="switch-row__hint">勾选后填写预计出荷</text>
+          </view>
+          <switch checked="{{isPresale}}" bindchange="togglePresale" color="#b6433a" />
+        </view>
+
+        <block wx:if="{{isPresale}}">
+          <view class="input-cell" bindtap="onExpectedShip">
+            <view class="input-cell__label">预计出荷</view>
+            <view class="input-cell__field">{{expectedShip || '请选择'}}</view>
+          </view>
+          <view class="qty-row">
+            <view class="qty-row__label">预售数量</view>
+            <view class="qty-row__btn" data-op="-1" bindtap="onQuantityStep">−</view>
+            <view class="qty-row__num">{{presaleQty}}</view>
+            <view class="qty-row__btn" data-op="1" bindtap="onQuantityStep">＋</view>
+          </view>
+        </block>
+
+        <!-- 备注 -->
+        <view class="input-cell">
+          <view class="input-cell__label">备注</view>
+          <input class="input-cell__field" placeholder="可选" value="{{note}}" bindinput="onNote" placeholder-class="input-cell__placeholder" />
+        </view>
+
+        <!-- 商品图片（PRD 4.2.4 — MVP 单张）-->
+        <view class="input-cell input-cell--stack">
+          <view class="input-cell__label">
+            <text>商品图片</text>
+            <text class="input-cell__hint">可选</text>
+          </view>
+
+          <block wx:if="{{pickedImage}}">
+            <view class="img-picked">
+              <image class="img-picked__thumb" src="{{pickedImage.cloudPath || pickedImage.localPath}}" mode="aspectFill" bindtap="onPreviewImage"></image>
+              <view class="img-picked__remove" bindtap="onRemoveImage">×</view>
+              <view class="img-picked__status">
+                {{pickedImage.status === 'uploaded' ? '已上传' : pickedImage.status === 'failed' ? '上传失败' : '待上传'}}
+              </view>
+            </view>
+          </block>
+          <block wx:else>
+            <button class="btn btn--ghost btn--sm" bindtap="onPickImage">＋ 选择图片</button>
+          </block>
+        </view>
+      </block>
+    </view>
+
+    <!-- 提交栏 -->
+    <view class="submit-bar">
+      <button class="btn btn--ghost" bindtap="backType">返回</button>
+      <button class="btn btn--primary" bindtap="save">{{editId ? '保存修改' : '保存记录'}}</button>
+    </view>
+    <!-- 占位：避免 submit-bar 浮在原生 TabBar 之上时遮挡内容 -->
+    <view class="submit-bar-spacer"></view>
+  </block>
 </view>

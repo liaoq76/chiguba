@@ -1,36 +1,80 @@
 // app.js
+const Sync = require('./utils/sync.js');
 const Storage = require('./utils/storage.js');
+const Vocab = require('./utils/vocab.js');
 
 App({
-  onLaunch() {
-    // 初始化本地存储的默认分类与字段
-    Storage.initDefaults();
+  globalData: {
+    openid: '',
+    envId: 'cloudbase-d4gsz9sx6c8d47a29',
+    pendingSyncCount: 0,
+    online: true,
+    bootedAt: Date.now()
+  },
 
-    // 云开发初始化 + 自动拉取
-    if (typeof wx.cloud !== 'undefined') {
+  onLaunch() {
+    // === 初始化云开发 ===
+    console.log('[db] wx.cloud:', !!wx.cloud);
+    if (wx.cloud) {
       wx.cloud.init({
-        env: 'cloudbase-d4gsz9sx6c8d47a29',   // ← 云环境 ID，首次在微信开发者工具控制台创建后填这里
+        env: this.globalData.envId,
         traceUser: true
       });
-      // 首次打开 / 每次冷启动时从云端拉取最新数据
-      const syncState = Storage.getSyncState();
-      Storage.pullFromCloud().then(merged => {
-        if (merged !== null) {
-          console.log('[cloud] pulled', merged.length, 'records from cloud');
+      console.log('[db] cloud.init ok, envId:', this.globalData.envId);
+    } else {
+      console.warn('[db] wx.cloud is undefined — 可能是模拟器环境不支持云开发，请在真机上测试');
+    }
+
+    // === 首次启动自动初始化数据库（幂等，可重复执行）===
+    if (wx.cloud && !wx.getStorageSync('dbInited')) {
+      wx.cloud.callFunction({
+        name: 'initDBSchema',
+        data: {},
+        success: res => {
+          wx.setStorageSync('dbInited', true);
+          console.log('[db] initDBSchema ok:', res.result);
+        },
+        fail: err => {
+          console.warn('[db] initDBSchema failed:', err);
+          // 失败不阻塞，下次启动再试
         }
-      }).catch(err => {
-        console.warn('[cloud] pull failed, using local cache', err);
       });
     }
 
-    // 读取主题偏好
-    const theme = Storage.getTheme();
-    this.globalData.theme = theme;
+    // 监听网络变化
+    wx.onNetworkStatusChange(res => {
+      const wasOnline = this.globalData.online;
+      this.globalData.online = res.isConnected;
+      if (!wasOnline && res.isConnected) {
+        Sync.flushQueue();
+      }
+      this.emitNetworkChange(res.isConnected);
+    });
+
+    wx.getNetworkType({
+      success: res => { this.globalData.online = res.networkType !== 'none'; }
+    });
+
+    Sync.startScheduler();
+
+    Vocab.ensureDefaults();
   },
 
-  globalData: {
-    userInfo: null,
-    theme: 'pink',
-    categories: []
+  emitNetworkChange(online) {
+    const pages = getCurrentPages();
+    pages.forEach(p => {
+      if (p.onNetworkChange) p.onNetworkChange(online);
+    });
+  },
+
+  emitSyncUpdate() {
+    if (this._emitSyncTimer) return;
+    this._emitSyncTimer = setTimeout(() => {
+      this._emitSyncTimer = null;
+      const pages = getCurrentPages();
+      pages.forEach(p => {
+        if (p.onSyncUpdate) p.onSyncUpdate(this.globalData.pendingSyncCount);
+      });
+    }, 120);
   }
 });

@@ -1,0 +1,27 @@
+<view class="rec-page">
+  <view wx:if="{{conditions.length > 0}}" class="condition-bar">
+    <view wx:for="{{conditions}}" wx:key="value" class="cond-tag" data-idx="{{index}}" bindtap="removeCondition">
+      <text>{{item.label}}</text>
+      <text class="cond-tag__close">×</text>
+    </view>
+  </view>
+
+  <view wx:if="{{records.length === 0}}" class="empty">
+    <view class="empty__seal">◌</view>
+    <view class="empty__text">没有符合条件的记录</view>
+  </view>
+
+  <view class="record-list">
+    <view wx:for="{{records}}" wx:key="_id" class="record" data-id="{{item._id}}" bindtap="goDetail">
+      <view class="record__icon {{item.icon === '◆' ? 'record__icon--game' : ''}}">{{item.icon}}</view>
+      <view class="record__main">
+        <view class="record__name">{{item.name}}</view>
+        <view class="record__sub">{{item.sub}}</view>
+      </view>
+      <view>
+        <view class="record__amount t-money">{{item.amount}}</view>
+        <view class="t-mute" style="font-size:22rpx;text-align:right;margin-top:4rpx;">{{item.dateLabel}}</view>
+      </view>
+    </view>
+  </view>
+</view>

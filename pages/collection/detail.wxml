@@ -1,0 +1,58 @@
+<view class="coll-detail-page" wx:if="{{item}}">
+
+  <view class="coll-detail-hero">
+    <view class="coll-detail-hero__icon">♡</view>
+    <view class="coll-detail-hero__name">{{item.name}}</view>
+    <view class="coll-detail-hero__qty">
+      <view class="coll-detail-hero__qty-item">
+        <view class="coll-detail-hero__qty-label">当前收藏</view>
+        <view class="coll-detail-hero__qty-num t-money">{{item.currentQty}}</view>
+      </view>
+      <view class="coll-detail-hero__qty-item">
+        <view class="coll-detail-hero__qty-label">曾拥有</view>
+        <view class="coll-detail-hero__qty-num t-money">{{item.ownedQty}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数量操作 -->
+  <view class="qty-control">
+    <view class="qty-control__btn qty-control__btn--minus" data-op="-1" bindtap="adjustQty">−</view>
+    <view class="qty-control__num">{{item.currentQty}}</view>
+    <view class="qty-control__btn" data-op="1" bindtap="adjustQty">＋</view>
+  </view>
+
+  <view style="text-align:center;padding:0 32rpx 24rpx;">
+    <view wx:if="{{!editingQty}}" class="btn btn--ghost btn--sm" bindtap="startEditQty">直接编辑数量</view>
+    <view wx:else style="display:flex;gap:12rpx;justify-content:center;">
+      <input class="edit-row__field" type="number" value="{{newQty}}" bindinput="onNewQty" />
+      <button class="btn btn--primary btn--sm" bindtap="confirmQty">确定</button>
+      <button class="btn btn--ghost btn--sm" bindtap="cancelQty">取消</button>
+    </view>
+  </view>
+
+  <!-- 基础信息 -->
+  <view class="section">
+    <view class="section__row"><view class="section__label">IP</view><view class="section__value">{{item.ip || '未填写'}}</view></view>
+    <view class="section__row" wx:if="{{item.role}}"><view class="section__label">角色</view><view class="section__value">{{item.role}}</view></view>
+    <view class="section__row" wx:if="{{item.productType}}"><view class="section__label">商品类型</view><view class="section__value">{{item.productType}}</view></view>
+    <view class="section__row"><view class="section__label">开始拥有</view><view class="section__value">{{item.startDateLabel}}</view></view>
+  </view>
+
+  <!-- 关联消费（PRD 4.3.11 — 包括 ¥0） -->
+  <view class="section">
+    <view class="section__row" style="background: var(--line-soft);">
+      <view class="section__label t-sub">关联消费</view>
+      <view class="section__value t-sub" style="text-align:right;font-size:22rpx;">{{relatedExpenses.length}} 条</view>
+    </view>
+    <view wx:if="{{relatedExpenses.length === 0}}" class="empty-cell" style="padding:32rpx;text-align:center;color:var(--text-mute);font-size:24rpx;">无关联消费</view>
+    <view wx:for="{{relatedExpenses}}" wx:key="_id" wx:for-item="rel" class="expense-row">
+      <view class="expense-row__main">
+        <view class="expense-row__name">{{rel.name}}</view>
+        <view class="expense-row__date">{{rel.dateLabel}}</view>
+      </view>
+      <view class="expense-row__qty">×{{rel.qty}}</view>
+      <view class="expense-row__amount t-money">{{rel.amount}}</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,66 @@
+/* pages/collection/edit.wxss */
+.add-coll-page { padding: 24rpx 32rpx 80rpx; }
+.form-card {
+  background: var(--bg-card);
+  border: 1rpx solid var(--line);
+  border-radius: 16rpx;
+  padding: 8rpx 32rpx;
+}
+.input-cell {
+  display: flex;
+  align-items: center;
+  border-bottom: 1rpx solid var(--line-soft);
+  padding: 24rpx 0;
+}
+.input-cell__label {
+  width: 180rpx;
+  color: var(--text-sub);
+  font-size: 28rpx;
+}
+.input-cell__field {
+  flex: 1;
+  font-size: 28rpx;
+  color: var(--text);
+}
+.input-cell__placeholder { color: var(--text-mute); }
+.qty-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 18rpx 0;
+}
+.qty-row__btn {
+  width: 56rpx; height: 56rpx;
+  border-radius: 50%;
+  border: 1rpx solid var(--line);
+  background: var(--bg-elev);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30rpx;
+}
+.qty-row__num {
+  min-width: 60rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-variant-numeric: tabular-nums;
+}
+.suggest-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  padding: 0 0 16rpx;
+}
+.suggest-item {
+  padding: 8rpx 18rpx;
+  font-size: 24rpx;
+  background: var(--line-soft);
+  color: var(--text-sub);
+  border-radius: 6rpx;
+}
+.submit-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  padding: 20rpx 32rpx 32rpx;
+  background: var(--bg);
+  border-top: 1rpx solid var(--line);
+}
+.submit-bar .btn { width: 100%; }

@@ -1,174 +1,103 @@
-// pages/mine/mine.js
+// pages/mine/mine.js — 我的（PRD 4.8.1）
+const app = getApp();
 const Storage = require('../../utils/storage.js');
-const Format = require('../../utils/format.js');
-const DEFAULT = Storage.DEFAULT_CATEGORIES;
+const Profile = require('../../utils/profile.js');
 
 Page({
   data: {
-    profile: { nickname: '吃谷人', avatar: '' },
-    records: [],
-    total: '0',
-    monthTotal: '0',
-    recordCount: 0,
-    budget: 0,
-    categories: [],
-    activeTab: 'profile', // profile | budget | categories | about
-    showAddCat: false,
-    newCat: { name: '', icon: '📦', color: '#ff6f9d' },
-    iconOptions: ['🎮', '🌸', '✨', '🧸', '🎖️', '🃏', '📖', '👗', '🎤', '🛍️', '📦', '🎨', '🪄', '🧁', '🎀', '🧿', '🔮'],
-    colorOptions: ['#ff6f9d', '#7fbcff', '#ffb84d', '#b07cff', '#5fd1c0', '#ff8a78', '#8aa1ff', '#ff6fb1', '#f7a35c', '#a0d995']
-  },
+    nickname: '吃谷人',
+    avatarURL: '',
+    pendingSync: 0,
+    online: true,
 
-  onLoad(query) {
-    if (query && query.tab) this.setData({ activeTab: query.tab });
+    // 昵称编辑弹层
+    nickVisible: false,
+    nickInput: '',
+    nickFocus: false,
+    nickPass: true,
+    nickReviewed: false
   },
 
   onShow() {
-    this.refresh();
-  },
-
-  refresh() {
-    const records = Storage.getRecords();
-    const monthRecords = records.filter(r => Format.getMonth(r.createdAt) === Format.getMonth(Date.now()));
+    const profile = Storage.getProfile();
     this.setData({
-      profile: Storage.getProfile(),
-      records,
-      total: Format.formatAmount(Format.sum(records)),
-      monthTotal: Format.formatAmount(Format.sum(monthRecords)),
-      recordCount: records.length,
-      budget: Storage.getBudget(),
-      categories: Storage.getCategories()
+      nickname: profile.nickname || '吃谷人',
+      avatarURL: Profile.getAvatarURL(),
+      pendingSync: app.globalData.pendingSyncCount || 0,
+      online: app.globalData.online
     });
   },
 
-  switchTab(e) {
-    this.setData({ activeTab: e.currentTarget.dataset.tab });
+  onNetworkChange(online) { this.setData({ online }); },
+  onSyncUpdate(count) { this.setData({ pendingSync: count }); },
+
+  goBudget() { wx.navigateTo({ url: '/pages/budget/budget' }); },
+  goPresale() { wx.navigateTo({ url: '/pages/presale/presale' }); },
+  goVocab() { wx.navigateTo({ url: '/pages/vocab/vocab' }); },
+  goData() { wx.navigateTo({ url: '/pages/data/data' }); },
+  goAbout() { wx.navigateTo({ url: '/pages/data/about' }); },
+  goStats() { wx.navigateTo({ url: '/pages/stats/stats' }); },
+
+  // ========== 头像（点击 → 直接触发微信原生面板）==========
+  onWxChooseAvatar(e) {
+    const url = e.detail && e.detail.avatarUrl;
+    if (!url) return;
+    this._commitAvatar(url);
   },
 
-  editNickname() {
-    wx.showModal({
-      title: '修改昵称',
-      editable: true,
-      placeholderText: '请输入昵称',
-      content: this.data.profile.nickname,
-      success: (r) => {
-        if (r.confirm && r.content) {
-          const p = this.data.profile;
-          p.nickname = r.content.slice(0, 12);
-          Storage.setProfile(p);
-          this.setData({ profile: p });
-        }
-      }
+  // ========== 昵称弹层 ==========
+  onNickTap() {
+    this.setData({
+      nickVisible: true,
+      nickInput: this.data.nickname,
+      nickFocus: false,
+      nickPass: true,
+      nickReviewed: false
     });
+    // 延迟一下再聚焦，让弹层动画先跑完，否则 input 可能在键盘弹出动画中途
+    setTimeout(() => this.setData({ nickFocus: true }), 350);
   },
 
-  saveBudget(e) {
-    const v = Number(e.detail.value);
-    Storage.setBudget(v > 0 ? v : 0);
-    this.setData({ budget: Storage.getBudget() });
+  onNickCancel() {
+    this.setData({ nickVisible: false, nickFocus: false });
+  },
+
+  onNickSubmit(e) {
+    const val = e.detail.value && e.detail.value.nickname;
+    const nick = val ? String(val).trim() : '';
+    if (!nick) {
+      wx.showToast({ title: '昵称不能为空', icon: 'none' });
+      return;
+    }
+    if (!this.data.nickPass) {
+      wx.showToast({ title: '昵称包含敏感内容', icon: 'none' });
+      return;
+    }
+    Profile.setNickname(nick);
+    this.setData({
+      nickVisible: false,
+      nickFocus: false,
+      nickname: nick
+    });
     wx.showToast({ title: '已保存', icon: 'success' });
   },
 
-  showAddCatModal() {
-    this.setData({ showAddCat: true, newCat: { name: '', icon: '📦', color: '#ff6f9d' } });
-  },
-
-  hideAddCatModal() {
-    this.setData({ showAddCat: false });
-  },
-
-  stopPropagation() {},
-
-  pickIcon(e) {
-    const ic = e.currentTarget.dataset.icon;
-    this.setData({ 'newCat.icon': ic });
-  },
-
-  pickColor(e) {
-    const c = e.currentTarget.dataset.color;
-    this.setData({ 'newCat.color': c });
-  },
-
-  onCatNameInput(e) {
-    this.setData({ 'newCat.name': e.detail.value });
-  },
-
-  confirmAddCat() {
-    const name = this.data.newCat.name.trim();
-    if (!name) {
-      wx.showToast({ title: '请输入名称', icon: 'none' });
-      return;
-    }
-    const id = 'c_' + Date.now();
-    const list = this.data.categories.concat([{
-      id, name,
-      icon: this.data.newCat.icon,
-      color: this.data.newCat.color
-    }]);
-    Storage.setCategories(list);
-    this.setData({ categories: list, showAddCat: false });
-  },
-
-  removeCat(e) {
-    const id = e.currentTarget.dataset.id;
-    if (DEFAULT.find(c => c.id === id)) {
-      wx.showToast({ title: '默认分类不可删除', icon: 'none' });
-      return;
-    }
-    wx.showModal({
-      title: '删除分类',
-      content: '确定要删除这个自定义分类吗？',
-      success: (r) => {
-        if (r.confirm) {
-          const list = this.data.categories.filter(c => c.id !== id);
-          Storage.setCategories(list);
-          this.setData({ categories: list });
-        }
-      }
+  // 敏感词检测（基础库 2.29.1+）
+  onNickReview(e) {
+    this.setData({
+      nickPass: e.detail && e.detail.pass !== false,
+      nickReviewed: true
     });
   },
 
-  resetCategories() {
-    wx.showModal({
-      title: '恢复默认分类',
-      content: '将清除自定义分类，确定吗？',
-      success: (r) => {
-        if (r.confirm) {
-          Storage.setCategories(DEFAULT);
-          this.setData({ categories: DEFAULT });
-        }
-      }
-    });
-  },
-
-  exportData() {
-    const data = {
-      profile: this.data.profile,
-      budget: this.data.budget,
-      categories: this.data.categories,
-      records: this.data.records,
-      exportedAt: Date.now()
-    };
-    wx.setStorageSync('chigu_export_' + Date.now(), data);
-    wx.showModal({
-      title: '数据已导出',
-      content: '导出数据已保存到本地缓存（key 前缀 chigu_export_）。后续可对接云函数上传。',
-      showCancel: false
-    });
-  },
-
-  clearAll() {
-    wx.showModal({
-      title: '清空全部记录',
-      content: '此操作会删除所有账目，且无法恢复，确定继续吗？',
-      confirmColor: '#ff4d4f',
-      success: (r) => {
-        if (r.confirm) {
-          Storage.setRecords([]);
-          this.refresh();
-          wx.showToast({ title: '已清空', icon: 'success' });
-        }
-      }
-    });
+  // ========== 提交头像（由微信 chooseAvatar 触发）==========
+  async _commitAvatar(localPath) {
+    Profile.setAvatarLocal(localPath);
+    this.setData({ avatarURL: Profile.getAvatarURL() });
+    wx.showLoading({ title: '上传中', mask: true });
+    await Profile.uploadAvatar();
+    wx.hideLoading();
+    this.setData({ avatarURL: Profile.getAvatarURL() });
+    wx.showToast({ title: '头像已更新', icon: 'success' });
   }
 });

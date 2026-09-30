@@ -1,0 +1,153 @@
+/* pages/expense/expense.wxss */
+.expense-page { padding-bottom: 60rpx; }
+
+.month-bar {
+  position: relative;
+  background: var(--bg-card);
+  margin: 16rpx 28rpx;
+  padding: 28rpx 32rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid var(--line);
+}
+.month-bar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24rpx;
+  margin-bottom: 16rpx;
+}
+.month-bar__btn {
+  width: 56rpx; height: 56rpx;
+  border-radius: 50%;
+  background: var(--bg-elev);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32rpx;
+  color: var(--text-sub);
+  border: 1rpx solid var(--line);
+  flex: none;
+}
+.month-bar__btn--disabled { opacity: 0.4; }
+
+/* 年月双列下拉：单一长胶囊，pill 样式 */
+.month-bar__picker {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 12rpx 24rpx;
+  background: var(--primary-soft);
+  border-radius: 999rpx;
+  border: 1rpx solid transparent;
+  flex: none;
+  line-height: 1;
+}
+.month-bar__picker:active {
+  opacity: 0.75;
+}
+.month-bar__cell {
+  font-size: 28rpx;
+  color: var(--primary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.month-bar__sep {
+  font-size: 24rpx;
+  color: var(--primary);
+  opacity: 0.55;
+}
+.month-bar__caret {
+  font-size: 22rpx;
+  color: var(--primary);
+  line-height: 1;
+  margin-left: 4rpx;
+}
+.month-bar__totals {
+  display: flex;
+  align-items: baseline;
+  gap: 24rpx;
+  margin-top: 12rpx;
+}
+.month-bar__total {
+  font-size: 48rpx;
+  color: var(--primary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.month-bar__count {
+  font-size: 22rpx;
+  color: var(--text-mute);
+}
+.month-bar__break {
+  display: flex;
+  gap: 16rpx;
+  font-size: 24rpx;
+  color: var(--text-sub);
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid var(--line-soft);
+}
+
+.tabs {
+  display: flex;
+  margin: 0 28rpx 16rpx;
+  background: var(--bg-card);
+  border: 1rpx solid var(--line);
+  border-radius: 12rpx;
+  padding: 6rpx;
+}
+.tabs__item {
+  flex: 1;
+  text-align: center;
+  padding: 14rpx 0;
+  font-size: 26rpx;
+  color: var(--text-sub);
+  border-radius: 8rpx;
+}
+.tabs__item--active {
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.record-list {
+  margin: 0 28rpx;
+  background: var(--bg-card);
+  border: 1rpx solid var(--line);
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+.record {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid var(--line-soft);
+}
+.record:last-child { border-bottom: 0; }
+.record__icon {
+  width: 72rpx; height: 72rpx;
+  border-radius: 18rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36rpx;
+  margin-right: 20rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.record__icon--game {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.record__main { flex: 1; }
+.record__name { font-size: 28rpx; color: var(--text); }
+.record__sub { font-size: 22rpx; color: var(--text-mute); margin-top: 6rpx; }
+.record__amount {
+  font-size: 30rpx;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.record__date {
+  font-size: 22rpx;
+  color: var(--text-mute);
+  margin-top: 4rpx;
+  text-align: right;
+}

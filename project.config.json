@@ -1,7 +1,16 @@
 {
   "description": "吃谷吧 - 二次元周边购物记账小程序",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      {
+        "type": "folder",
+        "value": ".git"
+      },
+      {
+        "type": "folder",
+        "value": ".cursor"
+      }
+    ],
     "include": []
   },
   "setting": {
