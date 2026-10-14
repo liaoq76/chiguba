@@ -1,18 +1,24 @@
 <view class="presale-page">
 
-  <view class="tabs">
-    <view class="tabs__item {{tab === 'pending' ? 'tabs__item--active' : ''}}" data-t="pending" bindtap="switchTab">待收到</view>
-    <view class="tabs__item {{tab === 'received' ? 'tabs__item--active' : ''}}" data-t="received" bindtap="switchTab">已收到</view>
+  <view class="tabs float-card">
+    <view class="tabs__item {{tab === 'pending' ? 'tabs__item--active' : ''}}" data-t="pending" bindtap="switchTab">
+      <text>待收到</text>
+      <text class="tabs__count" wx:if="{{pendingList.length > 0}}">{{pendingList.length}}</text>
+    </view>
+    <view class="tabs__item {{tab === 'received' ? 'tabs__item--active' : ''}}" data-t="received" bindtap="switchTab">
+      <text>已收到</text>
+      <text class="tabs__count" wx:if="{{receivedList.length > 0}}">{{receivedList.length}}</text>
+    </view>
   </view>
 
   <view wx:if="{{tab === 'pending'}}">
     <view wx:if="{{pendingList.length === 0}}" class="empty">
-      <view class="empty__seal">◌</view>
+      <view class="empty__seal">📦</view>
       <view class="empty__text">没有待收到的预售</view>
     </view>
-    <view class="presale-list" wx:else>
+    <view class="presale-list float-card" wx:else>
       <view wx:for="{{pendingList}}" wx:key="_id" class="presale-item" data-id="{{item._id}}" bindtap="goDetail">
-        <view class="presale-item__icon">◫</view>
+        <view class="presale-item__icon presale-item__icon--pending">⏳</view>
         <view class="presale-item__main">
           <view class="presale-item__name">{{item.name}} ×{{item.quantity}}</view>
           <view class="presale-item__sub">预计出荷：{{item.expectedShip}}</view>
@@ -27,7 +33,7 @@
       <view class="empty__seal">✓</view>
       <view class="empty__text">没有已收到的预售</view>
     </view>
-    <view class="presale-list" wx:else>
+    <view class="presale-list float-card" wx:else>
       <view wx:for="{{receivedList}}" wx:key="_id" class="presale-item" data-id="{{item._id}}" bindtap="goDetail">
         <view class="presale-item__icon presale-item__icon--received">✓</view>
         <view class="presale-item__main">

@@ -1,12 +1,16 @@
 <view class="detail-page" wx:if="{{item}}">
 
-  <view class="detail-hero">
+  <view class="detail-hero gradient-hero">
     <view class="detail-hero__name">{{item.name}}</view>
     <view class="detail-hero__amount t-money">{{item.amountLabel}}</view>
-    <view class="detail-hero__status {{item.status === 'received' ? 'detail-hero__status--received' : ''}}">{{item.statusLabel}}</view>
+    <view class="detail-hero__status-wrap">
+      <text class="tag detail-hero__status {{item.status === 'received' ? 'detail-hero__status--received' : ''}}">
+        {{item.status === 'received' ? '✓ ' : '⏳ '}}{{item.statusLabel}}
+      </text>
+    </view>
   </view>
 
-  <view class="section">
+  <view class="section float-card">
     <view class="section__row"><view class="section__label">数量</view><view class="section__value">×{{item.quantity}}</view></view>
     <view class="section__row"><view class="section__label">预计出荷</view><view class="section__value">{{item.expectedShipLabel}}</view></view>
     <view class="section__row" wx:if="{{relatedExpense}}">

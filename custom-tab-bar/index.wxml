@@ -1,0 +1,35 @@
+<view class="ctb">
+  <view class="ctb__bar">
+    <view
+      wx:for="{{list}}"
+      wx:key="pagePath"
+      class="ctb__item {{item.icon === 'add' ? 'ctb__item--add' : ''}}"
+      data-index="{{index}}"
+      bindtap="onTap"
+    >
+      <block wx:if="{{item.icon !== 'add'}}">
+        <view class="ctb__icon {{selected === index ? 'ctb__icon--active' : ''}}">
+          <block wx:if="{{item.icon === 'home'}}">
+            <image class="ctb__icon-img" src="/images/tab/{{selected === index ? 'home_active' : 'home'}}.png" mode="aspectFit"></image>
+          </block>
+          <block wx:elif="{{item.icon === 'expense'}}">
+            <image class="ctb__icon-img" src="/images/tab/{{selected === index ? 'expense_active' : 'expense'}}.png" mode="aspectFit"></image>
+          </block>
+          <block wx:elif="{{item.icon === 'collection'}}">
+            <image class="ctb__icon-img" src="/images/tab/{{selected === index ? 'collection_active' : 'collection'}}.png" mode="aspectFit"></image>
+          </block>
+          <block wx:elif="{{item.icon === 'mine'}}">
+            <image class="ctb__icon-img" src="/images/tab/{{selected === index ? 'mine_active' : 'mine'}}.png" mode="aspectFit"></image>
+          </block>
+        </view>
+        <text class="ctb__text {{selected === index ? 'ctb__text--active' : ''}}">{{item.text}}</text>
+      </block>
+      <block wx:else>
+        <view class="ctb__add-btn-outer">
+          <view class="ctb__add-btn">＋</view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view class="ctb__safe"></view>
+</view>

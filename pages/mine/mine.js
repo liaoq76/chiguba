@@ -9,6 +9,8 @@ Page({
     avatarURL: '',
     pendingSync: 0,
     online: true,
+    joinDays: 0,
+    activeSubPage: 'main',
 
     // 昵称编辑弹层
     nickVisible: false,
@@ -19,24 +21,43 @@ Page({
   },
 
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 4 });
+    }
     const profile = Storage.getProfile();
+    // 计算入坑天数（从 storage 记录的 startDate 起算，没有就显示 1）
+    let joinDays = 1;
+    try {
+      const start = profile && (profile.startDate || profile.joinDate);
+      if (start) {
+        const t = new Date(start).getTime();
+        if (!isNaN(t)) {
+          joinDays = Math.max(1, Math.floor((Date.now() - t) / 86400000) + 1);
+        }
+      }
+    } catch (e) { /* ignore */ }
     this.setData({
       nickname: profile.nickname || '吃谷人',
       avatarURL: Profile.getAvatarURL(),
       pendingSync: app.globalData.pendingSyncCount || 0,
-      online: app.globalData.online
+      online: app.globalData.online,
+      joinDays
     });
   },
 
   onNetworkChange(online) { this.setData({ online }); },
   onSyncUpdate(count) { this.setData({ pendingSync: count }); },
 
+  // ====== 导航 ======
   goBudget() { wx.navigateTo({ url: '/pages/budget/budget' }); },
   goPresale() { wx.navigateTo({ url: '/pages/presale/presale' }); },
   goVocab() { wx.navigateTo({ url: '/pages/vocab/vocab' }); },
   goData() { wx.navigateTo({ url: '/pages/data/data' }); },
   goAbout() { wx.navigateTo({ url: '/pages/data/about' }); },
   goStats() { wx.navigateTo({ url: '/pages/stats/stats' }); },
+  goSettings() { wx.navigateTo({ url: '/pages/data/settings' }); },
+  goHelp() { wx.navigateTo({ url: '/pages/data/feedback' }); },
+  onShare() { wx.showToast({ title: '已复制推荐链接', icon: 'none' }); },
 
   // ========== 头像（点击 → 直接触发微信原生面板）==========
   onWxChooseAvatar(e) {
@@ -54,7 +75,6 @@ Page({
       nickPass: true,
       nickReviewed: false
     });
-    // 延迟一下再聚焦，让弹层动画先跑完，否则 input 可能在键盘弹出动画中途
     setTimeout(() => this.setData({ nickFocus: true }), 350);
   },
 
@@ -82,7 +102,6 @@ Page({
     wx.showToast({ title: '已保存', icon: 'success' });
   },
 
-  // 敏感词检测（基础库 2.29.1+）
   onNickReview(e) {
     this.setData({
       nickPass: e.detail && e.detail.pass !== false,
@@ -90,7 +109,7 @@ Page({
     });
   },
 
-  // ========== 提交头像（由微信 chooseAvatar 触发）==========
+  // ========== 提交头像 ==========
   async _commitAvatar(localPath) {
     Profile.setAvatarLocal(localPath);
     this.setData({ avatarURL: Profile.getAvatarURL() });

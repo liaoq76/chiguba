@@ -1,14 +1,18 @@
 <view class="detail-page" wx:if="{{expense}}">
 
-  <!-- 顶部：商品/游戏 + 金额（PRD 4.2.14） -->
-  <view class="detail-hero">
+  <!-- 顶部 hero：粉紫渐变 -->
+  <view class="detail-hero gradient-hero">
     <view class="detail-hero__name">{{expense.productName || expense.gameName || '未命名'}}</view>
     <view class="detail-hero__amount t-money">{{expense.amountLabel}}</view>
-    <view class="detail-hero__type">{{expense.typeLabel}}</view>
+    <view class="detail-hero__type">
+      <text class="tag detail-hero__tag">
+        {{expense.type === 'guzi' ? '🛍 谷子' : '🎮 游戏'}}
+      </text>
+    </view>
   </view>
 
   <!-- 基础字段：所有字段都展示，无值灰字 -->
-  <view class="section">
+  <view class="section float-card">
     <view class="section__head">基础信息</view>
 
     <view class="section__row">
@@ -94,7 +98,7 @@
   </view>
 
   <!-- 商品图片（始终显示 section，无图时灰字说明） -->
-  <view class="section">
+  <view class="section float-card">
     <view class="section__head">商品图片</view>
     <view wx:if="{{expense.imageUrls && expense.imageUrls.length > 0}}" class="image-grid">
       <image wx:for="{{expense.imageUrls}}" wx:key="*this"
@@ -108,7 +112,7 @@
   </view>
 
   <!-- 收藏关联（始终显示） -->
-  <view class="section">
+  <view class="section float-card">
     <view class="section__head">收藏关联</view>
     <view wx:if="{{contributions.length > 0}}">
       <view wx:for="{{contributions}}" wx:key="_id" class="section__row">
@@ -120,13 +124,13 @@
   </view>
 
   <!-- 预售（始终显示） -->
-  <view class="section">
+  <view class="section float-card">
     <view class="section__head">预售</view>
     <block wx:if="{{presale}}">
       <view class="section__row">
         <view class="section__label">状态</view>
         <view class="section__value">
-          <text class="tag {{presale.status === 'received' ? 'tag--accent' : 'tag--warn'}}">{{presale.statusLabel}}</text>
+          <text class="tag {{presale.status === 'received' ? 'tag--mint' : 'tag--warn'}}">{{presale.statusLabel}}</text>
         </view>
       </view>
       <view class="section__row">

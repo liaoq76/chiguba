@@ -1,31 +1,131 @@
-<!-- pages/mine/mine.wxml -->
+<!-- pages/mine/mine.wxml — V2 严格复刻原型 -->
 <view class="mine-page">
 
-  <!-- 用户信息 -->
-  <view class="mine-hero">
-    <!-- 头像：用外层 view 严格限定 110rpx，内嵌 button 作为 hit-area -->
-    <view class="mine-hero__avatar-wrap">
-      <image wx:if="{{avatarURL}}" class="mine-hero__avatar" src="{{avatarURL}}" mode="aspectFill"></image>
-      <view wx:else class="mine-hero__avatar mine-hero__avatar--placeholder">人</view>
-      <button class="mine-hero__avatar-btn"
-              open-type="chooseAvatar"
-              bind:chooseavatar="onWxChooseAvatar"></button>
-    </view>
-    <view class="mine-hero__main">
-      <view class="mine-hero__name" bindtap="onNickTap">{{nickname}}</view>
-      <view class="mine-hero__status" wx:if="{{pendingSync > 0 || !online}}">
-        <view class="mine-hero__dot {{!online ? 'mine-hero__dot--off' : ''}}"></view>
-        <text wx:if="{{!online}}">网络异常 · </text>
-        <text wx:if="{{pendingSync > 0}}">{{pendingSync}} 条待同步</text>
+  <!-- ============== 主页 (activeSubPage === 'main') ============== -->
+  <block wx:if="{{activeSubPage === 'main'}}">
+
+    <!-- ========== 渐变 Profile Hero ========== -->
+    <view class="mine-hero">
+      <view class="mine-hero__bg-blur mine-hero__bg-blur--1"></view>
+      <view class="mine-hero__bg-blur mine-hero__bg-blur--2"></view>
+      <view class="mine-hero__bg-icon">★</view>
+
+      <view class="mine-hero__top">
+        <view class="mine-hero__avatar-wrap">
+          <image wx:if="{{avatarURL}}" class="mine-hero__avatar" src="{{avatarURL}}" mode="aspectFill"></image>
+          <view wx:else class="mine-hero__avatar mine-hero__avatar--placeholder">人</view>
+          <button class="mine-hero__avatar-btn"
+                  open-type="chooseAvatar"
+                  bind:chooseavatar="onWxChooseAvatar"></button>
+          <view class="mine-hero__avatar-edit">
+            <text>✎</text>
+          </view>
+        </view>
+        <view class="mine-hero__main">
+          <view class="mine-hero__name-row">
+            <text class="mine-hero__name" bindtap="onNickTap">{{nickname}}</text>
+            <text class="mine-hero__level">Lv.1</text>
+          </view>
+          <text class="mine-hero__bio">吃谷使我快乐，吃土使我清醒 🛍</text>
+          <text class="mine-hero__join">入坑第 {{joinDays}} 天</text>
+        </view>
+      </view>
+
+      <!-- Stat strip 3列 -->
+      <view class="mine-hero__stats">
+        <view class="mine-hero__stat">
+          <text class="mine-hero__stat-val">¥0</text>
+          <text class="mine-hero__stat-label">谷库估值</text>
+        </view>
+        <view class="mine-hero__stat">
+          <text class="mine-hero__stat-val">0</text>
+          <text class="mine-hero__stat-label">收藏件数</text>
+        </view>
+        <view class="mine-hero__stat">
+          <text class="mine-hero__stat-val">0</text>
+          <text class="mine-hero__stat-label">追IP数</text>
+        </view>
       </view>
     </view>
-    <!-- 右侧箭头，提示昵称可点击编辑 -->
-    <view class="mine-hero__arrow" bindtap="onNickTap">›</view>
-  </view>
 
-  <!-- 昵称编辑弹层（fixed 全屏遮罩 + 表单） -->
+    <!-- 同步状态 (轻量条) -->
+    <view class="mine-syncbar" wx:if="{{pendingSync > 0 || !online}}">
+      <view class="mine-syncbar__dot {{!online ? 'mine-syncbar__dot--off' : ''}}"></view>
+      <text wx:if="{{!online}}">网络异常 · </text>
+      <text wx:if="{{pendingSync > 0}}">{{pendingSync}} 条待同步</text>
+      <text wx:else>数据已同步 ✓</text>
+    </view>
+
+    <!-- ========== 常用功能 4 列 ========== -->
+    <view class="mine-section">
+      <view class="mine-section__title">常用功能</view>
+      <view class="mine-quick">
+        <view class="mine-quick__item" bindtap="goPresale">
+          <view class="mine-quick__icon mine-quick__icon--pink">
+            <text>🚚</text>
+          </view>
+          <text class="mine-quick__label">预售管理</text>
+        </view>
+        <view class="mine-quick__item" bindtap="goVocab">
+          <view class="mine-quick__icon mine-quick__icon--purple">
+            <text>🏷</text>
+          </view>
+          <text class="mine-quick__label">吃谷词库</text>
+        </view>
+        <view class="mine-quick__item" bindtap="goBudget">
+          <view class="mine-quick__icon mine-quick__icon--violet">
+            <text>💰</text>
+          </view>
+          <text class="mine-quick__label">预算管理</text>
+        </view>
+        <view class="mine-quick__item" bindtap="goData">
+          <view class="mine-quick__icon mine-quick__icon--emerald">
+            <text>📊</text>
+          </view>
+          <text class="mine-quick__label">数据导出</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 更多 列表 ========== -->
+    <view class="mine-section">
+      <view class="mine-section__title">更多</view>
+      <view class="mine-list float-card">
+        <view class="mine-list__row" bindtap="goSettings">
+          <view class="mine-list__icon mine-list__icon--gray">
+            <text>⚙</text>
+          </view>
+          <text class="mine-list__title">通用设置</text>
+          <text class="mine-list__arrow">›</text>
+        </view>
+        <view class="mine-list__row" bindtap="onShare">
+          <view class="mine-list__icon mine-list__icon--pink">
+            <text>↗</text>
+          </view>
+          <text class="mine-list__title">推荐给同好</text>
+          <text class="mine-list__arrow">›</text>
+        </view>
+        <view class="mine-list__row" bindtap="goHelp">
+          <view class="mine-list__icon mine-list__icon--blue">
+            <text>?</text>
+          </view>
+          <text class="mine-list__title">帮助与反馈</text>
+          <text class="mine-list__arrow">›</text>
+        </view>
+        <view class="mine-list__row" bindtap="goAbout">
+          <view class="mine-list__icon mine-list__icon--violet">
+            <text>ⓘ</text>
+          </view>
+          <text class="mine-list__title">关于吃谷吗</text>
+          <text class="mine-list__version">v1.0.0</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 昵称编辑弹层 (始终渲染) -->
   <view class="nick-overlay {{nickVisible ? 'nick-overlay--show' : ''}}" bindtap="onNickCancel" catchtouchmove="prevent">
-    <view class="nick-panel" catchtap="stopProp">
+    <view class="nick-panel float-card" catchtap="stopProp">
       <view class="nick-panel__title">修改昵称</view>
       <form bindsubmit="onNickSubmit">
         <input type="nickname"
@@ -42,51 +142,6 @@
           <button class="nick-panel__btn nick-panel__btn--confirm" form-type="submit">保存</button>
         </view>
       </form>
-    </view>
-  </view>
-
-  <!-- 消费管理 -->
-  <view class="mine-section-title">消费管理</view>
-  <view class="mine-card">
-    <view class="mine-row" bindtap="goBudget">
-      <view class="mine-row__icon mine-row__icon--gold">⊕</view>
-      <view class="mine-row__title">预算</view>
-      <text class="mine-row__arrow">›</text>
-    </view>
-    <view class="mine-row" bindtap="goStats">
-      <view class="mine-row__icon mine-row__icon--accent">⌒</view>
-      <view class="mine-row__title">消费统计</view>
-      <text class="mine-row__arrow">›</text>
-    </view>
-  </view>
-
-  <!-- 我的数据 -->
-  <view class="mine-section-title">我的数据</view>
-  <view class="mine-card">
-    <view class="mine-row" bindtap="goPresale">
-      <view class="mine-row__icon mine-row__icon--accent">◫</view>
-      <view class="mine-row__title">预售管理</view>
-      <text class="mine-row__arrow">›</text>
-    </view>
-    <view class="mine-row" bindtap="goVocab">
-      <view class="mine-row__icon">⌘</view>
-      <view class="mine-row__title">个人词库</view>
-      <text class="mine-row__arrow">›</text>
-    </view>
-    <view class="mine-row" bindtap="goData">
-      <view class="mine-row__icon mine-row__icon--gold">⇋</view>
-      <view class="mine-row__title">数据管理</view>
-      <text class="mine-row__arrow">›</text>
-    </view>
-  </view>
-
-  <!-- 其他 -->
-  <view class="mine-section-title">其他</view>
-  <view class="mine-card">
-    <view class="mine-row" bindtap="goAbout">
-      <view class="mine-row__icon mine-row__icon--warn">ⓘ</view>
-      <view class="mine-row__title">关于吃谷吗</view>
-      <text class="mine-row__arrow">›</text>
     </view>
   </view>
 </view>

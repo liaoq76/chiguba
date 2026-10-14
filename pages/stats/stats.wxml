@@ -1,7 +1,7 @@
 <view class="stats-page">
 
   <!-- 时间范围 -->
-  <view class="range-tabs">
+  <view class="range-tabs float-card">
     <view class="range-tabs__item {{rangeType === 'week' ? 'range-tabs__item--active' : ''}}" data-t="week" bindtap="switchRange">本周</view>
     <view class="range-tabs__item {{rangeType === 'month' ? 'range-tabs__item--active' : ''}}" data-t="month" bindtap="switchRange">本月</view>
     <view class="range-tabs__item {{rangeType === 'year' ? 'range-tabs__item--active' : ''}}" data-t="year" bindtap="switchRange">本年</view>
@@ -9,31 +9,35 @@
 
   <view class="range-label">{{rangeLabel}}</view>
 
-  <!-- 总览 -->
-  <view class="card">
-    <view class="card-title">
-      <view class="card-title__dot"></view>
-      <text class="card-title__name">总览</text>
+  <!-- 总览 - 渐变 hero -->
+  <view class="overview-card gradient-hero">
+    <view class="overview-card__head">
+      <text class="overview-card__label">📊 消费总览</text>
     </view>
-    <view class="overview">
-      <text class="overview__total t-money">{{total}}</text>
-      <text class="overview__count">共 {{count}} 笔</text>
-    </view>
-    <view class="row">
-      <text class="row__label">◉ 谷子</text>
-      <text class="row__value t-money">{{guzi}}</text>
-    </view>
-    <view class="row">
-      <text class="row__label">◆ 游戏</text>
-      <text class="row__value t-money">{{game}}</text>
+    <view class="overview-card__total gradient-text-light t-money">{{total}}</view>
+    <view class="overview-card__count">共 {{count}} 笔</view>
+    <view class="overview-card__breakdown">
+      <view class="overview-card__item">
+        <text class="overview-card__icon">🛍</text>
+        <text class="overview-card__name">谷子</text>
+        <text class="overview-card__amount t-money">{{guzi}}</text>
+      </view>
+      <view class="overview-card__divider"></view>
+      <view class="overview-card__item">
+        <text class="overview-card__icon">🎮</text>
+        <text class="overview-card__name">游戏</text>
+        <text class="overview-card__amount t-money">{{game}}</text>
+      </view>
     </view>
   </view>
 
   <!-- 趋势 -->
-  <view class="card">
+  <view class="card float-card">
     <view class="card-title">
-      <view class="card-title__dot"></view>
-      <text class="card-title__name">趋势</text>
+      <view class="card-title__left">
+        <view class="card-title__dot"></view>
+        <text>趋势</text>
+      </view>
     </view>
     <view class="trend-switch">
       <view class="trend-switch__btn {{trendMode === 'cumulative' ? 'trend-switch__btn--active' : ''}}" data-m="cumulative" bindtap="switchTrend">累计</view>
@@ -45,31 +49,41 @@
   </view>
 
   <!-- 消费构成（环形图） -->
-  <view class="card">
+  <view class="card float-card">
     <view class="card-title">
-      <view class="card-title__dot"></view>
-      <text class="card-title__name">消费构成</text>
+      <view class="card-title__left">
+        <view class="card-title__dot"></view>
+        <text>消费构成</text>
+      </view>
     </view>
     <view class="ring-row">
       <canvas canvas-id="statsRing" id="statsRing" type="2d" class="ring-canvas"></canvas>
       <view class="ring-legend">
         <view class="ring-legend__item">
-          <view class="ring-legend__name"><view class="ring-legend__dot ring-legend__dot--guzi"></view><text>谷子</text></view>
-          <text class="ring-legend__amount">{{guzi}}</text>
+          <view class="ring-legend__name">
+            <view class="ring-legend__dot ring-legend__dot--guzi"></view>
+            <text>🛍 谷子</text>
+          </view>
+          <text class="ring-legend__amount t-money">{{guzi}}</text>
         </view>
         <view class="ring-legend__item">
-          <view class="ring-legend__name"><view class="ring-legend__dot ring-legend__dot--game"></view><text>游戏</text></view>
-          <text class="ring-legend__amount">{{game}}</text>
+          <view class="ring-legend__name">
+            <view class="ring-legend__dot ring-legend__dot--game"></view>
+            <text>🎮 游戏</text>
+          </view>
+          <text class="ring-legend__amount t-money">{{game}}</text>
         </view>
       </view>
     </view>
   </view>
 
   <!-- IP Top5 -->
-  <view class="card">
+  <view class="card float-card">
     <view class="card-title">
-      <view class="card-title__dot"></view>
-      <text class="card-title__name">IP 消费 Top 5</text>
+      <view class="card-title__left">
+        <view class="card-title__dot"></view>
+        <text>IP 消费 Top 5</text>
+      </view>
     </view>
     <view wx:if="{{ipTop.length === 0 && !ipBlank}}" class="empty">
       <view class="empty__text">没有 IP 数据</view>
@@ -84,7 +98,7 @@
         <text class="ip-row__amount t-money">{{item.amount}}</text>
         <text class="ip-row__arrow">{{expandedIp === item.name ? '▲' : '▼'}}</text>
       </view>
-      <view wx:if="{{expandedIp === item.name}}" class="ip-detail">
+      <view wx:if="{{expandedIp === item.name}}" class="ip-detail float-card">
         <view class="ip-detail__item">
           <text class="ip-detail__label">占比</text>
           <text class="ip-detail__value">{{item.percent}}</text>
@@ -101,7 +115,7 @@
           <text class="ip-detail__label">游戏</text>
           <text class="ip-detail__value t-money">¥{{item.game}}</text>
         </view>
-        <view style="width:100%;text-align:right;padding-top:8rpx;">
+        <view class="ip-detail__link">
           <text class="t-primary" data-name="{{item.name}}" bindtap="goIpDetail">查看 IP 详情 ›</text>
         </view>
       </view>
@@ -115,7 +129,7 @@
       <text class="ip-row__amount t-money">{{ipOther.amount}}</text>
       <text class="ip-row__arrow">{{expandedIp === '__OTHERS__' ? '▲' : '▼'}}</text>
     </view>
-    <view wx:if="{{expandedIp === '__OTHERS__' && ipOther}}" class="ip-detail">
+    <view wx:if="{{expandedIp === '__OTHERS__' && ipOther}}" class="ip-detail float-card">
       <view wx:for="{{ipOther.restList}}" wx:key="key" class="ip-row" style="padding:8rpx 0;">
         <text class="ip-row__name t-small">{{item.name}}</text>
         <view class="ip-row__bar-wrap"><view class="ip-row__bar ip-row__bar--other" style="width: {{item.percent}}"></view></view>

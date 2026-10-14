@@ -1,59 +1,73 @@
-/* pages/expense/detail.wxss */
-.detail-page { padding-bottom: 60rpx; }
+/* pages/expense/detail.wxss — V2 樱花粉 UI */
+.detail-page { padding-bottom: 200rpx; padding-top: 16rpx; }
 
 .detail-hero {
-  background: var(--bg-card);
-  margin: 24rpx 28rpx;
+  margin: 0 28rpx 20rpx;
   padding: 40rpx 32rpx;
-  border-radius: 16rpx;
-  border: 1rpx solid var(--line);
+  border-radius: 28rpx;
   text-align: center;
+  color: #fff;
+  box-shadow: 0 12rpx 40rpx rgba(255, 148, 185, 0.35);
 }
 .detail-hero__name {
-  font-size: 34rpx;
-  color: var(--text);
-  font-weight: 500;
+  font-size: 36rpx;
+  color: #fff;
+  font-weight: 600;
   margin-bottom: 16rpx;
+  letter-spacing: 1rpx;
+  position: relative;
+  z-index: 2;
 }
 .detail-hero__amount {
   font-size: 80rpx;
-  color: var(--primary);
-  font-weight: 600;
+  color: #fff;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
   letter-spacing: 2rpx;
   line-height: 1.1;
+  position: relative;
+  z-index: 2;
 }
 .detail-hero__type {
   display: inline-block;
-  margin-top: 16rpx;
-  font-size: 22rpx;
-  color: var(--text-mute);
-  letter-spacing: 4rpx;
+  margin-top: 20rpx;
+  position: relative;
+  z-index: 2;
+}
+.detail-hero__tag {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border: 1rpx solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-weight: 500;
 }
 
 .section {
-  background: var(--bg-card);
   margin: 0 28rpx 20rpx;
-  border-radius: 16rpx;
-  border: 1rpx solid var(--line);
+  border-radius: 24rpx;
   overflow: hidden;
+  padding: 8rpx 0;
 }
 .section__head {
-  padding: 16rpx 32rpx 8rpx;
+  padding: 20rpx 32rpx 12rpx;
   font-size: 22rpx;
   color: var(--text-mute);
   letter-spacing: 4rpx;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 .section__row {
   display: flex;
-  padding: 16rpx 32rpx;
+  padding: 20rpx 32rpx;
   border-bottom: 1rpx solid var(--line-soft);
 }
 .section__row:last-child { border-bottom: 0; }
 .section__label { color: var(--text-sub); width: 200rpx; font-size: 26rpx; }
 .section__value { flex: 1; color: var(--text); font-size: 26rpx; }
+.section__value.is-empty { color: var(--text-mute); }
 
-/* === 商品图片网格（PRD 4.2.4）=== */
+/* === 商品图片网格 === */
 .image-grid {
   display: flex;
   flex-wrap: wrap;
@@ -63,12 +77,12 @@
 .image-grid__item {
   width: 200rpx;
   height: 200rpx;
-  border-radius: 12rpx;
+  border-radius: 16rpx;
   background: var(--bg-elev);
   border: 1rpx solid var(--line-soft);
 }
 
-/* === 操作栏：详情页非 tabBar 页，使用流式布局，避免被覆盖 === */
+/* === 操作栏 === */
 .action-bar {
   display: flex;
   gap: 16rpx;
@@ -85,4 +99,3 @@
   color: var(--text-mute);
   font-size: 24rpx;
 }
-.section__value.is-empty { color: var(--text-mute); }

@@ -1,34 +1,52 @@
-/* pages/presale/presale.wxss */
-.presale-page { padding-bottom: 80rpx; }
+/* pages/presale/presale.wxss — V2 樱花粉 UI */
+.presale-page { padding-bottom: 200rpx; padding-top: 16rpx; }
 
 .tabs {
   display: flex;
-  margin: 16rpx 28rpx;
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 12rpx;
-  padding: 6rpx;
+  margin: 0 28rpx 20rpx;
+  padding: 8rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 .tabs__item {
   flex: 1;
   text-align: center;
-  padding: 14rpx 0;
+  padding: 16rpx 0;
   font-size: 26rpx;
   color: var(--text-sub);
-  border-radius: 8rpx;
+  border-radius: 999rpx;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  transition: all 0.25s ease;
 }
 .tabs__item--active {
-  background: var(--primary-soft);
-  color: var(--primary);
-  font-weight: 500;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 16rpx var(--shadow-primary);
+  font-weight: 600;
+}
+.tabs__count {
+  font-size: 20rpx;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 2rpx 10rpx;
+  border-radius: 999rpx;
+  font-weight: 600;
+}
+.tabs__item--active .tabs__count {
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
 }
 
 .presale-list {
   margin: 0 28rpx;
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 16rpx;
+  border-radius: 24rpx;
   overflow: hidden;
+  padding: 8rpx 0;
 }
 .presale-item {
   display: flex;
@@ -37,23 +55,33 @@
   border-bottom: 1rpx solid var(--line-soft);
 }
 .presale-item:last-child { border-bottom: 0; }
+.presale-item:active { background: rgba(255, 255, 255, 0.5); }
 .presale-item__icon {
-  width: 72rpx; height: 72rpx;
-  border-radius: 18rpx;
-  background: var(--accent-soft);
-  color: var(--accent);
+  width: 76rpx; height: 76rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, var(--accent-soft) 0%, var(--mint-soft) 100%);
+  color: var(--mint);
   display: flex; align-items: center; justify-content: center;
   font-size: 36rpx;
   margin-right: 20rpx;
+  flex-shrink: 0;
+  box-shadow: 0 2rpx 8rpx rgba(78, 174, 154, 0.15);
+}
+.presale-item__icon--pending {
+  background: linear-gradient(135deg, var(--accent-soft) 0%, #FFE5C2 100%);
+  color: var(--gold);
+  box-shadow: 0 2rpx 8rpx rgba(176, 136, 71, 0.15);
 }
 .presale-item__icon--received {
-  background: var(--line-soft);
+  background: rgba(241, 245, 249, 0.8);
   color: var(--text-mute);
+  box-shadow: none;
 }
-.presale-item__main { flex: 1; }
+.presale-item__main { flex: 1; min-width: 0; }
 .presale-item__name {
   font-size: 28rpx;
   color: var(--text);
+  font-weight: 500;
 }
 .presale-item__sub {
   font-size: 22rpx;
@@ -64,5 +92,8 @@
   font-size: 30rpx;
   color: var(--text);
   font-variant-numeric: tabular-nums;
-  font-weight: 500;
+  font-weight: 700;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 12rpx;
 }

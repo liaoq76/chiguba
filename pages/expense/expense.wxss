@@ -1,13 +1,10 @@
-/* pages/expense/expense.wxss */
-.expense-page { padding-bottom: 60rpx; }
+/* pages/expense/expense.wxss — V2 樱花粉 UI */
+.expense-page { padding-bottom: 140rpx; padding-top: 16rpx; }
 
 .month-bar {
-  position: relative;
-  background: var(--bg-card);
-  margin: 16rpx 28rpx;
+  margin: 0 28rpx 20rpx;
   padding: 28rpx 32rpx;
-  border-radius: 16rpx;
-  border: 1rpx solid var(--line);
+  border-radius: 24rpx;
 }
 .month-bar__nav {
   display: flex;
@@ -17,104 +14,123 @@
   margin-bottom: 16rpx;
 }
 .month-bar__btn {
-  width: 56rpx; height: 56rpx;
+  width: 64rpx; height: 64rpx;
   border-radius: 50%;
-  background: var(--bg-elev);
+  background: rgba(255, 255, 255, 0.7);
   display: flex; align-items: center; justify-content: center;
-  font-size: 32rpx;
+  font-size: 36rpx;
   color: var(--text-sub);
-  border: 1rpx solid var(--line);
+  border: 1rpx solid rgba(255, 255, 255, 0.5);
   flex: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-weight: 300;
 }
-.month-bar__btn--disabled { opacity: 0.4; }
+.month-bar__btn:active { background: var(--primary-soft); color: var(--primary); }
+.month-bar__btn--disabled { opacity: 0.3; pointer-events: none; }
 
-/* 年月双列下拉：单一长胶囊，pill 样式 */
+/* 年月双列下拉：粉紫胶囊 */
 .month-bar__picker {
   display: flex;
   align-items: center;
   gap: 10rpx;
-  padding: 12rpx 24rpx;
-  background: var(--primary-soft);
+  padding: 14rpx 28rpx;
+  background: linear-gradient(135deg, var(--primary-soft) 0%, var(--secondary-soft) 100%);
   border-radius: 999rpx;
-  border: 1rpx solid transparent;
+  border: 1rpx solid rgba(255, 255, 255, 0.5);
   flex: none;
   line-height: 1;
+  box-shadow: 0 2rpx 8rpx var(--shadow-primary);
 }
-.month-bar__picker:active {
-  opacity: 0.75;
-}
+.month-bar__picker:active { opacity: 0.8; }
 .month-bar__cell {
-  font-size: 28rpx;
-  color: var(--primary);
-  font-weight: 600;
+  font-size: 30rpx;
+  color: var(--text);
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 .month-bar__sep {
-  font-size: 24rpx;
-  color: var(--primary);
-  opacity: 0.55;
+  font-size: 26rpx;
+  color: var(--text-mute);
 }
 .month-bar__caret {
   font-size: 22rpx;
-  color: var(--primary);
+  color: var(--text-mute);
   line-height: 1;
   margin-left: 4rpx;
 }
 .month-bar__totals {
   display: flex;
   align-items: baseline;
-  gap: 24rpx;
+  gap: 16rpx;
   margin-top: 12rpx;
 }
 .month-bar__total {
-  font-size: 48rpx;
-  color: var(--primary);
-  font-weight: 600;
+  font-size: 56rpx;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
+  letter-spacing: 1rpx;
 }
 .month-bar__count {
-  font-size: 22rpx;
+  font-size: 24rpx;
   color: var(--text-mute);
 }
 .month-bar__break {
   display: flex;
-  gap: 16rpx;
-  font-size: 24rpx;
-  color: var(--text-sub);
-  margin-top: 12rpx;
-  padding-top: 12rpx;
+  gap: 12rpx;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
   border-top: 1rpx solid var(--line-soft);
 }
+.month-bar__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+.month-bar__chip--guzi {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.month-bar__chip--game {
+  background: var(--secondary-soft);
+  color: var(--secondary);
+}
+.month-bar__chip-icon { font-size: 24rpx; }
 
 .tabs {
   display: flex;
-  margin: 0 28rpx 16rpx;
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 12rpx;
-  padding: 6rpx;
+  margin: 0 28rpx 20rpx;
+  padding: 8rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.7);
 }
 .tabs__item {
   flex: 1;
   text-align: center;
-  padding: 14rpx 0;
+  padding: 16rpx 0;
   font-size: 26rpx;
   color: var(--text-sub);
-  border-radius: 8rpx;
+  border-radius: 999rpx;
+  font-weight: 500;
+  transition: all 0.25s ease;
 }
 .tabs__item--active {
-  background: var(--primary-soft);
-  color: var(--primary);
-  font-weight: 500;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 16rpx var(--shadow-primary);
+  font-weight: 600;
 }
 
 .record-list {
   margin: 0 28rpx;
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 16rpx;
+  border-radius: 24rpx;
   overflow: hidden;
+  padding: 8rpx 0;
 }
 .record {
   display: flex;
@@ -123,27 +139,32 @@
   border-bottom: 1rpx solid var(--line-soft);
 }
 .record:last-child { border-bottom: 0; }
+.record:active { background: rgba(255, 255, 255, 0.5); }
 .record__icon {
-  width: 72rpx; height: 72rpx;
-  border-radius: 18rpx;
+  width: 76rpx; height: 76rpx;
+  border-radius: 20rpx;
   display: flex; align-items: center; justify-content: center;
   font-size: 36rpx;
   margin-right: 20rpx;
-  background: var(--primary-soft);
+  background: linear-gradient(135deg, var(--primary-soft) 0%, #FFE0EC 100%);
   color: var(--primary);
+  flex-shrink: 0;
+  box-shadow: 0 2rpx 8rpx rgba(255, 148, 185, 0.15);
 }
 .record__icon--game {
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: linear-gradient(135deg, var(--secondary-soft) 0%, #E5DEFF 100%);
+  color: var(--secondary);
+  box-shadow: 0 2rpx 8rpx rgba(155, 139, 255, 0.15);
 }
-.record__main { flex: 1; }
-.record__name { font-size: 28rpx; color: var(--text); }
+.record__main { flex: 1; min-width: 0; }
+.record__name { font-size: 28rpx; color: var(--text); font-weight: 500; }
 .record__sub { font-size: 22rpx; color: var(--text-mute); margin-top: 6rpx; }
 .record__amount {
   font-size: 30rpx;
   color: var(--text);
   font-variant-numeric: tabular-nums;
-  font-weight: 500;
+  font-weight: 700;
+  text-align: right;
 }
 .record__date {
   font-size: 22rpx;

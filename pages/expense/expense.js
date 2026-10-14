@@ -78,6 +78,9 @@ Page({
 
   onShow() {
     this.refresh();
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 1 });
+    }
   },
 
   refresh() {
@@ -170,6 +173,10 @@ Page({
   goDetail(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({ url: '/pages/expense/detail?id=' + id });
+  },
+
+  goAdd() {
+    wx.switchTab({ url: '/pages/add/add' });
   },
 
   // 下拉刷新

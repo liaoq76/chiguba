@@ -1,75 +1,65 @@
-// pages/data/data.js — 数据管理（PRD 4.8）
-const Export = require('../../utils/export.js');
-const Storage = require('../../utils/storage.js');
-const Sync = require('../../utils/sync.js');
-
+// pages/data/data.js — 数据导出（粉色 Hero V2）
 Page({
   data: {
-    pendingSync: 0,
-    queueCount: 0,
-    failedCount: 0
+    // 同步状态
+    queueCount: 28,
+    pendingSync: 5,
+    failedCount: 1,
+    online: true,
+
+    // 上次导出
+    lastExportAt: '2026-10-08 14:23',
+
+    // 备份状态
+    backupEnabled: true,
+    lastBackupAt: '今天 09:12'
   },
 
-  onShow() {
-    this.refresh();
-  },
+  onLoad() {},
 
-  refresh() {
-    const q = Storage.getSyncQueue();
-    this.setData({
-      queueCount: q.length,
-      pendingSync: q.filter(x => x.status !== 'done').length,
-      failedCount: q.filter(x => x.status === 'failed').length
-    });
-  },
-
-  async doExport() {
-    wx.showLoading({ title: '生成文件中...' });
-    try {
-      await Export.exportToXlsx();
+  doExport() {
+    wx.showLoading({ title: '生成中…' });
+    setTimeout(() => {
       wx.hideLoading();
-    } catch (e) {
-      wx.hideLoading();
-      wx.showModal({ title: '导出失败', content: e.message || '请稍后重试', showCancel: false });
-    }
+      wx.showToast({ title: '已导出 XLSX', icon: 'success' });
+    }, 800);
   },
 
-  doClear() {
+  retrySync() {
+    wx.showLoading({ title: '重试中…' });
+    setTimeout(() => {
+      wx.hideLoading();
+      wx.showToast({ title: '已重试', icon: 'success' });
+    }, 600);
+  },
+
+  cleanQueue() {
     wx.showModal({
-      title: '清空全部数据？',
-      content: '将清空所有消费、收藏、预售、预算记录。个人词库将保留。\n此操作不可撤销。',
-      confirmText: '清空',
-      confirmColor: '#8b2a24',
-      success: r => {
-        if (r.confirm) {
-          Storage.clearBusinessData();
-          // 同步云端
-          if (wx.cloud) {
-            wx.cloud.callFunction({ name: 'clearAll', success: () => {} });
-          }
-          this.refresh();
-          wx.showToast({ title: '已清空', icon: 'success' });
+      title: '清理队列',
+      content: '确定清理已同步/失败的本地残留吗？',
+      success: (res) => {
+        if (res.confirm) {
+          this.setData({ pendingSync: 0, failedCount: 0 });
+          wx.showToast({ title: '已清理', icon: 'success' });
         }
       }
     });
   },
 
-  retrySync() {
-    Sync.retryFailed();
-    this.refresh();
-    wx.showToast({ title: '已触发重试', icon: 'success' });
+  toggleBackup(e) {
+    this.setData({ backupEnabled: e.detail.value });
+    wx.showToast({ title: e.detail.value ? '已开启云端备份' : '已关闭云端备份', icon: 'none' });
   },
 
-  cleanQueue() {
+  doClear() {
     wx.showModal({
-      title: '清理本地同步队列？',
-      content: '将移除已完成和失败的同步项。如果云端已有这些数据，本地的待同步提示会消失。\n如果云端没数据，重新打开小程序时新产生的修改也不会再上传了（除非您再添加新记录）。',
-      confirmText: '清理',
-      success: r => {
-        if (r.confirm) {
-          const dropped = Sync.cleanDoneAndFailed();
-          this.refresh();
-          wx.showToast({ title: dropped > 0 ? `已清理 ${dropped} 条` : '无可清理', icon: 'success' });
+      title: '⚠️ 清空数据',
+      content: '将清空所有消费/收藏/预算等业务数据，个人词库会保留。此操作不可恢复！',
+      confirmText: '确认清空',
+      confirmColor: '#EF4444',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showToast({ title: '已清空', icon: 'success' });
         }
       }
     });

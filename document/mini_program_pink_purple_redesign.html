@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记一笔 - 高级极简粉紫主题设计</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
+            background: #111827;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px 0;
+            color: #1f2937;
+        }
+
+        /* Glassmorphism subtle card styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px -5px rgba(236, 72, 153, 0.08), 0 4px 12px rgba(139, 92, 246, 0.05);
+        }
+
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .glass-card-hover:active {
+            transform: scale(0.98);
+        }
+
+        /* Gradient Grids & Glows */
+        .pink-purple-gradient {
+            background: linear-gradient(135deg, #f472b6 0%, #a855f7 50%, #8b5cf6 100%);
+        }
+
+        .pink-purple-text {
+            background: linear-gradient(135deg, #db2777 0%, #9333ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .aurora-bg {
+            background: radial-gradient(circle at 10% 20%, rgba(251, 207, 232, 0.7) 0%, rgba(243, 232, 255, 0.8) 45%, rgba(238, 242, 255, 0.9) 100%);
+        }
+
+        .glow-btn {
+            box-shadow: 0 8px 24px -2px rgba(217, 70, 239, 0.45);
+        }
+
+        /* Custom Scrollbar for list */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Animated background mesh glow for high-end look */
+        .ambient-glow-1 {
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(244, 114, 182, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
+            filter: blur(40px);
+            pointer-events: none;
+            animation: pulse-glow 8s ease-in-out infinite alternate;
+        }
+
+        .ambient-glow-2 {
+            position: absolute;
+            bottom: 25%;
+            right: 5%;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
+            filter: blur(45px);
+            pointer-events: none;
+            animation: pulse-glow 10s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(0.9) translate(0, 0); opacity: 0.7; }
+            100% { transform: scale(1.2) translate(10px, -15px); opacity: 1; }
+        }
+
+        /* High-end glossy border style */
+        .luxury-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 40px -15px rgba(217, 70, 239, 0.12), 
+                        0 8px 16px -8px rgba(139, 92, 246, 0.08);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .luxury-card:active {
+            transform: scale(0.97);
+            box-shadow: 0 10px 20px -10px rgba(217, 70, 239, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="flex flex-col items-center gap-4">
+        
+        <!-- Interactive Preview Container (Mobile Device Screen Frame) -->
+        <div class="relative w-[380px] h-[780px] aurora-bg rounded-[44px] shadow-[0_25px_60px_-15px_rgba(168,85,247,0.3)] border-[8px] border-gray-900 overflow-hidden flex flex-col justify-between select-none">
+            
+            <!-- Ambient Glowing Background Bubbles -->
+            <div class="ambient-glow-1"></div>
+            <div class="ambient-glow-2"></div>
+
+            <!-- Top Header Bar -->
+            <div class="pt-10 px-5 pb-3 flex justify-between items-center bg-white/20 backdrop-blur-md sticky top-0 z-30 border-b border-white/30">
+                <!-- Title -->
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-fuchsia-500 animate-pulse"></span>
+                    <h1 class="text-base font-bold text-gray-800 tracking-tight">记一笔</h1>
+                </div>
+
+                <!-- WeChat Capsule Buttons Mock -->
+                <div class="w-[82px] h-[30px] bg-black/5 backdrop-blur-md rounded-full border border-black/10 flex items-center justify-between px-2.5">
+                    <i class="fa-solid fa-ellipsis text-gray-700 text-xs cursor-pointer hover:opacity-70"></i>
+                    <div class="w-[1px] h-3 bg-gray-300"></div>
+                    <i class="fa-regular fa-circle-dot text-gray-700 text-xs cursor-pointer hover:opacity-70"></i>
+                </div>
+            </div>
+
+            <!-- Main Content Area: Centered layout with only two premium buttons -->
+            <div class="flex-1 flex flex-col justify-center items-center px-6 z-10 space-y-6 -mt-8">
+                
+                <!-- Section Subtitle / Minimal Prompt -->
+                <div class="text-center space-y-1 mb-2">
+                    <p class="text-[11px] font-bold text-fuchsia-600/80 uppercase tracking-widest">SELECT CATEGORY</p>
+                    <h2 class="text-lg font-extrabold text-gray-800 tracking-tight">请选择一种消费类型</h2>
+                </div>
+
+                <!-- Button Card 1: Anime Merch / Goods -->
+                <div class="luxury-card w-full rounded-[28px] p-5 cursor-pointer relative group overflow-hidden">
+                    <!-- Internal shimmer effect -->
+                    <div class="absolute -right-8 -top-8 w-28 h-28 bg-gradient-to-br from-pink-300/40 to-fuchsia-400/20 rounded-full blur-xl group-hover:scale-125 transition-all duration-500"></div>
+                    
+                    <div class="flex items-center justify-between relative z-10">
+                        <div class="flex items-center gap-4">
+                            <!-- Icon Box with rich gradient & subtle glow -->
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-pink-500 via-rose-400 to-fuchsia-400 text-white flex items-center justify-center shadow-lg shadow-pink-500/30 flex-shrink-0">
+                                <i class="fa-solid fa-bag-shopping text-2xl"></i>
+                            </div>
+                            
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-extrabold text-gray-800 text-lg tracking-tight">谷子 / 周边</h3>
+                                </div>
+                                <p class="text-xs text-gray-500 font-medium leading-relaxed">官方 / 同人创作、周边及商品</p>
+                            </div>
+                        </div>
+
+                        <!-- Right Chevron Indicator -->
+                        <div class="w-9 h-9 rounded-full bg-pink-500/10 text-pink-600 flex items-center justify-center group-hover:bg-pink-500 group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Button Card 2: Gaming Gacha / Top Up -->
+                <div class="luxury-card w-full rounded-[28px] p-5 cursor-pointer relative group overflow-hidden">
+                    <!-- Internal shimmer effect -->
+                    <div class="absolute -right-8 -top-8 w-28 h-28 bg-gradient-to-br from-purple-300/40 to-indigo-400/20 rounded-full blur-xl group-hover:scale-125 transition-all duration-500"></div>
+                    
+                    <div class="flex items-center justify-between relative z-10">
+                        <div class="flex items-center gap-4">
+                            <!-- Icon Box with rich purple gradient & subtle glow -->
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-500 to-fuchsia-500 text-white flex items-center justify-center shadow-lg shadow-purple-500/30 flex-shrink-0">
+                                <i class="fa-solid fa-gamepad text-2xl"></i>
+                            </div>
+                            
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-extrabold text-gray-800 text-lg tracking-tight">游戏氪金</h3>
+                                </div>
+                                <p class="text-xs text-gray-500 font-medium leading-relaxed">抽卡 / 直购 / 月卡 / 礼包 / 赠送</p>
+                            </div>
+                        </div>
+
+                        <!-- Right Chevron Indicator -->
+                        <div class="w-9 h-9 rounded-full bg-purple-500/10 text-purple-600 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-all duration-300">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="relative h-20 bg-white/70 backdrop-blur-2xl border-t border-white/60 px-6 flex items-center justify-between z-20">
+                
+                <!-- Tab 1: Home (Active) -->
+                <button class="flex flex-col items-center gap-1 text-fuchsia-600 transition-all">
+                    <i class="fa-solid fa-house text-lg"></i>
+                    <span class="text-[10px] font-bold">首页</span>
+                </button>
+
+                <!-- Tab 2: Expense -->
+                <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-fuchsia-500 transition-all">
+                    <i class="fa-solid fa-wallet text-lg"></i>
+                    <span class="text-[10px] font-medium">消费</span>
+                </button>
+
+                <!-- Central Floating Center Add (+ ) Button -->
+                <div class="relative -top-5">
+                    <button class="w-14 h-14 pink-purple-gradient text-white rounded-full flex items-center justify-center shadow-lg glow-btn border-4 border-white active:scale-90 transition-all">
+                        <i class="fa-solid fa-plus text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Tab 3: Favorite -->
+                <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-fuchsia-500 transition-all">
+                    <i class="fa-solid fa-heart text-lg"></i>
+                    <span class="text-[10px] font-medium">收藏</span>
+                </button>
+
+                <!-- Tab 4: Mine -->
+                <button class="flex flex-col items-center gap-1 text-gray-400 hover:text-fuchsia-500 transition-all">
+                    <i class="fa-solid fa-user text-lg"></i>
+                    <span class="text-[10px] font-medium">我的</span>
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="text-center text-xs text-gray-400 space-y-1">
+            <p class="font-medium text-gray-300">微信小程序极简高奢粉紫主题 (Ultra-Minimal Luxury Pink-Purple Theme)</p>
+            <p>已聚焦：双按钮居中沉浸式设计 · 动态光晕背景 · 高光流线玻璃质感</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,4 +1,25 @@
-/* pages/data/agreement.wxss */
-.legal-page { padding: 32rpx 40rpx; line-height: 1.8; color: var(--text-sub); font-size: 26rpx; }
-.legal-page h2 { font-size: 32rpx; color: var(--text); margin: 32rpx 0 16rpx; }
-.legal-page p { margin-bottom: 16rpx; }
+/* pages/data/agreement.wxss — V2 樱花粉 UI */
+.legal-page {
+  padding: 32rpx 40rpx 200rpx;
+  line-height: 1.8;
+  color: var(--text-sub);
+  font-size: 26rpx;
+}
+.legal-page h2 {
+  font-size: 32rpx;
+  color: var(--text);
+  font-weight: 600;
+  margin: 32rpx 0 16rpx;
+  letter-spacing: 1rpx;
+}
+.legal-page h2:first-child {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 36rpx;
+}
+.legal-page p {
+  margin-bottom: 16rpx;
+  color: var(--text-sub);
+}

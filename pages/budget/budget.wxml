@@ -1,105 +1,130 @@
+<!-- pages/budget/budget.wxml — 预算管理（浅粉紫 Hero + SVG 环形图） -->
 <view class="budget-page">
 
-  <view class="section-title">总预算</view>
-  <block wx:if="{{total}}">
-    <view class="budget-card">
-      <view class="budget-card__head">
-        <text class="budget-card__title">{{total.rangeLabel}}</text>
-        <view class="budget-card__status budget-card__status--{{total.status || 'safe'}}">{{total.statusLabel || '正常'}}</view>
+  <!-- === 浅粉紫渐变 Hero（柔和高明度） === -->
+  <view class="budget-hero">
+    <view class="budget-hero__bg budget-hero__bg--1"></view>
+    <view class="budget-hero__bg budget-hero__bg--2"></view>
+
+    <view class="budget-hero__top">
+      <view class="budget-hero__title-block">
+        <view class="budget-hero__title">预算管理</view>
+        <view class="budget-hero__subtitle">10 月 · 实时追踪支出进度</view>
       </view>
-      <view class="budget-card__amount">
-        <text>预算 <text class="budget-card__amount__v">{{total.amount}}</text></text>
-        <text>实际 <text class="budget-card__amount__v">{{total.actual}}</text></text>
+      <view class="budget-hero__icon">💰</view>
+    </view>
+
+    <!-- === SVG 环形图（一次性渲染，绝对可见） === -->
+    <view class="budget-ring">
+      <view class="budget-ring__svg-wrap">
+        <svg class="budget-ring__svg" viewBox="0 0 120 120">
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFB3D9"/>
+              <stop offset="50%" stop-color="#E0BBE4"/>
+              <stop offset="100%" stop-color="#C4A0F5"/>
+            </linearGradient>
+          </defs>
+          <!-- 背景环 -->
+          <circle cx="60" cy="60" r="48" stroke="rgba(255,255,255,0.4)" stroke-width="14" fill="none"/>
+          <!-- 进度环：用 stroke-dasharray + stroke-dashoffset 精确控制 -->
+          <circle cx="60" cy="60" r="48"
+                  stroke="url(#ringGrad)"
+                  stroke-width="14"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-dasharray="{{301.59}}"
+                  stroke-dashoffset="{{strokeOffset}}"
+                  transform="rotate(-90 60 60)"/>
+        </svg>
       </view>
-      <view class="budget-card__bar">
-        <view class="budget-card__fill budget-card__fill--{{total.status || 'safe'}}" style="width: {{total.barWidth * 100}}%"></view>
-      </view>
-      <view class="budget-card__bottom">
-        <text>{{total.rawPercent}}%</text>
-        <text>阈值：{{total.thresholds.join('/')}}</text>
-      </view>
-      <view class="budget-card__actions">
-        <button class="btn btn--ghost btn--sm" data-type="total" bindtap="openBudget">修改</button>
-        <button class="btn btn--danger btn--sm" data-type="total" bindtap="openBudget">关闭</button>
+      <view class="budget-ring__center">
+        <view class="budget-ring__percent">{{totalPercent}}<text class="budget-ring__pct">%</text></view>
+        <view class="budget-ring__amount">¥{{totalActual}}</view>
       </view>
     </view>
-  </block>
-  <view wx:else class="budget-empty">
-    <view>总预算未开启</view>
-    <view class="budget-empty__btn">
-      <button class="btn btn--primary btn--sm" data-type="total" bindtap="openBudget">开启总预算</button>
+
+    <!-- === 顶部统计 === -->
+    <view class="budget-hero__stats">
+      <view class="budget-hero__stat">
+        <text class="budget-hero__stat-label">总预算</text>
+        <text class="budget-hero__stat-val">¥{{totalBudget}}</text>
+      </view>
+      <view class="budget-hero__divider"></view>
+      <view class="budget-hero__stat">
+        <text class="budget-hero__stat-label">已支出</text>
+        <text class="budget-hero__stat-val">¥{{totalActual}}</text>
+      </view>
+      <view class="budget-hero__divider"></view>
+      <view class="budget-hero__stat">
+        <text class="budget-hero__stat-label">剩余</text>
+        <text class="budget-hero__stat-val">¥{{totalBudget - totalActual}}</text>
+      </view>
     </view>
   </view>
 
-  <view class="section-title">分类预算</view>
-  <block wx:if="{{guzi}}">
-    <view class="budget-card">
-      <view class="budget-card__head">
-        <text class="budget-card__title">谷子 · {{guzi.rangeLabel}}</text>
-        <view class="budget-card__status budget-card__status--{{guzi.status || 'safe'}}">{{guzi.statusLabel || '正常'}}</view>
-      </view>
-      <view class="budget-card__amount">
-        <text>预算 <text class="budget-card__amount__v">{{guzi.amount}}</text></text>
-        <text>实际 <text class="budget-card__amount__v">{{guzi.actual}}</text></text>
-      </view>
-      <view class="budget-card__bar">
-        <view class="budget-card__fill budget-card__fill--{{guzi.status || 'safe'}}" style="width: {{guzi.barWidth * 100}}%"></view>
-      </view>
-      <view class="budget-card__bottom">
-        <text>{{guzi.rawPercent}}%</text>
-        <text>周期：{{guzi.cycleLabel}}</text>
-      </view>
-      <view class="budget-card__actions">
-        <button class="btn btn--ghost btn--sm" data-type="guzi" bindtap="openBudget">修改</button>
-        <button class="btn btn--danger btn--sm" data-type="guzi" bindtap="openBudget">关闭</button>
+  <!-- === 分类预算 === -->
+  <view class="budget-section-title">分类预算</view>
+
+  <!-- 谷子 -->
+  <view class="budget-card">
+    <view class="budget-card__row">
+      <view class="budget-card__icon budget-card__icon--pink">🛍</view>
+      <view class="budget-card__main">
+        <view class="budget-card__name">谷子 / 周边</view>
+        <view class="budget-card__bar">
+          <view class="budget-card__fill" style="width: {{guziPercent}}%"></view>
+        </view>
+        <view class="budget-card__meta">
+          <text class="budget-card__amount">¥{{guziActual}} <text class="budget-card__divider">/ ¥{{guziBudget}}</text></text>
+          <text class="budget-card__badge budget-card__badge--safe">{{guziPercent}}%</text>
+        </view>
       </view>
     </view>
-  </block>
-  <view wx:else class="budget-empty">
-    <view>谷子预算未开启</view>
-    <view class="budget-empty__btn">
-      <button class="btn btn--ghost btn--sm" data-type="guzi" bindtap="openBudget">开启谷子预算</button>
+    <view class="budget-card__actions">
+      <view class="budget-card__btn budget-card__btn--ghost" data-type="guzi" bindtap="openBudget">修改</view>
+      <view class="budget-card__btn budget-card__btn--primary" data-type="guzi" bindtap="openBudget">调整</view>
     </view>
   </view>
 
-  <block wx:if="{{game}}">
-    <view class="budget-card">
-      <view class="budget-card__head">
-        <text class="budget-card__title">游戏 · {{game.rangeLabel}}</text>
-        <view class="budget-card__status budget-card__status--{{game.status || 'safe'}}">{{game.statusLabel || '正常'}}</view>
-      </view>
-      <view class="budget-card__amount">
-        <text>预算 <text class="budget-card__amount__v">{{game.amount}}</text></text>
-        <text>实际 <text class="budget-card__amount__v">{{game.actual}}</text></text>
-      </view>
-      <view class="budget-card__bar">
-        <view class="budget-card__fill budget-card__fill--{{game.status || 'safe'}}" style="width: {{game.barWidth * 100}}%"></view>
-      </view>
-      <view class="budget-card__bottom">
-        <text>{{game.rawPercent}}%</text>
-        <text>周期：{{game.cycleLabel}}</text>
-      </view>
-      <view class="budget-card__actions">
-        <button class="btn btn--ghost btn--sm" data-type="game" bindtap="openBudget">修改</button>
-        <button class="btn btn--danger btn--sm" data-type="game" bindtap="openBudget">关闭</button>
+  <!-- 游戏 -->
+  <view class="budget-card">
+    <view class="budget-card__row">
+      <view class="budget-card__icon budget-card__icon--lavender">🎮</view>
+      <view class="budget-card__main">
+        <view class="budget-card__name">游戏氪金</view>
+        <view class="budget-card__bar">
+          <view class="budget-card__fill budget-card__fill--warn" style="width: {{gamePercent}}%"></view>
+        </view>
+        <view class="budget-card__meta">
+          <text class="budget-card__amount">¥{{gameActual}} <text class="budget-card__divider">/ ¥{{gameBudget}}</text></text>
+          <text class="budget-card__badge budget-card__badge--warn">{{gamePercent}}%</text>
+        </view>
       </view>
     </view>
-  </block>
-  <view wx:else class="budget-empty">
-    <view>游戏预算未开启</view>
-    <view class="budget-empty__btn">
-      <button class="btn btn--ghost btn--sm" data-type="game" bindtap="openBudget">开启游戏预算</button>
+    <view class="budget-card__actions">
+      <view class="budget-card__btn budget-card__btn--ghost" data-type="game" bindtap="openBudget">修改</view>
+      <view class="budget-card__btn budget-card__btn--primary" data-type="game" bindtap="openBudget">调整</view>
     </view>
   </view>
 
-  <!-- 历史 -->
-  <view class="section-title" wx:if="{{history.length > 0}}">历史周期</view>
-  <view wx:if="{{history.length > 0}}" class="budget-card">
-    <view wx:for="{{history}}" wx:key="_id" class="history-row">
-      <text class="history-row__label">{{item.range.label}}</text>
-      <view>
-        <text class="history-row__amount">{{item.actual}}</text>
-        <text class="t-mute" style="margin-left:8rpx;font-size:22rpx;">/ {{item.amount}}</text>
+  <!-- 添加分类 -->
+  <view class="budget-add" bindtap="openBudget" data-type="add">
+    <view class="budget-add__plus">+</view>
+    <text class="budget-add__text">添加分类预算</text>
+  </view>
+
+  <!-- === 历史周期 === -->
+  <view class="budget-section-title" wx:if="{{history.length > 0}}">历史周期</view>
+  <view wx:if="{{history.length > 0}}" class="budget-card budget-card--history">
+    <view wx:for="{{history}}" wx:key="_id" class="budget-history">
+      <view class="budget-history__label">
+        <view class="budget-history__dot"></view>
+        <text>{{item.label}}</text>
+      </view>
+      <view class="budget-history__amounts">
+        <text class="budget-history__actual">¥{{item.actual}}</text>
+        <text class="budget-history__total">/ ¥{{item.amount}}</text>
       </view>
     </view>
   </view>

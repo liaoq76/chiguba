@@ -1,0 +1,189 @@
+<!-- pages/data/settings.wxml — 通用设置（紫色 Hero V2） -->
+<view class="settings-page">
+
+  <!-- === 紫色渐变 Hero === -->
+  <view class="settings-hero">
+    <view class="settings-hero__bg settings-hero__bg--1"></view>
+    <view class="settings-hero__bg settings-hero__bg--2"></view>
+
+    <view class="settings-hero__top">
+      <view class="settings-hero__title-block">
+        <view class="settings-hero__title">通用设置</view>
+        <view class="settings-hero__subtitle">通知 · 隐私 · 主题 · 备份</view>
+      </view>
+      <view class="settings-hero__icon">⚙</view>
+    </view>
+
+    <view class="settings-hero__user">
+      <view class="settings-hero__avatar">⚙</view>
+      <view class="settings-hero__user-info">
+        <view class="settings-hero__user-name">个性化配置</view>
+        <view class="settings-hero__user-sub">v1.0.0 · 2026.10</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- === 通知设置 === -->
+  <view class="settings-section-title">通知与提醒</view>
+  <view class="settings-card">
+    <view class="settings-row">
+      <view class="settings-row__icon settings-row__icon--pink">🔔</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">预算超支提醒</view>
+        <view class="settings-row__desc">达到 80% / 100% 时通知</view>
+      </view>
+      <switch checked="{{notifyBudget}}" data-key="notifyBudget" bindchange="toggleSwitch" color="#FF6B9D"></switch>
+    </view>
+    <view class="settings-row">
+      <view class="settings-row__icon settings-row__icon--blue">↻</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">同步完成通知</view>
+        <view class="settings-row__desc">数据同步成功时通知</view>
+      </view>
+      <switch checked="{{notifySync}}" data-key="notifySync" bindchange="toggleSwitch" color="#FF6B9D"></switch>
+    </view>
+    <view class="settings-row">
+      <view class="settings-row__icon settings-row__icon--gold">★</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">关注的 IP 优惠</view>
+        <view class="settings-row__desc">周边/谷子降价时通知</view>
+      </view>
+      <switch checked="{{notifySale}}" data-key="notifySale" bindchange="toggleSwitch" color="#FF6B9D"></switch>
+    </view>
+    <view class="settings-row">
+      <view class="settings-row__icon settings-row__icon--purple">📨</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">推送通知</view>
+        <view class="settings-row__desc">系统推送总开关</view>
+      </view>
+      <switch checked="{{notifyPush}}" data-key="notifyPush" bindchange="toggleSwitch" color="#FF6B9D"></switch>
+    </view>
+  </view>
+
+  <!-- === 主题切换 === -->
+  <view class="settings-section-title">主题切换</view>
+  <view class="settings-card">
+    <view class="settings-theme">
+      <view class="settings-theme__item {{themeMode === 'system' ? 'settings-theme__item--active' : ''}}"
+            data-theme="system" bindtap="selectTheme">
+        <view class="settings-theme__chip settings-theme__chip--system">◐</view>
+        <text class="settings-theme__label">跟随系统</text>
+      </view>
+      <view class="settings-theme__item {{themeMode === 'light' ? 'settings-theme__item--active' : ''}}"
+            data-theme="light" bindtap="selectTheme">
+        <view class="settings-theme__chip settings-theme__chip--light">☀</view>
+        <text class="settings-theme__label">浅色</text>
+      </view>
+      <view class="settings-theme__item {{themeMode === 'dark' ? 'settings-theme__item--active' : ''}}"
+            data-theme="dark" bindtap="selectTheme">
+        <view class="settings-theme__chip settings-theme__chip--dark">☾</view>
+        <text class="settings-theme__label">深色</text>
+      </view>
+      <view class="settings-theme__item {{themeMode === 'pink' ? 'settings-theme__item--active' : ''}}"
+            data-theme="pink" bindtap="selectTheme">
+        <view class="settings-theme__chip settings-theme__chip--pink">✿</view>
+        <text class="settings-theme__label">樱花粉</text>
+      </view>
+      <view class="settings-theme__item {{themeMode === 'purple' ? 'settings-theme__item--active' : ''}}"
+            data-theme="purple" bindtap="selectTheme">
+        <view class="settings-theme__chip settings-theme__chip--purple">❀</view>
+        <text class="settings-theme__label">薰衣草紫</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- === 隐私与安全 === -->
+  <view class="settings-section-title">隐私与安全</view>
+  <view class="settings-card">
+    <view class="settings-row">
+      <view class="settings-row__icon settings-row__icon--mint">🔒</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">面容 / 指纹解锁</view>
+        <view class="settings-row__desc">进入小程序时验证</view>
+      </view>
+      <switch checked="{{biometricLock}}" data-key="biometricLock" bindchange="toggleSwitch" color="#FF6B9D"></switch>
+    </view>
+    <view class="settings-row">
+      <view class="settings-row__icon settings-row__icon--gray">👁</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">首页隐藏金额</view>
+        <view class="settings-row__desc">列表中的金额显示为 •••</view>
+      </view>
+      <switch checked="{{hideAmount}}" data-key="hideAmount" bindchange="toggleSwitch" color="#FF6B9D"></switch>
+    </view>
+    <view class="settings-row" bindtap="goPrivacy">
+      <view class="settings-row__icon settings-row__icon--blue">📄</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">隐私政策</view>
+        <view class="settings-row__desc">查看个人信息处理规则</view>
+      </view>
+      <text class="settings-row__arrow">›</text>
+    </view>
+    <view class="settings-row" bindtap="goAgreement">
+      <view class="settings-row__icon settings-row__icon--purple">📜</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">用户协议</view>
+        <view class="settings-row__desc">查看服务条款</view>
+      </view>
+      <text class="settings-row__arrow">›</text>
+    </view>
+  </view>
+
+  <!-- === 数据与缓存 === -->
+  <view class="settings-section-title">数据与缓存</view>
+  <view class="settings-card">
+    <view class="settings-row">
+      <view class="settings-row__icon settings-row__icon--green">☁</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">自动备份</view>
+        <view class="settings-row__desc">每天 09:00 自动备份</view>
+      </view>
+      <switch checked="{{autoBackup}}" data-key="autoBackup" bindchange="toggleSwitch" color="#FF6B9D"></switch>
+    </view>
+    <view class="settings-row">
+      <view class="settings-row__icon settings-row__icon--gold">⚡</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">智能识别</view>
+        <view class="settings-row__desc">自动从备注提取 IP/角色</view>
+      </view>
+      <switch checked="{{smartRecognition}}" data-key="smartRecognition" bindchange="toggleSwitch" color="#FF6B9D"></switch>
+    </view>
+    <view class="settings-row" bindtap="checkUpdate">
+      <view class="settings-row__icon settings-row__icon--blue">⤴</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">检查更新</view>
+        <view class="settings-row__desc">v1.0.0 · 已是最新</view>
+      </view>
+      <text class="settings-row__arrow">›</text>
+    </view>
+    <view class="settings-row" bindtap="clearCache">
+      <view class="settings-row__icon settings-row__icon--gray">⌫</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">清除缓存</view>
+        <view class="settings-row__desc">释放本地存储空间</view>
+      </view>
+      <text class="settings-row__arrow">›</text>
+    </view>
+  </view>
+
+  <!-- === 帮助与关于 === -->
+  <view class="settings-section-title">帮助与关于</view>
+  <view class="settings-card">
+    <view class="settings-row" bindtap="goFeedback">
+      <view class="settings-row__icon settings-row__icon--pink">✉</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">意见反馈</view>
+        <view class="settings-row__desc">帮助我们做得更好</view>
+      </view>
+      <text class="settings-row__arrow">›</text>
+    </view>
+    <view class="settings-row" bindtap="goAbout">
+      <view class="settings-row__icon settings-row__icon--purple">ⓘ</view>
+      <view class="settings-row__main">
+        <view class="settings-row__title">关于吃谷吗</view>
+        <view class="settings-row__desc">v1.0.0</view>
+      </view>
+      <text class="settings-row__arrow">›</text>
+    </view>
+  </view>
+</view>

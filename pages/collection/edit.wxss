@@ -1,11 +1,11 @@
-/* pages/collection/edit.wxss */
-.add-coll-page { padding: 24rpx 32rpx 80rpx; }
+/* pages/collection/edit.wxss — V2 樱花粉 UI */
+.add-coll-page { padding: 24rpx 0 200rpx; }
 .form-card {
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 16rpx;
-  padding: 8rpx 32rpx;
+  margin: 0 28rpx 20rpx;
+  border-radius: 24rpx;
+  padding: 4rpx 32rpx;
 }
+.form-card .input-cell:last-child { border-bottom: 0; }
 .input-cell {
   display: flex;
   align-items: center;
@@ -15,12 +15,14 @@
 .input-cell__label {
   width: 180rpx;
   color: var(--text-sub);
-  font-size: 28rpx;
+  font-size: 26rpx;
+  flex-shrink: 0;
 }
 .input-cell__field {
   flex: 1;
   font-size: 28rpx;
   color: var(--text);
+  min-width: 0;
 }
 .input-cell__placeholder { color: var(--text-mute); }
 .qty-row {
@@ -28,20 +30,26 @@
   align-items: center;
   gap: 12rpx;
   padding: 18rpx 0;
+  border-bottom: 1rpx solid var(--line-soft);
 }
 .qty-row__btn {
-  width: 56rpx; height: 56rpx;
+  width: 60rpx; height: 60rpx;
   border-radius: 50%;
-  border: 1rpx solid var(--line);
-  background: var(--bg-elev);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 30rpx;
+  background: linear-gradient(135deg, var(--primary-soft) 0%, #FFE0EC 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  color: var(--primary);
+  font-weight: 300;
 }
 .qty-row__num {
   min-width: 60rpx;
   text-align: center;
   font-size: 30rpx;
   font-variant-numeric: tabular-nums;
+  color: var(--text);
+  font-weight: 600;
 }
 .suggest-list {
   display: flex;
@@ -50,17 +58,20 @@
   padding: 0 0 16rpx;
 }
 .suggest-item {
-  padding: 8rpx 18rpx;
+  padding: 10rpx 20rpx;
   font-size: 24rpx;
-  background: var(--line-soft);
-  color: var(--text-sub);
-  border-radius: 6rpx;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: 999rpx;
+  font-weight: 500;
 }
 .submit-bar {
   position: fixed;
   left: 0; right: 0; bottom: 0;
-  padding: 20rpx 32rpx 32rpx;
-  background: var(--bg);
-  border-top: 1rpx solid var(--line);
+  padding: 20rpx 32rpx calc(32rpx + env(safe-area-inset-bottom, 0px));
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1rpx solid rgba(255, 148, 185, 0.15);
 }
 .submit-bar .btn { width: 100%; }

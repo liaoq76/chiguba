@@ -1,51 +1,71 @@
-/* pages/data/about.wxss */
-.about-page { padding-bottom: 60rpx; }
+/* pages/data/about.wxss — V2 樱花粉 UI */
+.about-page { padding-bottom: 200rpx; padding-top: 16rpx; }
 .about-hero {
+  margin: 0 28rpx 20rpx;
+  padding: 60rpx 32rpx;
+  border-radius: 28rpx;
   text-align: center;
-  padding: 60rpx 32rpx 40rpx;
+  color: #fff;
+  box-shadow: 0 12rpx 40rpx rgba(255, 148, 185, 0.35);
 }
 .about-hero__seal {
-  font-size: 100rpx;
-  color: var(--primary);
+  font-size: 88rpx;
+  line-height: 1;
+  margin-bottom: 12rpx;
+  position: relative;
+  z-index: 2;
 }
 .about-hero__name {
-  font-size: 40rpx;
-  color: var(--text);
-  font-weight: 600;
-  margin-top: 16rpx;
-  letter-spacing: 4rpx;
+  font-size: 44rpx;
+  color: #fff;
+  font-weight: 700;
+  margin-top: 12rpx;
+  letter-spacing: 2rpx;
+  position: relative;
+  z-index: 2;
 }
 .about-hero__version {
   font-size: 22rpx;
-  color: var(--text-mute);
+  color: rgba(255, 255, 255, 0.85);
   margin-top: 8rpx;
+  position: relative;
+  z-index: 2;
 }
 .about-card {
-  background: var(--bg-card);
   margin: 0 28rpx 16rpx;
-  border-radius: 16rpx;
-  border: 1rpx solid var(--line);
+  border-radius: 24rpx;
   overflow: hidden;
+  padding: 8rpx 0;
 }
 .about-row {
   display: flex;
   align-items: center;
-  padding: 24rpx 32rpx;
+  padding: 28rpx 32rpx;
   border-bottom: 1rpx solid var(--line-soft);
 }
 .about-row:last-child { border-bottom: 0; }
-.about-row__title { flex: 1; font-size: 28rpx; color: var(--text); }
-.about-row__arrow { font-size: 36rpx; color: var(--text-mute); }
-.about-row__copy { padding: 6rpx 14rpx; font-size: 22rpx; border: 1rpx solid var(--line); border-radius: 6rpx; color: var(--text-sub); }
+.about-row__title { flex: 1; font-size: 28rpx; color: var(--text); font-weight: 500; }
+.about-row__arrow { font-size: 36rpx; color: var(--text-mute); font-weight: 300; }
+.about-row__copy {
+  padding: 8rpx 18rpx;
+  font-size: 22rpx;
+  border: 1rpx solid var(--line);
+  border-radius: 999rpx;
+  color: var(--text-sub);
+  background: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
 .about-section-title {
   padding: 24rpx 32rpx 12rpx;
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: var(--text-mute);
   letter-spacing: 4rpx;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 .about-desc {
   font-size: 26rpx;
   color: var(--text-sub);
   line-height: 1.8;
-  padding: 0 32rpx 32rpx;
+  padding: 0 32rpx 24rpx;
 }

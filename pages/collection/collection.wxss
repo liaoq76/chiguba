@@ -1,40 +1,49 @@
-/* pages/collection/collection.wxss */
-.coll-page { padding-bottom: 80rpx; }
+/* pages/collection/collection.wxss — V2 樱花粉 UI */
+.coll-page { padding-bottom: 140rpx; padding-top: 16rpx; }
 
 .coll-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20rpx 32rpx;
-  margin: 0 28rpx 8rpx;
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 16rpx;
+  padding: 16rpx 24rpx;
+  margin: 0 28rpx 20rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1rpx solid rgba(255, 255, 255, 0.5);
 }
-.coll-tab { display: flex; gap: 8rpx; }
+.coll-tab { display: flex; gap: 4rpx; }
 .coll-tab__item {
-  padding: 10rpx 22rpx;
+  padding: 12rpx 24rpx;
   border-radius: 999rpx;
   font-size: 26rpx;
   color: var(--text-sub);
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 .coll-tab__item--active {
-  background: var(--primary-soft);
-  color: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 16rpx var(--shadow-primary);
+  font-weight: 600;
 }
-.coll-tools { display: flex; gap: 12rpx; }
+.coll-tools { display: flex; gap: 8rpx; }
 .coll-tools__btn {
   padding: 10rpx 18rpx;
-  border: 1rpx solid var(--line);
+  border: 1rpx solid rgba(255, 148, 185, 0.2);
   border-radius: 999rpx;
   font-size: 24rpx;
   color: var(--text-sub);
-  background: var(--bg-elev);
+  background: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
 }
+.coll-tools__btn:active { background: var(--primary-soft); color: var(--primary); }
 .coll-tools__btn--active {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: #fff;
-  border-color: var(--primary);
+  border-color: transparent;
+  box-shadow: 0 2rpx 8rpx var(--shadow-primary);
 }
 
 /* 网格 */
@@ -42,55 +51,63 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16rpx;
-  padding: 16rpx 28rpx 80rpx;
+  padding: 0 28rpx 80rpx;
   box-sizing: border-box;
 }
 .coll-grid__item {
   flex: 1 1 calc((100% - 16rpx) / 2);
   max-width: calc((100% - 16rpx) / 2);
   box-sizing: border-box;
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 14rpx;
-  padding: 24rpx 20rpx;
+  padding: 28rpx 20rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.coll-grid__icon {
-  width: 100rpx; height: 100rpx;
   border-radius: 24rpx;
-  background: var(--primary-soft);
+}
+.coll-grid__item:active { transform: scale(0.97); }
+.coll-grid__icon {
+  width: 110rpx; height: 110rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(135deg, var(--primary-soft) 0%, #FFE0EC 100%);
   color: var(--primary);
   display: flex; align-items: center; justify-content: center;
-  font-size: 48rpx;
+  font-size: 52rpx;
   margin-bottom: 16rpx;
+  box-shadow: 0 4rpx 16rpx var(--shadow-primary);
 }
 .coll-grid__name {
-  font-size: 26rpx;
+  font-size: 28rpx;
   color: var(--text);
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
 }
 .coll-grid__sub {
   font-size: 22rpx;
   color: var(--text-mute);
   margin-top: 4rpx;
+  text-align: center;
 }
 .coll-grid__qty {
-  margin-top: 12rpx;
+  margin-top: 14rpx;
   font-size: 22rpx;
   color: var(--primary);
   font-variant-numeric: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  background: var(--primary-soft);
+  padding: 6rpx 14rpx;
+  border-radius: 999rpx;
+  font-weight: 500;
 }
+.coll-grid__qty-sep { color: var(--primary); opacity: 0.5; }
 
 /* 列表 */
 .coll-list {
-  margin: 16rpx 28rpx;
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 14rpx;
+  margin: 0 28rpx 20rpx;
+  border-radius: 24rpx;
   overflow: hidden;
+  padding: 8rpx 0;
 }
 .coll-list__item {
   display: flex;
@@ -99,62 +116,85 @@
   border-bottom: 1rpx solid var(--line-soft);
 }
 .coll-list__item:last-child { border-bottom: 0; }
+.coll-list__item:active { background: rgba(255, 255, 255, 0.5); }
 .coll-list__icon {
-  width: 72rpx; height: 72rpx;
-  border-radius: 18rpx;
-  background: var(--primary-soft);
+  width: 76rpx; height: 76rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, var(--primary-soft) 0%, #FFE0EC 100%);
   color: var(--primary);
   display: flex; align-items: center; justify-content: center;
   font-size: 36rpx;
   margin-right: 20rpx;
+  flex-shrink: 0;
+  box-shadow: 0 2rpx 8rpx rgba(255, 148, 185, 0.15);
 }
-.coll-list__main { flex: 1; }
-.coll-list__name { font-size: 28rpx; color: var(--text); }
+.coll-list__icon--history {
+  background: rgba(241, 245, 249, 0.8);
+  color: var(--text-mute);
+  box-shadow: none;
+}
+.coll-list__main { flex: 1; min-width: 0; }
+.coll-list__name { font-size: 28rpx; color: var(--text); font-weight: 500; }
 .coll-list__sub { font-size: 22rpx; color: var(--text-mute); margin-top: 4rpx; }
 .coll-list__qty {
   font-size: 28rpx;
   color: var(--primary);
   font-variant-numeric: tabular-nums;
-  font-weight: 500;
+  font-weight: 700;
+  background: var(--primary-soft);
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  flex-shrink: 0;
+  margin-left: 12rpx;
 }
 
 /* 筛选抽屉 */
 .filter-mask {
   position: fixed; left: 0; right: 0; top: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(45, 49, 66, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 999;
 }
 .filter-panel-inner {
   position: fixed;
   left: 0; right: 0; bottom: 0;
-  background: var(--bg-card);
-  border-top-left-radius: 24rpx;
-  border-top-right-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top-left-radius: 32rpx;
+  border-top-right-radius: 32rpx;
   padding: 32rpx;
   z-index: 1000;
   max-height: 80vh;
   overflow-y: auto;
+  box-shadow: 0 -12rpx 40rpx rgba(0, 0, 0, 0.1);
 }
 .filter-block { margin-bottom: 28rpx; }
 .filter-block__title {
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: var(--text-mute);
   letter-spacing: 4rpx;
-  margin-bottom: 12rpx;
+  margin-bottom: 14rpx;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 .filter-pills { display: flex; flex-wrap: wrap; gap: 12rpx; }
 .filter-pill {
-  padding: 12rpx 22rpx;
+  padding: 14rpx 24rpx;
   font-size: 24rpx;
   border-radius: 999rpx;
-  background: var(--bg-elev);
+  background: rgba(255, 255, 255, 0.7);
   border: 1rpx solid var(--line);
   color: var(--text-sub);
+  font-weight: 500;
 }
 .filter-pill--active {
-  background: var(--primary-soft);
-  color: var(--primary);
-  border-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4rpx 16rpx var(--shadow-primary);
+  font-weight: 600;
 }
 .filter-actions { display: flex; gap: 16rpx; margin-top: 24rpx; }
 .filter-actions .btn { flex: 1; }

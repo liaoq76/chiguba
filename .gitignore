@@ -22,3 +22,8 @@ node_modules/
 
 # 其他
 *.log
+
+# 凭证与临时文件（绝不入库）
+cred.txt
+*.cred
+*.token

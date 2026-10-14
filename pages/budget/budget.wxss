@@ -1,87 +1,317 @@
-/* pages/budget/budget.wxss */
-.budget-page { padding-bottom: 80rpx; }
-.section-title {
-  padding: 24rpx 32rpx 12rpx;
+/* pages/budget/budget.wxss — 预算管理（浅粉紫柔和高明度 V2） */
+
+.budget-page {
+  padding: 0 0 200rpx;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FDF2F8 0%, #FAF5FF 35%, #FFFFFF 60%, #F6F8FD 100%);
+}
+
+/* === 浅粉紫柔色 Hero（接近 add 页面风格） === */
+.budget-hero {
+  position: relative;
+  margin: 24rpx 28rpx 32rpx;
+  padding: 36rpx 32rpx 32rpx;
+  border-radius: 36rpx;
+  background: linear-gradient(135deg, #FFC9DD 0%, #E9D4F5 50%, #D9C7F5 100%);
+  color: #6B3F73;
+  overflow: hidden;
+  box-shadow: 0 12rpx 32rpx rgba(212, 130, 184, 0.22);
+}
+.budget-hero__bg {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40rpx);
+  pointer-events: none;
+}
+.budget-hero__bg--1 {
+  width: 220rpx; height: 220rpx;
+  top: -60rpx; right: -50rpx;
+  background: rgba(255, 255, 255, 0.4);
+}
+.budget-hero__bg--2 {
+  width: 160rpx; height: 160rpx;
+  bottom: -40rpx; left: 25%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.budget-hero__top {
+  position: relative; z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+.budget-hero__title-block { flex: 1; }
+.budget-hero__title {
+  font-size: 40rpx;
+  font-weight: 800;
+  letter-spacing: 2rpx;
+  margin-bottom: 4rpx;
+  color: #5B2C66;
+}
+.budget-hero__subtitle {
   font-size: 24rpx;
-  color: var(--text-mute);
+  color: rgba(91, 44, 102, 0.7);
+  font-weight: 600;
+}
+.budget-hero__icon {
+  font-size: 56rpx;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+/* === SVG 环形图 === */
+.budget-ring {
+  position: relative; z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 240rpx;
+  height: 240rpx;
+  margin: 0 auto 24rpx;
+}
+.budget-ring__svg-wrap {
+  position: absolute;
+  inset: 0;
+  width: 240rpx;
+  height: 240rpx;
+}
+.budget-ring__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.budget-ring__center {
+  position: relative; z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.budget-ring__percent {
+  font-size: 56rpx;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 1rpx;
+  color: #5B2C66;
+}
+.budget-ring__pct { font-size: 24rpx; font-weight: 600; margin-left: 2rpx; }
+.budget-ring__amount {
+  font-size: 22rpx;
+  color: rgba(91, 44, 102, 0.75);
+  font-weight: 600;
+  margin-top: 2rpx;
+}
+
+/* === Hero 底部统计 === */
+.budget-hero__stats {
+  position: relative; z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 18rpx 16rpx;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 24rpx;
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
+}
+.budget-hero__stat { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4rpx; }
+.budget-hero__stat-label {
+  font-size: 20rpx; color: rgba(91, 44, 102, 0.65);
+  font-weight: 600;
+}
+.budget-hero__stat-val {
+  font-size: 28rpx; font-weight: 800; letter-spacing: 1rpx;
+  font-variant-numeric: tabular-nums;
+  color: #5B2C66;
+}
+.budget-hero__divider {
+  width: 1rpx; height: 52rpx;
+  background: rgba(91, 44, 102, 0.2);
+}
+
+/* === 分区标题 === */
+.budget-section-title {
+  padding: 24rpx 32rpx 12rpx;
+  font-size: 22rpx;
+  color: #A0AAC0;
   letter-spacing: 4rpx;
+  font-weight: 600;
+  text-transform: uppercase;
 }
+
+/* === 分类预算卡 === */
 .budget-card {
-  background: var(--bg-card);
-  margin: 0 28rpx 16rpx;
-  border-radius: 16rpx;
-  border: 1rpx solid var(--line);
-  padding: 28rpx 32rpx;
+  margin: 0 28rpx 20rpx;
+  padding: 24rpx 28rpx;
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4rpx 20rpx rgba(212, 130, 184, 0.08);
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12rpx);
+  -webkit-backdrop-filter: blur(12rpx);
 }
-.budget-card__head {
-  display: flex; justify-content: space-between; align-items: center;
+.budget-card__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
   margin-bottom: 16rpx;
 }
-.budget-card__title {
+.budget-card__icon {
+  width: 80rpx; height: 80rpx;
+  border-radius: 24rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40rpx;
+  flex-shrink: 0;
+}
+.budget-card__icon--pink {
+  background: linear-gradient(135deg, #FFC9DD 0%, #F8A8C9 100%);
+  box-shadow: 0 6rpx 16rpx rgba(248, 168, 201, 0.35);
+}
+.budget-card__icon--lavender {
+  background: linear-gradient(135deg, #E9D4F5 0%, #C9B0E8 100%);
+  box-shadow: 0 6rpx 16rpx rgba(201, 176, 232, 0.35);
+}
+.budget-card__main { flex: 1; min-width: 0; }
+.budget-card__name {
   font-size: 30rpx;
-  color: var(--text);
-  font-weight: 500;
-}
-.budget-card__status {
-  font-size: 22rpx;
-  padding: 4rpx 14rpx;
-  border-radius: 6rpx;
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-.budget-card__status--p80 { background: #f4e3d3; color: var(--warn); }
-.budget-card__status--p100, .budget-card__status--over {
-  background: var(--primary-soft); color: var(--primary);
-}
-.budget-card__amount {
-  display: flex; justify-content: space-between;
-  font-size: 26rpx;
-  color: var(--text-sub);
+  color: #2D3142;
+  font-weight: 700;
   margin-bottom: 12rpx;
 }
-.budget-card__amount__v { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 500; }
 .budget-card__bar {
-  height: 16rpx;
-  background: var(--line-soft);
-  border-radius: 8rpx;
+  height: 12rpx;
+  background: rgba(232, 130, 184, 0.12);
+  border-radius: 999rpx;
   overflow: hidden;
-  margin-bottom: 12rpx;
+  margin-bottom: 8rpx;
 }
 .budget-card__fill {
   height: 100%;
-  background: var(--accent);
-  border-radius: 8rpx;
+  background: linear-gradient(90deg, #FFB3D9 0%, #E0BBE4 100%);
+  border-radius: 999rpx;
+  transition: width 0.4s ease;
 }
-.budget-card__fill--p80 { background: var(--warn); }
-.budget-card__fill--p100, .budget-card__fill--over { background: var(--primary); }
-.budget-card__bottom {
-  display: flex; justify-content: space-between;
+.budget-card__fill--warn {
+  background: linear-gradient(90deg, #FBBF24 0%, #F59E0B 100%);
+}
+.budget-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.budget-card__amount {
+  font-size: 24rpx;
+  color: #2D3142;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.budget-card__divider {
+  color: #A0AAC0;
+  font-weight: 500;
+}
+.budget-card__badge {
   font-size: 22rpx;
-  color: var(--text-mute);
-  margin-bottom: 16rpx;
+  font-weight: 700;
+  padding: 4rpx 14rpx;
+  border-radius: 999rpx;
 }
-.budget-card__actions { display: flex; gap: 12rpx; }
-.budget-card__actions .btn { flex: 1; }
-
-.budget-empty {
+.budget-card__badge--safe {
+  background: rgba(232, 130, 184, 0.12);
+  color: #C7649B;
+}
+.budget-card__badge--warn {
+  background: rgba(245, 158, 107, 0.12);
+  color: #F59E0B;
+}
+.budget-card__actions {
+  display: flex;
+  gap: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid rgba(248, 250, 252, 0.6);
+}
+.budget-card__btn {
+  flex: 1;
   text-align: center;
-  padding: 60rpx 32rpx;
-  color: var(--text-mute);
-  background: var(--bg-card);
-  margin: 0 28rpx 16rpx;
-  border-radius: 16rpx;
-  border: 1rpx dashed var(--line);
+  padding: 16rpx 0;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  font-weight: 600;
 }
-.budget-empty__btn {
-  margin-top: 24rpx;
-  display: inline-block;
+.budget-card__btn--ghost {
+  background: rgba(232, 130, 184, 0.1);
+  color: #C7649B;
+}
+.budget-card__btn--ghost:active { background: rgba(232, 130, 184, 0.18); }
+.budget-card__btn--primary {
+  background: linear-gradient(135deg, #FFB3D9 0%, #C9B0E8 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(212, 130, 184, 0.25);
+}
+.budget-card__btn--primary:active { opacity: 0.85; }
+
+/* === 添加分类 === */
+.budget-add {
+  margin: 0 28rpx 20rpx;
+  padding: 28rpx 0;
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2rpx dashed rgba(232, 130, 184, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}
+.budget-add__plus {
+  width: 40rpx; height: 40rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFB3D9 0%, #C9B0E8 100%);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32rpx; font-weight: 400; line-height: 1;
+  margin-left: -8rpx;
+}
+.budget-add__text {
+  font-size: 28rpx;
+  color: #C7649B;
+  font-weight: 600;
 }
 
-.history-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 16rpx 0;
-  border-bottom: 1rpx solid var(--line-soft);
+/* === 历史周期 === */
+.budget-card--history { padding: 8rpx 0; }
+.budget-history {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 28rpx;
+  border-bottom: 1rpx solid rgba(248, 250, 252, 0.6);
 }
-.history-row:last-child { border-bottom: 0; }
-.history-row__label { font-size: 24rpx; color: var(--text-sub); }
-.history-row__amount { font-size: 26rpx; color: var(--text); font-variant-numeric: tabular-nums; }
+.budget-history:last-child { border-bottom: 0; }
+.budget-history__label {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 26rpx;
+  color: #2D3142;
+  font-weight: 500;
+}
+.budget-history__dot {
+  width: 8rpx; height: 8rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFB3D9, #C9B0E8);
+}
+.budget-history__amounts {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+.budget-history__actual {
+  font-size: 28rpx;
+  color: #2D3142;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.budget-history__total {
+  font-size: 22rpx;
+  color: #A0AAC0;
+  font-weight: 500;
+}

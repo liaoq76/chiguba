@@ -18,6 +18,7 @@
     "pages/vocab/edit",
     "pages/data/data",
     "pages/data/feedback",
+    "pages/data/settings",
     "pages/data/about",
     "pages/data/agreement",
     "pages/data/privacy",
@@ -27,51 +28,45 @@
   ],
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#faf6ef",
+    "navigationBarBackgroundColor": "#F6F8FD",
     "navigationBarTitleText": "吃谷吗",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f5efe6",
+    "backgroundColor": "#F6F8FD",
     "enablePullDownRefresh": false
   },
   "tabBar": {
-    "color": "#9a8f80",
-    "selectedColor": "#b6433a",
-    "backgroundColor": "#faf6ef",
+    "custom": true,
+    "color": "#94A3B8",
+    "selectedColor": "#FF94B9",
+    "backgroundColor": "#FFFFFF",
     "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "images/tab/home.png",
-        "selectedIconPath": "images/tab/home_active.png"
+        "text": "首页"
       },
       {
         "pagePath": "pages/expense/expense",
-        "text": "消费",
-        "iconPath": "images/tab/expense.png",
-        "selectedIconPath": "images/tab/expense_active.png"
+        "text": "消费"
       },
       {
         "pagePath": "pages/add/add",
-        "text": "记一笔",
-        "iconPath": "images/tab/add.png",
-        "selectedIconPath": "images/tab/add_active.png"
+        "text": ""
       },
       {
         "pagePath": "pages/collection/collection",
-        "text": "收藏",
-        "iconPath": "images/tab/collection.png",
-        "selectedIconPath": "images/tab/collection_active.png"
+        "text": "收藏"
       },
       {
         "pagePath": "pages/mine/mine",
-        "text": "我的",
-        "iconPath": "images/tab/mine.png",
-        "selectedIconPath": "images/tab/mine_active.png"
+        "text": "我的"
       }
     ]
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "custom-tab-bar": "/custom-tab-bar/index"
+  }
 }

@@ -1,54 +1,248 @@
-/* pages/vocab/vocab.wxss */
-.vocab-page { padding-bottom: 80rpx; }
-.tabs {
+/* pages/vocab/vocab.wxss — 个人词库（浅粉紫柔色 V2） */
+
+.vocab-page {
+  padding: 0 0 200rpx;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FDF2F8 0%, #FAF5FF 35%, #FFFFFF 60%, #F6F8FD 100%);
+}
+
+/* === 浅粉紫柔色 Hero === */
+.vocab-hero {
+  position: relative;
+  margin: 24rpx 28rpx 32rpx;
+  padding: 48rpx 32rpx 36rpx;
+  border-radius: 36rpx;
+  background: linear-gradient(135deg, #FFC9DD 0%, #E9D4F5 50%, #D9C7F5 100%);
+  color: #6B3F73;
+  overflow: hidden;
+  box-shadow: 0 12rpx 32rpx rgba(212, 130, 184, 0.22);
+}
+.vocab-hero__bg {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  filter: blur(32rpx);
+  pointer-events: none;
+}
+.vocab-hero__bg--1 {
+  width: 220rpx; height: 220rpx;
+  top: -60rpx; right: -40rpx;
+  background: rgba(255, 255, 255, 0.4);
+}
+.vocab-hero__bg--2 {
+  width: 160rpx; height: 160rpx;
+  bottom: -40rpx; left: 30%;
+  background: rgba(255, 255, 255, 0.3);
+}
+.vocab-hero__seal {
+  position: relative; z-index: 2;
+  font-size: 64rpx;
+  line-height: 1;
+  margin-bottom: 16rpx;
+}
+.vocab-hero__title {
+  position: relative; z-index: 2;
+  font-size: 44rpx;
+  font-weight: 800;
+  letter-spacing: 2rpx;
+  margin-bottom: 8rpx;
+  color: #5B2C66;
+}
+.vocab-hero__subtitle {
+  position: relative; z-index: 2;
+  font-size: 24rpx;
+  color: rgba(91, 44, 102, 0.75);
+  font-weight: 600;
+  margin-bottom: 28rpx;
+}
+.vocab-hero__stats {
+  position: relative; z-index: 2;
   display: flex;
-  margin: 16rpx 28rpx;
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 12rpx;
-  padding: 6rpx;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 24rpx;
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
 }
-.tabs__item {
+.vocab-hero__stat { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.vocab-hero__stat-val {
+  font-size: 36rpx; font-weight: 800;
+  letter-spacing: 1rpx; line-height: 1.2;
+  color: #5B2C66;
+}
+.vocab-hero__stat-label {
+  font-size: 20rpx; color: rgba(91, 44, 102, 0.7);
+  margin-top: 4rpx; font-weight: 600;
+}
+.vocab-hero__divider {
+  width: 1rpx; height: 56rpx;
+  background: rgba(91, 44, 102, 0.2);
+}
+
+/* === 分类 Tabs === */
+.vocab-tabs {
+  display: flex;
+  margin: 0 28rpx 24rpx;
+  padding: 8rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4rpx 16rpx rgba(244, 114, 182, 0.1);
+  gap: 4rpx;
+}
+.vocab-tabs__item {
   flex: 1;
-  text-align: center;
-  padding: 12rpx 0;
-  font-size: 22rpx;
-  color: var(--text-sub);
-  border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rpx;
+  padding: 12rpx 4rpx;
+  border-radius: 999rpx;
+  transition: all 0.25s ease;
 }
-.tabs__item--active {
-  background: var(--primary-soft);
-  color: var(--primary);
+.vocab-tabs__item--active {
+  background: linear-gradient(135deg, #FFB3D9 0%, #C9B0E8 100%);
+  box-shadow: 0 4rpx 12rpx rgba(212, 130, 184, 0.3);
 }
+.vocab-tabs__emoji {
+  font-size: 28rpx;
+  line-height: 1;
+  filter: grayscale(0.3);
+  opacity: 0.65;
+}
+.vocab-tabs__item--active .vocab-tabs__emoji {
+  filter: none; opacity: 1;
+}
+.vocab-tabs__label {
+  font-size: 20rpx;
+  color: #6B7A99;
+  font-weight: 500;
+}
+.vocab-tabs__item--active .vocab-tabs__label {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* === 词条列表 === */
 .vocab-list {
   margin: 0 28rpx;
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 14rpx;
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.92);
   overflow: hidden;
+  box-shadow: 0 4rpx 24rpx rgba(244, 114, 182, 0.08);
+  border: 1rpx solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12rpx);
+  -webkit-backdrop-filter: blur(12rpx);
 }
 .vocab-row {
   display: flex;
   align-items: center;
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid var(--line-soft);
+  padding: 28rpx 32rpx;
+  border-bottom: 1rpx solid rgba(248, 250, 252, 0.6);
+  gap: 16rpx;
 }
 .vocab-row:last-child { border-bottom: 0; }
-.vocab-row__name { flex: 1; font-size: 28rpx; color: var(--text); }
+.vocab-row:active { background: rgba(244, 114, 182, 0.04); }
+
+.vocab-row__dot {
+  width: 16rpx; height: 16rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.vocab-row__dot--ip { background: linear-gradient(135deg, #FFB3D9, #C9B0E8); }
+.vocab-row__dot--game { background: linear-gradient(135deg, #60A5FA, #3B82F6); }
+.vocab-row__dot--role { background: linear-gradient(135deg, #FB7185, #F43F5E); }
+.vocab-row__dot--productType { background: linear-gradient(135deg, #34D399, #10B981); }
+.vocab-row__dot--channel { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
+
+.vocab-row__name {
+  flex: 1;
+  font-size: 30rpx;
+  color: #2D3142;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.vocab-row__actions { display: flex; gap: 12rpx; flex-shrink: 0; }
 .vocab-row__btn {
-  padding: 8rpx 18rpx;
+  padding: 10rpx 22rpx;
   font-size: 22rpx;
-  margin-left: 12rpx;
-  border-radius: 6rpx;
-  background: var(--bg-elev);
-  border: 1rpx solid var(--line);
-  color: var(--text-sub);
+  border-radius: 999rpx;
+  font-weight: 600;
+  border: 1rpx solid transparent;
 }
+.vocab-row__btn--edit {
+  background: rgba(232, 130, 184, 0.1);
+  color: #C7649B;
+  border-color: rgba(232, 130, 184, 0.2);
+}
+.vocab-row__btn--edit:active { background: rgba(232, 130, 184, 0.18); }
 .vocab-row__btn--danger {
-  color: var(--danger);
-  border-color: var(--danger);
+  background: rgba(239, 68, 68, 0.08);
+  color: #EF4444;
+  border-color: rgba(239, 68, 68, 0.2);
 }
-.action-bar {
+.vocab-row__btn--danger:active { background: rgba(239, 68, 68, 0.16); }
+
+/* === 空状态 === */
+.vocab-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 32rpx;
+  color: #A0AAC0;
+}
+.vocab-empty__seal {
+  font-size: 80rpx;
+  line-height: 1;
+  margin-bottom: 16rpx;
+  opacity: 0.4;
+}
+.vocab-empty__text {
+  font-size: 26rpx;
+  color: #A0AAC0;
+  margin-bottom: 24rpx;
+}
+.vocab-empty__btn {
+  padding: 14rpx 36rpx;
+  border-radius: 999rpx;
+  background: linear-gradient(135deg, #FFB3D9 0%, #C9B0E8 100%);
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 12rpx rgba(212, 130, 184, 0.25);
+}
+
+/* === 底部操作区 === */
+.vocab-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 32rpx 28rpx 0;
+  padding: 0 8rpx;
+  gap: 16rpx;
+}
+.vocab-action__add {
+  flex: 1;
   text-align: center;
-  padding: 32rpx;
+  padding: 22rpx 0;
+  border-radius: 999rpx;
+  background: linear-gradient(135deg, #FFB3D9 0%, #C9B0E8 100%);
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  box-shadow: 0 6rpx 20rpx rgba(212, 130, 184, 0.32);
 }
+.vocab-action__add:active { opacity: 0.85; }
+.vocab-action__clear {
+  padding: 22rpx 32rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.9);
+  color: #EF4444;
+  font-size: 26rpx;
+  font-weight: 600;
+  border: 1rpx solid rgba(239, 68, 68, 0.2);
+}
+.vocab-action__clear:active { background: rgba(239, 68, 68, 0.08); }

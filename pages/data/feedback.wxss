@@ -1,19 +1,25 @@
-/* pages/data/feedback.wxss */
-.feedback-page { padding: 24rpx 32rpx 80rpx; }
+/* pages/data/feedback.wxss — V2 樱花粉 UI */
+.feedback-page { padding: 24rpx 0 200rpx; }
 .form-card {
-  background: var(--bg-card);
-  border: 1rpx solid var(--line);
-  border-radius: 16rpx;
+  margin: 0 28rpx 20rpx;
+  border-radius: 24rpx;
   padding: 24rpx 32rpx;
-  margin-bottom: 24rpx;
 }
-.label { font-size: 24rpx; color: var(--text-mute); margin-bottom: 16rpx; letter-spacing: 2rpx; }
+.label {
+  font-size: 22rpx;
+  color: var(--text-mute);
+  margin-bottom: 16rpx;
+  letter-spacing: 4rpx;
+  font-weight: 500;
+  text-transform: uppercase;
+}
 .textarea {
   width: 100%;
   height: 240rpx;
   font-size: 28rpx;
   color: var(--text);
   background: transparent;
+  line-height: 1.6;
 }
 .input {
   width: 100%;
@@ -22,6 +28,7 @@
   padding: 12rpx 0;
 }
 .submit-btn {
-  margin-top: 24rpx;
-  width: 100%;
+  margin: 24rpx 28rpx 0;
+  width: auto;
+  display: block;
 }

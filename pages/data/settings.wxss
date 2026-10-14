@@ -1,0 +1,252 @@
+/* pages/data/settings.wxss — 通用设置（浅粉紫柔色 V2） */
+
+.settings-page {
+  padding: 0 0 200rpx;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FDF2F8 0%, #FAF5FF 35%, #FFFFFF 60%, #F6F8FD 100%);
+}
+
+/* === 浅粉紫柔色 Hero === */
+.settings-hero {
+  position: relative;
+  margin: 24rpx 28rpx 32rpx;
+  padding: 36rpx 32rpx 28rpx;
+  border-radius: 36rpx;
+  background: linear-gradient(135deg, #FFC9DD 0%, #E9D4F5 50%, #D9C7F5 100%);
+  color: #6B3F73;
+  overflow: hidden;
+  box-shadow: 0 12rpx 32rpx rgba(212, 130, 184, 0.22);
+}
+.settings-hero__bg {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40rpx);
+  pointer-events: none;
+}
+.settings-hero__bg--1 {
+  width: 220rpx; height: 220rpx;
+  top: -60rpx; right: -50rpx;
+  background: rgba(255, 255, 255, 0.4);
+}
+.settings-hero__bg--2 {
+  width: 160rpx; height: 160rpx;
+  bottom: -40rpx; left: 25%;
+  background: rgba(255, 255, 255, 0.3);
+}
+.settings-hero__top {
+  position: relative; z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+.settings-hero__title-block { flex: 1; }
+.settings-hero__title {
+  font-size: 40rpx;
+  font-weight: 800;
+  letter-spacing: 2rpx;
+  margin-bottom: 4rpx;
+  color: #5B2C66;
+}
+.settings-hero__subtitle {
+  font-size: 24rpx;
+  color: rgba(91, 44, 102, 0.7);
+  font-weight: 600;
+}
+.settings-hero__icon {
+  font-size: 56rpx;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+/* Hero 内用户卡 */
+.settings-hero__user {
+  position: relative; z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 20rpx 24rpx;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 24rpx;
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
+}
+.settings-hero__avatar {
+  width: 80rpx; height: 80rpx;
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40rpx;
+  flex-shrink: 0;
+}
+.settings-hero__user-info { flex: 1; min-width: 0; }
+.settings-hero__user-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  color: #5B2C66;
+}
+.settings-hero__user-sub {
+  font-size: 22rpx;
+  color: rgba(91, 44, 102, 0.7);
+  margin-top: 2rpx;
+  font-weight: 600;
+}
+
+/* === 分区标题 === */
+.settings-section-title {
+  padding: 24rpx 32rpx 12rpx;
+  font-size: 22rpx;
+  color: #A0AAC0;
+  letter-spacing: 4rpx;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* === 通用卡 === */
+.settings-card {
+  margin: 0 28rpx 20rpx;
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.92);
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(212, 130, 184, 0.06);
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12rpx);
+  -webkit-backdrop-filter: blur(12rpx);
+}
+
+/* === 行 === */
+.settings-row {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 28rpx;
+  border-bottom: 1rpx solid rgba(248, 250, 252, 0.6);
+  gap: 20rpx;
+}
+.settings-row:last-child { border-bottom: 0; }
+.settings-row:active { background: rgba(232, 130, 184, 0.04); }
+
+.settings-row__icon {
+  width: 72rpx; height: 72rpx;
+  border-radius: 20rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36rpx;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+.settings-row__icon--pink {
+  background: linear-gradient(135deg, #FFC9DD 0%, #F8A8C9 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(248, 168, 201, 0.3);
+}
+.settings-row__icon--purple {
+  background: linear-gradient(135deg, #E9D4F5 0%, #C9B0E8 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(201, 176, 232, 0.3);
+}
+.settings-row__icon--blue {
+  background: linear-gradient(135deg, #B8DBFB 0%, #93C5FD 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(147, 197, 253, 0.3);
+}
+.settings-row__icon--mint {
+  background: linear-gradient(135deg, #B8F0DC 0%, #86E8C0 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(134, 232, 192, 0.3);
+}
+.settings-row__icon--gold {
+  background: linear-gradient(135deg, #FDE6A8 0%, #FCD34D 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(252, 211, 77, 0.3);
+}
+.settings-row__icon--green {
+  background: linear-gradient(135deg, #B8F0CB 0%, #86E89F 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(134, 232, 159, 0.3);
+}
+.settings-row__icon--gray {
+  background: rgba(160, 170, 192, 0.12);
+  color: #6B7A99;
+}
+
+.settings-row__main { flex: 1; min-width: 0; }
+.settings-row__title {
+  font-size: 28rpx;
+  color: #2D3142;
+  font-weight: 600;
+}
+.settings-row__desc {
+  font-size: 22rpx;
+  color: #A0AAC0;
+  margin-top: 4rpx;
+  font-weight: 500;
+}
+.settings-row__arrow {
+  font-size: 36rpx;
+  color: #A0AAC0;
+  font-weight: 300;
+  flex-shrink: 0;
+}
+
+/* === 主题切换 === */
+.settings-theme {
+  display: flex;
+  padding: 20rpx 16rpx;
+  gap: 8rpx;
+}
+.settings-theme__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 4rpx;
+  border-radius: 20rpx;
+  transition: all 0.25s ease;
+}
+.settings-theme__item--active {
+  background: rgba(232, 130, 184, 0.08);
+}
+.settings-theme__chip {
+  width: 72rpx; height: 72rpx;
+  border-radius: 22rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36rpx;
+  font-weight: 500;
+  border: 2rpx solid transparent;
+  transition: all 0.25s ease;
+}
+.settings-theme__item--active .settings-theme__chip {
+  border-color: #C9B0E8;
+  box-shadow: 0 0 0 4rpx rgba(201, 176, 232, 0.2);
+  transform: scale(1.05);
+}
+.settings-theme__chip--system {
+  background: linear-gradient(135deg, #fff 0%, #fff 50%, #2D3142 50%, #2D3142 100%);
+  color: #C7649B;
+}
+.settings-theme__chip--light {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  color: #F59E0B;
+}
+.settings-theme__chip--dark {
+  background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+  color: #FBBF24;
+}
+.settings-theme__chip--pink {
+  background: linear-gradient(135deg, #FFC9DD 0%, #F8A8C9 100%);
+  color: #fff;
+}
+.settings-theme__chip--purple {
+  background: linear-gradient(135deg, #E9D4F5 0%, #C9B0E8 100%);
+  color: #fff;
+}
+.settings-theme__label {
+  font-size: 22rpx;
+  color: #6B7A99;
+  font-weight: 500;
+}
+.settings-theme__item--active .settings-theme__label {
+  color: #C7649B;
+  font-weight: 700;
+}

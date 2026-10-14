@@ -1,102 +1,168 @@
 <view class="home">
-  <!-- 问候 + 同步状态 -->
+
+  <!-- ========== 顶部 打招呼 Header ========== -->
   <view class="greet">
-    <view class="greet__left">
+    <view class="greet__left" bindtap="goMine">
       <view class="greet__avatar-wrap">
-        <image wx:if="{{avatarURL}}" class="greet__avatar" src="{{avatarURL}}" mode="aspectFill" bindtap="goMine"></image>
-        <view wx:else class="greet__avatar greet__avatar--placeholder" bindtap="goMine">人</view>
+        <image wx:if="{{avatarURL}}" class="greet__avatar" src="{{avatarURL}}" mode="aspectFill"></image>
+        <view wx:else class="greet__avatar greet__avatar--placeholder">人</view>
       </view>
-      <view class="greet__text-col">
-        <text class="greet__text">今日，</text>
-        <text class="greet__name">{{nickname}}</text>
+      <view class="greet__main">
+        <view class="greet__title-row">
+          <text class="greet__name">吃谷达人·{{nickname}}</text>
+          <text class="greet__level">Lv.1 谷圣</text>
+        </view>
+        <text class="greet__slogan">吃谷使我快乐，吃土使我清醒 🛍️</text>
       </view>
     </view>
-    <view class="greet__sync" wx:if="{{pendingSync > 0}}">
-      <view class="greet__sync-dot greet__sync-dot--off"></view>
-      <text>{{pendingSync}} 条待同步</text>
+    <!-- 右上 ＋ 圆形按钮（原型：渐变 FAB，触发新增） -->
+    <view class="greet__add" bindtap="goAdd">
+      <text>＋</text>
     </view>
   </view>
 
-  <!-- 本月消费 -->
-  <view class="month-card">
-    <view class="month-card__label">本月消费 · {{monthLabel}}</view>
+  <!-- ========== 本月消费 渐变 hero ========== -->
+  <view class="month-card gradient-hero">
+    <!-- 装饰大图标 -->
+    <view class="month-card__bg-icon">
+      <text>🛍</text>
+    </view>
+    <view class="month-card__top">
+      <view class="month-card__date">
+        <text class="month-card__cal">📅</text>
+        <text>{{monthLabel}}消费</text>
+      </view>
+      <view class="month-card__delta">
+        <text>较上月 </text>
+        <text class="month-card__delta-icon">↓</text>
+        <text> 12.4%</text>
+      </view>
+    </view>
     <view class="month-card__total t-money">{{monthTotal}}</view>
-    <view class="month-card__breakdown">
-      <view class="month-card__item">
-        <text class="month-card__icon">◉</text>
-        <text>谷子</text>
-        <text class="month-card__amount t-money">{{guziTotal}}</text>
+
+    <!-- 预算摘要（开启时显示） -->
+    <view wx:if="{{budget}}" class="month-card__budget">
+      <view class="month-card__budget-row">
+        <text>本月预算进度</text>
+        <text>已用 {{budget.rawPercent}}% / 剩余 ¥{{budgetRemain}}</text>
       </view>
-      <view class="month-card__item">
-        <text class="month-card__icon">◆</text>
-        <text>游戏</text>
-        <text class="month-card__amount t-money">{{gameTotal}}</text>
+      <view class="month-card__budget-bar">
+        <view class="month-card__budget-fill" style="width: {{budget.percent * 100}}%"></view>
       </view>
     </view>
   </view>
 
-  <!-- 消费趋势 -->
-  <view class="card trend-card">
-    <view class="card-title">
-      <view class="card-title__left">
-        <view class="card-title__dot"></view>
-        <text>消费趋势</text>
+  <!-- ========== 消费趋势 玻璃卡 ========== -->
+  <view class="card float-card trend-card">
+    <view class="trend-card__head">
+      <view class="trend-card__left">
+        <view class="trend-card__dot"></view>
+        <text>近半年消费趋势</text>
       </view>
+      <text class="trend-card__hint">平均 {{trendAvg}}/月</text>
     </view>
     <view class="trend-chart">
       <canvas canvas-id="homeTrend" id="homeTrend" class="trend-chart__canvas" type="2d" bindtouchstart="onTrendTouch"></canvas>
     </view>
-    <view class="trend-compare">
-      <text>本月 <text class="trend-compare__cur t-money">{{curTotal}}</text></text>
-      <text>上月 <text class="t-money">{{prevTotal}}</text></text>
+  </view>
+
+  <!-- ========== 待收到 标题 + 快捷入口 ========== -->
+  <view class="section">
+    <view class="section__head">
+      <view class="section__head-left">
+        <text class="section__head-icon">🚚</text>
+        <text>待收到谷子</text>
+        <view class="section__count">{{pendingCount}}件</view>
+      </view>
+      <text class="section__more" bindtap="goPresale">全部分配 ›</text>
+    </view>
+
+    <!-- 横滑卡片：原型有图 + IP 标签 + 倒计时。我们用最近消费的"待收"项替代（最近消费状态包含预售/定金/运输中） -->
+    <view wx:if="{{pendingPreview.length > 0}}" class="pending-scroll">
+      <scroll-view class="pending-scroll__inner" scroll-x enhanced show-scrollbar="{{false}}">
+        <view wx:for="{{pendingPreview}}" wx:key="_id" class="pending-card" data-id="{{item._id}}" bindtap="goRecentDetail">
+          <view class="pending-card__cover">
+            <image wx:if="{{item.thumb}}" class="pending-card__img" src="{{item.thumb}}" mode="aspectFill" data-id="{{item._id}}" catchtap="onTapThumb"></image>
+            <view wx:else class="pending-card__placeholder {{item.icon === '◆' ? 'pending-card__placeholder--game' : ''}}">
+              <text>{{item.icon === '◆' ? '💎' : '🛍'}}</text>
+            </view>
+            <view class="pending-card__cover-mask"></view>
+            <view class="pending-card__ip">
+              <text>{{item.ip || 'IP'}}</text>
+            </view>
+            <view class="pending-card__days">
+              <text>🕒 {{item.daysLeft}}天</text>
+            </view>
+          </view>
+          <view class="pending-card__body">
+            <text class="pending-card__name">{{item.name}}</text>
+            <view class="pending-card__meta">
+              <view class="pending-card__stage">
+                <text>{{item.stageLabel}}</text>
+              </view>
+              <text class="pending-card__price">¥{{item.amount}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      <view class="pending-scroll__fade"></view>
+    </view>
+    <view wx:else class="pending-empty float-card">
+      <view class="pending-empty__icon">📦</view>
+      <view class="pending-empty__text">还没有待收到的谷子</view>
+      <view class="pending-empty__btn" bindtap="goAdd">＋ 登记预售</view>
     </view>
   </view>
 
-  <!-- 待收到 -->
-  <view class="pending" bindtap="goPresale">
-    <view class="pending__icon">◫</view>
-    <view class="pending__text">待收到 {{pendingCount}} 件</view>
-    <text class="pending__arrow">›</text>
-  </view>
+  <!-- ========== 最近消费 列表 ========== -->
+  <view class="section">
+    <view class="section__head">
+      <view class="section__head-left">
+        <text class="section__head-icon section__head-icon--purple">🧾</text>
+        <text>最近消费</text>
+      </view>
+      <text class="section__more section__more--mute" bindtap="goExpense">查看更多</text>
+    </view>
 
-  <!-- 预算摘要（PRD 4.1.6 — 仅开启时显示） -->
-  <view class="budget" wx:if="{{budget}}" bindtap="goBudget">
-    <view class="budget__head">
-      <view class="budget__title">{{budget.typeLabel}} · 本周期</view>
-      <view class="budget__status budget__status--{{budget.status}}">{{budget.statusLabel}}</view>
+    <view wx:if="{{recent.length === 0}}" class="empty float-card">
+      <view class="empty__seal">◌</view>
+      <view class="empty__text">还没有消费记录</view>
+      <view class="empty__btn">
+        <button class="btn btn--primary btn--sm" bindtap="fillDemo">填入示例数据看效果</button>
+      </view>
     </view>
-    <view class="budget__bar">
-      <view class="budget__fill budget__fill--{{budget.status}}" style="width: {{budget.percent * 100}}%"></view>
-    </view>
-    <view class="budget__bottom">
-      <text>已用 <text class="budget__actual t-money">{{budget.actual}}</text></text>
-      <text class="t-mute">{{budget.rawPercent}}%</text>
-    </view>
-  </view>
 
-  <!-- 最近 3 条 -->
-  <view class="recent">
-    <view class="recent__head">最近消费</view>
-    <view class="recent__list">
-      <view wx:if="{{recent.length === 0}}" class="empty">
-        <view class="empty__seal">◌</view>
-        <view class="empty__text">还没有消费记录</view>
-        <view style="margin-top:24rpx;">
-          <button class="btn btn--primary btn--sm" bindtap="fillDemo">填入示例数据看效果</button>
+    <view wx:else class="recent-list">
+      <view wx:for="{{recent}}" wx:key="_id" class="recent-row float-card" data-id="{{item._id}}" bindtap="goRecentDetail">
+        <view class="recent-row__cover">
+          <image wx:if="{{item.thumb}}" class="recent-row__img" src="{{item.thumb}}" mode="aspectFill"></image>
+          <view wx:else class="recent-row__placeholder {{item.icon === '◆' ? 'recent-row__placeholder--game' : ''}}">
+            <text>{{item.icon === '◆' ? '💎' : '🛍'}}</text>
+          </view>
+          <view class="recent-row__type-badge {{item.icon === '◆' ? 'recent-row__type-badge--game' : ''}}">
+            <text>{{item.icon === '◆' ? '💎' : '🛍'}}</text>
+            <text>{{item.typeLabel}}</text>
+          </view>
+        </view>
+        <view class="recent-row__main">
+          <text class="recent-row__name">{{item.name}}</text>
+          <view class="recent-row__tags">
+            <view wx:if="{{item.ip}}" class="recent-row__ip">
+              <text>{{item.ip}}</text>
+            </view>
+            <view wx:if="{{item.character}}" class="recent-row__char">
+              <text>❤️ {{item.character}}</text>
+            </view>
+          </view>
+          <text class="recent-row__meta">{{item.dateLabel}}{{item.channel ? ' · ' + item.channel : ''}}</text>
+        </view>
+        <view class="recent-row__right">
+          <text class="recent-row__amount">-{{item.amount}}</text>
+          <view wx:if="{{item.statusLabel}}" class="recent-row__status {{item.statusType === 'pending' ? 'recent-row__status--pending' : 'recent-row__status--done'}}">
+            <text>{{item.statusLabel}}</text>
+          </view>
         </view>
       </view>
-      <view wx:for="{{recent}}" wx:key="_id" class="recent-item" data-id="{{item._id}}" bindtap="goRecentDetail">
-        <view class="recent-item__icon {{item.icon === '◆' ? 'recent-item__icon--game' : ''}}">{{item.icon}}</view>
-        <view class="recent-item__main">
-          <view class="recent-item__name">{{item.name}}</view>
-          <view class="recent-item__date">{{item.dateLabel}}</view>
-        </view>
-        <image wx:if="{{item.thumb}}" class="recent-item__thumb" src="{{item.thumb}}" mode="aspectFill" data-id="{{item._id}}" catchtap="onTapThumb"></image>
-        <view class="recent-item__amount">{{item.amount}}</view>
-      </view>
     </view>
   </view>
-
-  <!-- 中央浮动 ＋ -->
-  <view class="fab" bindtap="goAdd">＋</view>
 </view>

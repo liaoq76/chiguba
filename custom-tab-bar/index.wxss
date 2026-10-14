@@ -1,0 +1,119 @@
+/* custom-tab-bar/index.wxss
+   复刻原型：玻璃底栏 + 中间 ＋ 圆形按钮上凸 -24rpx
+   WeChat custom tabBar 模式：组件用 position:fixed 渲染在屏幕底部
+   页面需要给 page 加 padding-bottom: 140rpx 留出 tab bar 空间 */
+
+.ctb {
+  position: relative;
+  pointer-events: auto;
+}
+
+.ctb__bar {
+  /* 让栏本身 fixed 到屏幕底（避免受 wrapper/transform 影响） */
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: env(safe-area-inset-bottom) !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100rpx;
+  padding: 0 16rpx 0;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
+  border-top: 1rpx solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 -4rpx 24rpx rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+}
+
+.ctb__safe {
+  /* 不渲染独立的 safe area（由栏 bottom 值内嵌） */
+  display: none;
+}
+
+.ctb__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+  height: 100rpx;
+  position: relative;
+  transition: transform 0.15s ease;
+  min-width: 0;
+}
+
+.ctb__item:active { transform: scale(0.95); }
+
+/* === 普通 tab 按钮 === */
+.ctb__icon {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16rpx;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.ctb__icon-img {
+  width: 44rpx;
+  height: 44rpx;
+  display: block;
+}
+.ctb__icon--active {
+  background: rgba(255, 148, 185, 0.12);
+}
+
+.ctb__text {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #94A3B8;
+  letter-spacing: 0.5rpx;
+  line-height: 1;
+}
+.ctb__text--active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* === 中间 + 按钮：上凸 === */
+.ctb__item--add {
+  flex: 0 0 120rpx;
+  height: 100rpx;
+  position: relative;
+  display: block;
+}
+/* 外层容器：负责绝对定位 + 上凸（脱离 flow，绝对尺寸防拉伸） */
+.ctb__add-btn-outer {
+  position: absolute;
+  left: 50%;
+  top: 26rpx;
+  transform: translate(-50%, -50%);
+  width: 96rpx;
+  height: 96rpx;
+  flex: 0 0 96rpx;
+  box-sizing: border-box;
+  display: block;
+}
+/* 内层圆形按钮：填充外层（无 box-sizing 歧义） */
+.ctb__add-btn {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FF94B9 0%, #E87AA0 40%, #9B8BFF 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  font-weight: 300;
+  line-height: 1;
+  border: 6rpx solid #fff;
+  box-shadow: 0 10rpx 28rpx rgba(255, 148, 185, 0.55), 0 2rpx 6rpx rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  position: relative;
+}
+.ctb__item--add:active .ctb__add-btn-outer { transform: translate(-50%, -50%) scale(0.94); }

@@ -1,5 +1,5 @@
 <view class="add-coll-page">
-  <view class="form-card">
+  <view class="form-card float-card">
     <view class="input-cell">
       <view class="input-cell__label">商品名称<text class="t-danger">*</text></view>
       <input class="input-cell__field" placeholder="如：芙宁娜吧唧" value="{{name}}" bindinput="onName" placeholder-class="input-cell__placeholder" />

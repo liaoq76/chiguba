@@ -2,33 +2,66 @@
 
   <!-- === 步骤 1：选择消费类型 === -->
   <block wx:if="{{step === 'type'}}">
-    <view class="section-title">先选择一种消费</view>
+    <!-- 环境光晕（双层 ambient glow，8s/10s 呼吸） -->
+    <view class="ambient-glow ambient-glow--pink"></view>
+    <view class="ambient-glow ambient-glow--purple"></view>
 
-    <view class="type-card" data-type="guzi" bindtap="pickType">
-      <view class="type-card__icon">◉</view>
-      <view class="type-card__main">
-        <view class="type-card__title">谷子 / 周边</view>
-        <view class="type-card__desc">官方/同人创作、周边及商品</view>
+    <!-- 居中布局：标题 + 副标题 + 2 张分类卡 -->
+    <view class="type-stage">
+      <!-- 顶部品牌徽标（脉冲圆点 + 标题） -->
+      <view class="type-stage__brand">
+        <view class="type-stage__brand-dot"></view>
+        <text class="type-stage__brand-text">记一笔</text>
       </view>
-      <text class="type-card__arrow">›</text>
-    </view>
 
-    <view class="type-card" data-type="game" bindtap="pickType">
-      <view class="type-card__icon type-card__icon--game">◆</view>
-      <view class="type-card__main">
-        <view class="type-card__title">游戏氪金</view>
-        <view class="type-card__desc">抽卡 / 直购 / 月卡 / 礼包 / 赠送</view>
+      <!-- 副标题 -->
+      <view class="type-stage__head">
+        <text class="type-stage__eyebrow">SELECT CATEGORY</text>
+        <text class="type-stage__title">请选择一种消费类型</text>
       </view>
-      <text class="type-card__arrow">›</text>
+
+      <!-- 卡片 1：谷子 / 周边（粉色渐变） -->
+      <view class="luxury-card" data-type="guzi" bindtap="pickType" hover-class="luxury-card--active" hover-stay-time="120">
+        <view class="luxury-card__shimmer luxury-card__shimmer--pink"></view>
+        <view class="luxury-card__row">
+          <view class="luxury-card__icon luxury-card__icon--guzi">
+            <text class="luxury-card__icon-glyph">🛍</text>
+          </view>
+          <view class="luxury-card__main">
+            <view class="luxury-card__name">谷子 / 周边</view>
+            <view class="luxury-card__desc">官方 / 同人创作、周边及商品</view>
+          </view>
+          <view class="luxury-card__chevron luxury-card__chevron--guzi">›</view>
+        </view>
+      </view>
+
+      <!-- 卡片 2：游戏氪金（紫色渐变） -->
+      <view class="luxury-card" data-type="game" bindtap="pickType" hover-class="luxury-card--active" hover-stay-time="120">
+        <view class="luxury-card__shimmer luxury-card__shimmer--purple"></view>
+        <view class="luxury-card__row">
+          <view class="luxury-card__icon luxury-card__icon--game">
+            <text class="luxury-card__icon-glyph">🎮</text>
+          </view>
+          <view class="luxury-card__main">
+            <view class="luxury-card__name">游戏氪金</view>
+            <view class="luxury-card__desc">抽卡 / 直购 / 月卡 / 礼包 / 赠送</view>
+          </view>
+          <view class="luxury-card__chevron luxury-card__chevron--game">›</view>
+        </view>
+      </view>
     </view>
   </block>
 
   <!-- === 步骤 2：表单 === -->
   <block wx:if="{{step === 'form'}}">
-    <view class="form-card">
+    <view class="form-card float-card">
       <view class="input-cell" bindtap="backType">
         <view class="input-cell__label">类型</view>
-        <view class="input-cell__field">{{expenseType === 'guzi' ? '谷子 / 周边' : '游戏氪金'}}</view>
+        <view class="input-cell__field">
+          <text class="tag {{expenseType === 'guzi' ? 'tag--primary' : 'tag--secondary'}}">
+            {{expenseType === 'guzi' ? '🛍 谷子' : '🎮 游戏'}}
+          </text>
+        </view>
       </view>
 
       <!-- 日期 -->
@@ -111,13 +144,16 @@
 
       <!-- 总金额显示 -->
       <view class="total-display">
-        <view class="total-display__label">总金额<text class="total-display__hint">自动计算</text></view>
-        <view class="total-display__amount t-money">¥{{totalAmount}}</view>
+        <view class="total-display__label">
+          总金额
+          <text class="total-display__hint">自动计算</text>
+        </view>
+        <view class="total-display__amount gradient-text t-money">¥{{totalAmount}}</view>
       </view>
     </view>
 
     <!-- 更多信息 -->
-    <view class="form-card">
+    <view class="form-card float-card">
       <view class="more-toggle" bindtap="toggleMore">
         <text>更多信息</text>
         <text class="more-toggle__arrow">{{showMore ? '▲' : '▼'}}</text>
@@ -169,7 +205,7 @@
               <text class="switch-row__label">加入收藏</text>
               <text class="switch-row__hint">同时沉淀到当前收藏</text>
             </view>
-            <switch checked="{{addToCollection}}" bindchange="toggleCollection" color="#b6433a" />
+            <switch checked="{{addToCollection}}" bindchange="toggleCollection" color="#FF94B9" />
           </view>
         </block>
 
@@ -179,7 +215,7 @@
             <text class="switch-row__label">预售</text>
             <text class="switch-row__hint">勾选后填写预计出荷</text>
           </view>
-          <switch checked="{{isPresale}}" bindchange="togglePresale" color="#b6433a" />
+          <switch checked="{{isPresale}}" bindchange="togglePresale" color="#FF94B9" />
         </view>
 
         <block wx:if="{{isPresale}}">

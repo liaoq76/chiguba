@@ -2,7 +2,9 @@
   <view class="guide-skip" bindtap="finish">跳过</view>
 
   <view class="guide-card">
-    <view class="guide-seal">{{steps[step - 1].seal}}</view>
+    <view class="guide-card__inner gradient-hero">
+      <view class="guide-seal">{{steps[step - 1].seal}}</view>
+    </view>
     <view class="guide-title">{{steps[step - 1].title}}</view>
     <view class="guide-desc">{{steps[step - 1].desc}}</view>
   </view>

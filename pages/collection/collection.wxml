@@ -1,13 +1,13 @@
 <view class="coll-page">
 
   <!-- 顶部 Tab + 工具 -->
-  <view class="coll-toolbar">
+  <view class="coll-toolbar float-card">
     <view class="coll-tab">
       <view class="coll-tab__item {{activeTab === 'current' ? 'coll-tab__item--active' : ''}}" data-t="current" bindtap="switchTab">当前收藏</view>
       <view class="coll-tab__item {{activeTab === 'history' ? 'coll-tab__item--active' : ''}}" data-t="history" bindtap="switchTab">收藏历史</view>
     </view>
     <view class="coll-tools">
-      <view class="coll-tools__btn" bindtap="openFilter">筛选 ≡</view>
+      <view class="coll-tools__btn" bindtap="openFilter">⚙ 筛选</view>
       <view class="coll-tools__btn {{view === 'grid' ? 'coll-tools__btn--active' : ''}}" bindtap="switchView">{{view === 'grid' ? '网格' : '列表'}}</view>
     </view>
   </view>
@@ -24,16 +24,20 @@
 
     <!-- 网格 -->
     <view wx:if="{{view === 'grid'}}" class="coll-grid">
-      <view wx:for="{{currentItems}}" wx:key="_id" class="coll-grid__item" data-id="{{item._id}}" bindtap="goDetail">
+      <view wx:for="{{currentItems}}" wx:key="_id" class="coll-grid__item float-card" data-id="{{item._id}}" bindtap="goDetail">
         <view class="coll-grid__icon">♡</view>
         <view class="coll-grid__name">{{item.name}}</view>
         <view class="coll-grid__sub">{{item.ip || '未填IP'}}</view>
-        <view class="coll-grid__qty">当前 ×{{item.currentQty}} · 曾拥有 ×{{item.ownedQty}}</view>
+        <view class="coll-grid__qty">
+          <text>当前 ×{{item.currentQty}}</text>
+          <text class="coll-grid__qty-sep">·</text>
+          <text>曾拥有 ×{{item.ownedQty}}</text>
+        </view>
       </view>
     </view>
 
     <!-- 列表 -->
-    <view wx:else class="coll-list">
+    <view wx:else class="coll-list float-card">
       <view wx:for="{{currentItems}}" wx:key="_id" class="coll-list__item" data-id="{{item._id}}" bindtap="goDetail">
         <view class="coll-list__icon">♡</view>
         <view class="coll-list__main">
@@ -51,9 +55,9 @@
       <view class="empty__seal">◌</view>
       <view class="empty__text">收藏历史为空</view>
     </view>
-    <view class="coll-list">
+    <view class="coll-list float-card">
       <view wx:for="{{historyItems}}" wx:key="_id" class="coll-list__item" data-id="{{item._id}}" bindtap="goDetail">
-        <view class="coll-list__icon">○</view>
+        <view class="coll-list__icon coll-list__icon--history">○</view>
         <view class="coll-list__main">
           <view class="coll-list__name">{{item.name}}</view>
           <view class="coll-list__sub">{{item.ip || '未填IP'}} · 曾拥有 ×{{item.ownedQty}}</view>
